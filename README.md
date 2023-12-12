@@ -33,8 +33,12 @@ Uses:
 
 ##### Requirements for Assignment 1
 
-1. Create a `class` `Object` using _reflection_ and put data there and use in project workflow (
-   choose any `class`)
-2. Replace all `for` loops in your project with `Collection` streaming
+1. Install MySQL Workbench
+2. Using assigned topic create schema with 15 tables with all types of relations used
+3. save `.mwb` file of schema and upload it as result of your homework on this assignment
+4. Topics:
+   ...
+   **Dana Tolman** - Airport (simulate process of traveling from one country to another)
+   ...
 
 <hr />
