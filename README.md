@@ -6,14 +6,31 @@ Uses:
 
 - MySQL 8.0.34
 - MySQL Workbench 8.0.34
-- mac os x aarch64 & mac os x x86_64
+- IntelliJ IDEA 2023.2.3 (Community Edition)
+- openjdk 11.0.21 2023-10-17
+- mac os x aarch64
+- mac os x x86_64
+- Apache Maven 3.9.6
+
+Dependencies:
+
+- org.apache.logging.log4j:log4j-api v2.21.1
+- org.apache.logging.log4j:log4j-core v2.21.1
+- org.apache.commons:commons-lang3 v3.12.0
+- commons-io:commons-io v2.15.0
+
+Plugins:
+
+- org.apache.maven.plugins:maven-compiler-plugin v3.11.0
+- org.codehaus.mojo:exec-maven-plugin v3.1.0
 
 ## How to Run
 
-### Run ?
+### Run `Main.class`
 
 ```shell
-# insert here
+mvn clean install
+mvn exec:java
 ```
 
 ## Assignments
