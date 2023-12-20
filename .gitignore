@@ -50,8 +50,11 @@ buildNumber.properties
 
 ### SQL ###
 *.mwb
+*.sql
+sql_scripts/
 
 ### MISC ###
 playground/
 *.class
 *.iml
+.prettierrc*
