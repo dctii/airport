@@ -51,7 +51,6 @@ buildNumber.properties
 ### SQL ###
 *.mwb
 *.sql
-sql_scripts/
 
 ### MISC ###
 playground/
