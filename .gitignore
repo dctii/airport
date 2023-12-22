@@ -51,6 +51,7 @@ buildNumber.properties
 ### SQL ###
 *.mwb
 *.sql
+resources/otherSql/
 sql_*.png
 
 ### MISC ###
