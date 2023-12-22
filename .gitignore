@@ -51,9 +51,14 @@ buildNumber.properties
 ### SQL ###
 *.mwb
 *.sql
+sql_*.png
 
 ### MISC ###
 playground/
 *.class
 *.iml
 .prettierrc*
+
+
+### Secrets ###
+config.properties
