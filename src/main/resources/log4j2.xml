@@ -15,6 +15,9 @@
         <Logger name="com.solvd.airport.Main" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>
+        <Logger name="com.solvd.airport.service" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
 
         <Logger name="com.solvd.airport" level="info" additivity="false">
             <AppenderRef ref="Console"/>

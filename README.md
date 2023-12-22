@@ -49,11 +49,11 @@ mvn exec:java
 
 ##### Requirements for Assignment 3
 
-1. Create new github repo
-2. Use maven as build tool and log4j2 as logger
-3. Create project structure with bin folder, dao folder and service folder
+1. Create new GitHub repo
+2. Use `maven` as build tool and `log4j2` as logger
+3. Create project structure with `bin/` folder, `dao/` folder and `service/` folder
 4. Create connection pool
-5. Create Main class where you will use only service layer to perform core logic of application
+5. Create `Main` class where you will use only service layer to perform core logic of application
 6. DAO layer should work only with DB
 7. Service layer should have more business logic, all assertions and more difficult actions not
    related to database requests should be there
