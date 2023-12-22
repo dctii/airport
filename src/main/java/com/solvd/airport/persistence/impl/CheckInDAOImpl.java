@@ -4,12 +4,11 @@ import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.CheckIn;
 import com.solvd.airport.persistence.dao.CheckInDAO;
 import com.solvd.airport.util.SQLKeys;
+import com.solvd.airport.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CheckInDAOImpl implements CheckInDAO {
     private static final Logger LOGGER = LogManager.getLogger(CheckInDAOImpl.class);
@@ -25,21 +24,29 @@ public class CheckInDAOImpl implements CheckInDAO {
 
     @Override
     public void insertCheckIn(CheckIn checkIn) {
+        ResultSet generatedKeys = null;
         try (
                 Connection conn = connectionPool.getConnection();
-                PreparedStatement statement = conn.prepareStatement(INSERT_CHECK_IN_SQL)
+                PreparedStatement statement = conn.prepareStatement(INSERT_CHECK_IN_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, checkIn.getCheckInMethod());
             statement.setInt(2, checkIn.getAirportStaffId());
             statement.setInt(3, checkIn.getBookingId());
 
             int affectedRows = statement.executeUpdate();
-            LOGGER.info("Insert CheckIn - Rows affected: {}", affectedRows);
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating check-in failed, no rows affected.");
+            }
+
+            // need to set the AUTO_INCREMENT `*_id`
+            SQLUtils.setGeneratedKey(statement, checkIn::setCheckInId);
 
         } catch (SQLException e) {
             LOGGER.error("Insert CheckIn - Error: ", e);
         }
     }
+
 
     @Override
     public void updateCheckIn(CheckIn checkIn) {
@@ -49,9 +56,7 @@ public class CheckInDAOImpl implements CheckInDAO {
         ) {
             statement.setBoolean(1, checkIn.isPassIssued());
             statement.setInt(2, checkIn.getBookingId());
-
-            int affectedRows = statement.executeUpdate();
-            LOGGER.info("Update CheckIn - Rows affected: {}", affectedRows);
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             LOGGER.error("Update CheckIn - Error: ", e);

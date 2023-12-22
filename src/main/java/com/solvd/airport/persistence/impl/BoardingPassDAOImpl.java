@@ -3,11 +3,12 @@ package com.solvd.airport.persistence.impl;
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.BoardingPass;
 import com.solvd.airport.persistence.dao.BoardingPassDAO;
+import com.solvd.airport.util.SQLUtils;
 
 import java.sql.*;
 
 public class BoardingPassDAOImpl implements BoardingPassDAO {
-    private DBConnectionPool connectionPool = DBConnectionPool.getInstance();
+    private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     private static final String INSERT_BOARDING_PASS_SQL =
             "INSERT INTO boarding_passes (boarding_time, boarding_group, check_in_id, flight_id, baggage_id) " +
@@ -30,14 +31,8 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
                 throw new SQLException("Creating boarding pass failed, no rows affected.");
             }
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    boardingPass.setBoardingPassId(generatedKeys.getInt(1));
-                }
-                else {
-                    throw new SQLException("Creating boarding pass failed, no ID obtained.");
-                }
-            }
+            SQLUtils.setGeneratedKey(statement, boardingPass::setBoardingPassId);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

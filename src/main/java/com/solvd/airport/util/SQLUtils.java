@@ -5,12 +5,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.function.IntConsumer;
 
 
 public class SQLUtils {
     // utils for SQL-related actions, like SQL statement generations, etc.
     private static final Logger LOGGER = LogManager.getLogger(SQLUtils.class);
 
+    public static void setGeneratedKey(PreparedStatement statement, IntConsumer setIdConsumer) throws SQLException {
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                int id = generatedKeys.getInt(1);
+                setIdConsumer.accept(id);
+            } else {
+                throw new SQLException("Failed to obtain ID.");
+            }
+        }
+    }
     public static void displayBoardingPassInfo(String bookingNumber) {
         DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
@@ -38,7 +49,7 @@ public class SQLUtils {
                     String baggageId = rs.getString("baggage_id");
 
                     // Now you can display the information however you need.
-                    LOGGER.info("Boarding Group: {}\n, Boarding Time: {}\n, Flight: {}\n, Gate: {}\n, Baggage ID: {}\n",
+                    LOGGER.info("\n=== Boarding Information ===\nBoarding Group: {}\n, Boarding Time: {}\n, Flight: {}\n, Gate: {}\n, Baggage Code: {}\n",
                             baggageId, boardingGroup, boardingTime, flightId, gateCode);
                 }
             }

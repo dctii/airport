@@ -1,8 +1,8 @@
 package com.solvd.airport;
 
-import com.solvd.airport.domain.CheckIn;
 import com.solvd.airport.service.CheckInService;
 import com.solvd.airport.service.impl.CheckInServiceImpl;
+import com.solvd.airport.util.AnsiCodes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +27,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            LOGGER.info("--- Airport Check-In System ---");
+            LOGGER.info("=== Airport Check-In System ===");
             LOGGER.info("1. Perform Check-In");
             LOGGER.info("2. Exit");
             LOGGER.info("Enter your choice: ");
@@ -54,11 +54,9 @@ public class Main {
         String flightCode = scanner.next();
 
         try {
-            CheckIn checkIn = new CheckIn();
-
             // TODO: Gets stuck here
             checkInService.performCheckIn(bookingNumber, flightCode);
-            LOGGER.info("Check-In completed successfully.");
+            LOGGER.info("{}Check-In completed successfully.{}\n", AnsiCodes.GREEN, AnsiCodes.RESET_ALL);
         } catch (Exception e) {
             LOGGER.error("Error during check-in process: ", e);
         }
