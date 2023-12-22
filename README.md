@@ -58,6 +58,50 @@ mvn exec:java
 7. Service layer should have more business logic, all assertions and more difficult actions not
    related to database requests should be there
 
+##### Expected Run Thus Far:
+
+```shell
+mvn exec:java
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ---------------------< com.solvd.airport:airport >----------------------
+[INFO] Building airport 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- exec:3.1.0:java (default-cli) @ airport ---
+01:25:27.408 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.427 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.439 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.451 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.469 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.483 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.497 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.509 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.531 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+01:25:27.544 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.db.AuthConnection - Connected to the data base successfully.
+=== Airport Check-In System ===
+1. Perform Check-In
+2. Exit
+Enter your choice:
+1
+Enter Booking Number:
+A002
+Enter Flight Code:
+DL123
+01:25:33.512 [com.solvd.airport.Main.main()] INFO  com.solvd.airport.util.SQLUtils -
+=== Boarding Information ===
+Boarding Group: DL123-A002-K12-20241220
+, Boarding Time: Group 3
+, Flight: 2024-12-20T08:00:00.000-0800
+, Gate: DL123
+, Baggage Code: 148
+
+Check-In completed successfully.
+
+```
+
+
 <hr />
 
 ### Assignment 2: Database CRUD operations. SQLs, DDL
