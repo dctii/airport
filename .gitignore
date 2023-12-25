@@ -50,8 +50,7 @@ buildNumber.properties
 
 ### SQL ###
 *.mwb
-*.sql
-resources/otherSql/
+otherSql/
 sql_*.png
 
 ### MISC ###
