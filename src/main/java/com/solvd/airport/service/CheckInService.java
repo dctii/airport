@@ -1,5 +1,6 @@
 package com.solvd.airport.service;
 
 public interface CheckInService {
-    void performCheckIn(String bookingNumber, String flightId);
+    // check passport holder in by bookingNumber and flightId
+    void performCheckIn(String staffEmail, String bookingNumber, boolean hasBaggage, double baggageWeight);
 }

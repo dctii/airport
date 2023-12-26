@@ -3,35 +3,34 @@ package com.solvd.airport.domain;
 import com.solvd.airport.util.StringFormatters;
 
 public class Terminal {
-    private int terminalId;
+    private String airportCode;
     private String terminalCode;
     private String terminalName;
     private boolean isInternational;
     private boolean isDomestic;
-    private boolean isPrivate;
-    private String airportId;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int AIRPORT_CODE_MAX_WIDTH = 3;
+    final static private int TERMINAL_CODE_MAX_WIDTH = 10;
+    final static private int TERMINAL_NAME_MAX_WIDTH = 100;
 
     public Terminal() {
     }
 
-    public Terminal(int terminalId, String terminalCode, String terminalName,
-                    boolean isInternational, boolean isDomestic, boolean isPrivate,
-                    String airportId) {
-        this.terminalId = terminalId;
+    public Terminal(String airportCode, String terminalCode, String terminalName, boolean isInternational, boolean isDomestic) {
+        this.airportCode = airportCode;
         this.terminalCode = terminalCode;
         this.terminalName = terminalName;
         this.isInternational = isInternational;
         this.isDomestic = isDomestic;
-        this.isPrivate = isPrivate;
-        this.airportId = airportId;
     }
 
-    public int getTerminalId() {
-        return terminalId;
+    public String getAirportCode() {
+        return airportCode;
     }
 
-    public void setTerminalId(int terminalId) {
-        this.terminalId = terminalId;
+    public void setAirportCode(String airportCode) {
+        this.airportCode = airportCode;
     }
 
     public String getTerminalCode() {
@@ -66,54 +65,18 @@ public class Terminal {
         isDomestic = domestic;
     }
 
-    public boolean isPrivate() {
-        return isPrivate;
-    }
-
-    public void setPrivate(boolean aPrivate) {
-        isPrivate = aPrivate;
-    }
-
-    public String getAirportId() {
-        return airportId;
-    }
-
-    public void setAirportId(String airportId) {
-        this.airportId = airportId;
-    }
-
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Terminal.class;
         String[] fieldNames = {
-                "terminalId",
+                "airportCode",
                 "terminalCode",
                 "terminalName",
                 "isInternational",
-                "isDomestic",
-                "isPrivate",
-                "airportId"
+                "isDomestic"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    terminals (
-        terminal_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        terminal_code VARCHAR(10) NOT NULL,
-        terminal_name VARCHAR(100),
-        is_international BOOL NOT NULL,
-        is_domestic BOOL NOT NULL,
-        is_private BOOL NOT NULL,
-        airport_id VARCHAR(3) NOT NULL,
-        PRIMARY KEY(terminal_id)
-    );
-    ALTER TABLE terminals
-    ADD
-        FOREIGN KEY(airport_id) REFERENCES airports(IATA_airport_code);
-*/

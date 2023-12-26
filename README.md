@@ -29,11 +29,46 @@ Plugins:
 ### Run `Main.class`
 
 ```shell
+# Drop `airport` database. Will be dropped if it exists.
+mysql -u {{username}} -p{{password}} < /path/to/airport_database_drop.sql
+
+# Create `airport` database.
+mysql -u {{username}} -p{{password}} < /path/to/airport_database_creation.sql
+
+# Create `airport` schema.
+mysql -u {{username}} -p{{password}} -D airport < /path/to/airport_schema.sql
+
 mvn clean install
 mvn exec:java
 ```
 
 ## Assignments
+
+<hr />
+
+### Assignment 3: JDBC. DAO classes.
+
+<hr />
+
+#### Requirements
+
+##### Comments and Required changes to consider from previous assignment:
+
+- Database Schema:
+    - Remove redundant relationships in schema and remove or collapse tables into others where
+      possible
+    - Simplify relationships between tables, thereby reducing unnecessary complexity. A closed table
+      relationship path should exist.
+        - For example, one person can have many addresses, one person can have many email addresses,
+          phone numbers, etc.
+    - Resolve circular relationships. A strategy, for example, is to create another table that sets
+      a relationship between.
+    - Try not to have more than two relationships per table.
+
+##### Requirements for Assignment 3
+
+1. Automate same business logic but using MyBatis and provide ability to switch between
+   implementations from properties file
 
 <hr />
 
@@ -100,7 +135,6 @@ Boarding Group: DL123-A002-K12-20241220
 Check-In completed successfully.
 
 ```
-
 
 <hr />
 

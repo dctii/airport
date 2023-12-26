@@ -1,98 +1,91 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 import java.math.BigDecimal;
 
 public class Baggage {
     private String baggageCode;
-    private BigDecimal baggageWeight;
-    private BigDecimal baggagePrice;
-    private int boardingPassId;
+    private BigDecimal weight;
+    private BigDecimal price;
+    private int checkInId;
+
+    final static private int BAGGAGE_CODE_MAX_WIDTH = 45;
+    final static private int WEIGHT_DECIMAL_PRECISION = 5;
+    final static private int WEIGHT_DECIMAL_SCALE = 2;
+    final static private int PRICE_DECIMAL_PRECISION = 10;
+    final static private int PRICE_DECIMAL_SCALE = 2;
 
 
     public Baggage() {
     }
 
-    public Baggage(String baggageCode, BigDecimal baggageWeight,
-                   BigDecimal baggagePrice, int boardingPassId) {
+    public Baggage(String baggageCode) {
         this.baggageCode = baggageCode;
-        this.baggageWeight = baggageWeight;
-        this.baggagePrice = baggagePrice;
-        this.boardingPassId = boardingPassId;
     }
 
-    public Baggage(String baggageCode, BigDecimal baggageWeight, BigDecimal baggagePrice) {
-        this.baggageCode = baggageCode;
-        this.baggageWeight = baggageWeight;
-        this.baggagePrice = baggagePrice;
-    }
+    public Baggage(String baggageCode, BigDecimal weight,
+                   BigDecimal price, int checkInId) {
+        ExceptionUtils.isStringLengthValid(baggageCode, BAGGAGE_CODE_MAX_WIDTH);
+        ExceptionUtils.isDecimalValid(weight, WEIGHT_DECIMAL_PRECISION, WEIGHT_DECIMAL_SCALE);
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
 
+        this.baggageCode = baggageCode;
+        this.weight = weight;
+        this.price = price;
+        this.checkInId = checkInId;
+    }
 
     public String getBaggageCode() {
         return baggageCode;
     }
 
     public void setBaggageCode(String baggageCode) {
+        ExceptionUtils.isStringLengthValid(baggageCode, BAGGAGE_CODE_MAX_WIDTH);
+
         this.baggageCode = baggageCode;
     }
 
-    public BigDecimal getBaggageWeight() {
-        return baggageWeight;
+    public BigDecimal getWeight() {
+        return weight;
     }
 
-    public void setBaggageWeight(BigDecimal baggageWeight) {
-        this.baggageWeight = baggageWeight;
+    public void setWeight(BigDecimal weight) {
+        ExceptionUtils.isDecimalValid(weight, WEIGHT_DECIMAL_PRECISION, WEIGHT_DECIMAL_SCALE);
+
+        this.weight = weight;
     }
 
-    public BigDecimal getBaggagePrice() {
-        return baggagePrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setBaggagePrice(BigDecimal baggagePrice) {
-        this.baggagePrice = baggagePrice;
+    public void setPrice(BigDecimal price) {
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
+
+        this.price = price;
     }
 
-    public int getBoardingPassId() {
-        return boardingPassId;
+    public int getCheckInId() {
+        return checkInId;
     }
 
-    public void setBoardingPassId(int boardingPassId) {
-        this.boardingPassId = boardingPassId;
+    public void setCheckInId(int checkInId) {
+        this.checkInId = checkInId;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Baggage.class;
         String[] fieldNames = {
                 "baggageCode",
-                "baggageWeight",
-                "baggagePrice",
-                "boardingPassId"
+                "weight",
+                "price",
+                "checkInId"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    baggage (
-        baggage_code VARCHAR(45) NOT NULL UNIQUE,
-        baggage_weight DECIMAL(5, 2)
-            CHECK (
-                baggage_weight >= 0.00
-            ),
-        baggage_price DECIMAL(10, 2)
-            CHECK (
-                baggage_price >= 0.00
-            ),
-        boarding_pass_id INT UNSIGNED,
-        PRIMARY KEY(baggage_code)
-    );
-    ALTER TABLE baggage
-    ADD
-        FOREIGN KEY(boarding_pass_id) REFERENCES boarding_passes(boarding_pass_id);
-*/

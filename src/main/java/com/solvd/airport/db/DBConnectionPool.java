@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class DBConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger(DBConnectionPool.class);
     private static DBConnectionPool dbConnectionPool = null;
-    private static final int MAX_CONNECTIONS = 10;
+    private static final int MAX_CONNECTIONS = 30;
 
     private final Queue<java.sql.Connection> dbConnections = new LinkedList<>();
 

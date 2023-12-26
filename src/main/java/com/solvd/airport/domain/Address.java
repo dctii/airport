@@ -1,6 +1,9 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
+
+import java.util.Map;
 
 public class Address {
     private int addressId;
@@ -8,27 +11,52 @@ public class Address {
     private String citySubdivision;
     private String city;
     private String citySuperdivision;
-    private String country;
+    private String countryCode;
     private String postalCode;
     private String timezone;
-    private String countryId;
+
+    final static private int STREET_MAX_WIDTH = 45;
+    final static private int CITY_SUBDIVISION_MAX_WIDTH = 45;
+    final static private int CITY_MAX_WIDTH = 45;
+    final static private int CITY_SUPERDIVISION_MAX_WIDTH = 45;
+    final static private int COUNTRY_CODE_MAX_WIDTH = 2;
+    final static private int POSTAL_CODE_MAX_WIDTH = 45;
+    final static private int TIMEZONE_CODE_MAX_WIDTH = 45;
 
 
     public Address() {
     }
 
     public Address(int addressId, String street, String citySubdivision, String city,
-                   String citySuperdivision, String country, String postalCode,
-                   String timezone, String countryId) {
+                   String citySuperdivision, String countryCode, String postalCode,
+                   String timezone) {
+        Map<String, Integer> addressMap = Map.of(
+                street, STREET_MAX_WIDTH,
+                citySubdivision, CITY_SUBDIVISION_MAX_WIDTH,
+                city, CITY_MAX_WIDTH,
+                citySuperdivision, CITY_SUPERDIVISION_MAX_WIDTH,
+                countryCode, COUNTRY_CODE_MAX_WIDTH,
+                postalCode, POSTAL_CODE_MAX_WIDTH,
+                timezone, TIMEZONE_CODE_MAX_WIDTH
+        );
+
+        addressMap.forEach(ExceptionUtils::isStringLengthValid);
+
         this.addressId = addressId;
         this.street = street;
         this.citySubdivision = citySubdivision;
         this.city = city;
         this.citySuperdivision = citySuperdivision;
-        this.country = country;
+        this.countryCode = countryCode;
         this.postalCode = postalCode;
         this.timezone = timezone;
-        this.countryId = countryId;
+    }
+
+    public Address(String street, String city, String postalCode, String countryCode) {
+        this.street = street;
+        this.city = city;
+        this.countryCode = countryCode;
+        this.postalCode = postalCode;
     }
 
     public int getAddressId() {
@@ -44,6 +72,7 @@ public class Address {
     }
 
     public void setStreet(String street) {
+        ExceptionUtils.isStringLengthValid(street, STREET_MAX_WIDTH);
         this.street = street;
     }
 
@@ -52,6 +81,7 @@ public class Address {
     }
 
     public void setCitySubdivision(String citySubdivision) {
+        ExceptionUtils.isStringLengthValid(citySubdivision, CITY_SUBDIVISION_MAX_WIDTH);
         this.citySubdivision = citySubdivision;
     }
 
@@ -60,6 +90,7 @@ public class Address {
     }
 
     public void setCity(String city) {
+        ExceptionUtils.isStringLengthValid(city, CITY_MAX_WIDTH);
         this.city = city;
     }
 
@@ -68,15 +99,17 @@ public class Address {
     }
 
     public void setCitySuperdivision(String citySuperdivision) {
+        ExceptionUtils.isStringLengthValid(citySuperdivision, CITY_SUPERDIVISION_MAX_WIDTH);
         this.citySuperdivision = citySuperdivision;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountry(String countryCode) {
+        ExceptionUtils.isStringLengthValid(countryCode, COUNTRY_CODE_MAX_WIDTH);
+        this.countryCode = countryCode;
     }
 
     public String getPostalCode() {
@@ -84,6 +117,7 @@ public class Address {
     }
 
     public void setPostalCode(String postalCode) {
+        ExceptionUtils.isStringLengthValid(postalCode, POSTAL_CODE_MAX_WIDTH);
         this.postalCode = postalCode;
     }
 
@@ -92,60 +126,25 @@ public class Address {
     }
 
     public void setTimezone(String timezone) {
+        ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_CODE_MAX_WIDTH);
         this.timezone = timezone;
-    }
-
-    public String getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(String countryId) {
-        this.countryId = countryId;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Address.class;
         String[] fieldNames = {
                 "addressId",
                 "street",
                 "citySubdivision",
                 "city",
                 "citySuperdivision",
-                "country",
+                "countryCode",
                 "postalCode",
-                "timezone",
-                "countryId"
+                "timezone"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    addresses (
-        address_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        street VARCHAR(45) NOT NULL,
-        city_subdivision VARCHAR(45),
-        city VARCHAR(45) NOT NULL,
-        city_superdivision VARCHAR(45),
-        country VARCHAR(75) NOT NULL,
-        postal_code VARCHAR(20)
-            CHECK (
-                postal_code REGEXP '^[A-Z0-9]+$'
-            ),
-        timezone VARCHAR(45) NOT NULL,
-        country_id VARCHAR(2) NOT NULL,
-        PRIMARY KEY(address_id)
-    );
-        ALTER TABLE addresses
-    ADD
-        FOREIGN KEY(country_id) REFERENCES countries(ISO3166_a2_code),
-    ADD
-        FOREIGN KEY(country) REFERENCES countries(country_name),
-    ADD
-        FOREIGN KEY(timezone) REFERENCES timezones(timezone_name);
-*/

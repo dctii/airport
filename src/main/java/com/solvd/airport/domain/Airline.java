@@ -1,74 +1,46 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class Airline {
-    private String iataAirlineCode;
-    private String icaoAirlineCode;
+    private String airlineCode;
     private String airlineName;
+    private int addressId;
+
+    final static private int AIRLINE_CODE_MAX_WIDTH = 2;
+    final static private int AIRLINE_NAME_MAX_WIDTH = 45;
 
     public Airline() {
     }
 
-    public Airline(String iataAirlineCode, String icaoAirlineCode, String airlineName) {
-        this.iataAirlineCode = iataAirlineCode;
-        this.icaoAirlineCode = icaoAirlineCode;
+    public Airline(String airlineCode, int addressId) {
+        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
+
+        this.airlineCode = airlineCode;
+        this.addressId = addressId;
+    }
+
+    public Airline(String airlineCode, String airlineName, int addressId) {
+        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
+        ExceptionUtils.isStringLengthValid(airlineName, AIRLINE_NAME_MAX_WIDTH);
+
+        this.airlineCode = airlineCode;
         this.airlineName = airlineName;
+        this.addressId = addressId;
     }
 
-    public String getIataAirlineCode() {
-        return iataAirlineCode;
-    }
-
-    public void setIataAirlineCode(String iataAirlineCode) {
-        this.iataAirlineCode = iataAirlineCode;
-    }
-
-    public String getIcaoAirlineCode() {
-        return icaoAirlineCode;
-    }
-
-    public void setIcaoAirlineCode(String icaoAirlineCode) {
-        this.icaoAirlineCode = icaoAirlineCode;
-    }
-
-    public String getAirlineName() {
-        return airlineName;
-    }
-
-    public void setAirlineName(String airlineName) {
-        this.airlineName = airlineName;
-    }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Airline.class;
         String[] fieldNames = {
-                "iataAirlineCode",
-                "icaoAirlineCode",
-                "airlineName"
+                "airlineCode",
+                "airlineName",
+                "addressId"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    airlines (
-        IATA_airline_code VARCHAR(2) NOT NULL UNIQUE
-            CHECK(
-                CHAR_LENGTH(IATA_airline_code) = 2
-                AND IATA_airline_code REGEXP '^[A-Z0-9]+$'
-            ),
-        ICAO_airline_code VARCHAR(3) UNIQUE
-            CHECK(
-                    CHAR_LENGTH(ICAO_airline_code) = 3
-                    AND ICAO_airline_code REGEXP '^[A-Z]+$'
-                ),
-        airline_name VARCHAR(45) NOT NULL UNIQUE,
-        PRIMARY KEY(IATA_airline_code)
-    );
-*/

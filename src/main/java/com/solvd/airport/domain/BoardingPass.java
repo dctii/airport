@@ -1,40 +1,44 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 import java.sql.Timestamp;
 
 public class BoardingPass {
     private int boardingPassId;
+    private boolean isBoarded;
     private Timestamp boardingTime;
     private String boardingGroup;
     private int checkInId;
-    private String flightId;
-    private String baggageId;
+
+    final static private int BOARDING_GROUP_MAX_WIDTH = 25;
 
 
     public BoardingPass() {
     }
 
-    public BoardingPass(int boardingPassId, Timestamp boardingTime, String boardingGroup,
-                        int checkInId, String flightId, String baggageId) {
+    public BoardingPass(int boardingPassId, int checkInId) {
         this.boardingPassId = boardingPassId;
+        this.checkInId = checkInId;
+    }
+
+    public BoardingPass(int boardingPassId, boolean isBoarded, Timestamp boardingTime, String boardingGroup, int checkInId) {
+        ExceptionUtils.isStringLengthValid(boardingGroup, BOARDING_GROUP_MAX_WIDTH);
+
+        this.boardingPassId = boardingPassId;
+        this.isBoarded = isBoarded;
         this.boardingTime = boardingTime;
         this.boardingGroup = boardingGroup;
         this.checkInId = checkInId;
-        this.flightId = flightId;
-        this.baggageId = baggageId;
     }
 
-    public BoardingPass(Timestamp boardingTime, String boardingGroup,
-                        int checkInId, String flightId, String baggageCode) {
+    public BoardingPass(boolean isBoarded, Timestamp boardingTime, String boardingGroup, int checkInId) {
+        this.isBoarded = isBoarded;
         this.boardingTime = boardingTime;
         this.boardingGroup = boardingGroup;
         this.checkInId = checkInId;
-        this.flightId = flightId;
-        this.baggageId = baggageCode;
     }
-
 
     public int getBoardingPassId() {
         return boardingPassId;
@@ -42,6 +46,14 @@ public class BoardingPass {
 
     public void setBoardingPassId(int boardingPassId) {
         this.boardingPassId = boardingPassId;
+    }
+
+    public boolean isBoarded() {
+        return isBoarded;
+    }
+
+    public void setBoarded(boolean boarded) {
+        isBoarded = boarded;
     }
 
     public Timestamp getBoardingTime() {
@@ -57,6 +69,8 @@ public class BoardingPass {
     }
 
     public void setBoardingGroup(String boardingGroup) {
+        ExceptionUtils.isStringLengthValid(boardingGroup, BOARDING_GROUP_MAX_WIDTH);
+
         this.boardingGroup = boardingGroup;
     }
 
@@ -68,56 +82,18 @@ public class BoardingPass {
         this.checkInId = checkInId;
     }
 
-    public String getFlightId() {
-        return flightId;
-    }
-
-    public void setFlightId(String flightId) {
-        this.flightId = flightId;
-    }
-
-    public String getBaggageId() {
-        return baggageId;
-    }
-
-    public void setBaggageId(String baggageId) {
-        this.baggageId = baggageId;
-    }
-
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = BoardingPass.class;
         String[] fieldNames = {
                 "boardingPassId",
+                "isBoarded",
                 "boardingTime",
                 "boardingGroup",
-                "checkInId",
-                "flightId",
-                "baggageId"
+                "checkInId"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    boarding_passes (
-        boarding_pass_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        boarding_time DATETIME,
-        boarding_group VARCHAR(25),
-        check_in_id INT UNSIGNED NOT NULL,
-        flight_id VARCHAR(10),
-        baggage_id VARCHAR(45),
-        PRIMARY KEY(boarding_pass_id)
-    );
-    ALTER TABLE boarding_passes
-    ADD
-        FOREIGN KEY (check_in_id) REFERENCES check_ins(check_in_id),
-    ADD
-        FOREIGN KEY (flight_id) REFERENCES flights(flight_code),
-    ADD
-        FOREIGN KEY (baggage_id) REFERENCES baggage(baggage_code);
-*/

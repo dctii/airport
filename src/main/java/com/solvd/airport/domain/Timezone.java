@@ -3,51 +3,34 @@ package com.solvd.airport.domain;
 import com.solvd.airport.util.StringFormatters;
 
 public class Timezone {
-    private int timezoneId;
-    private String timezoneName;
+    private String timezone;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int TIMEZONE_MAX_WIDTH = 45;
 
     public Timezone() {
     }
 
-    public Timezone(int timezoneId, String timezoneName) {
-        this.timezoneId = timezoneId;
-        this.timezoneName = timezoneName;
+    public Timezone(String timezone) {
+        this.timezone = timezone;
     }
 
-    public int getTimezoneId() {
-        return timezoneId;
+    public String getTimezone() {
+        return timezone;
     }
 
-    public void setTimezoneId(int timezoneId) {
-        this.timezoneId = timezoneId;
-    }
-
-    public String getTimezoneName() {
-        return timezoneName;
-    }
-
-    public void setTimezoneName(String timezoneName) {
-        this.timezoneName = timezoneName;
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Timezone.class;
         String[] fieldNames = {
-                "timezoneId",
-                "timezoneName"
+                "timezone"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-/*
-CREATE TABLE
-    timezones (
-        timezone_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        timezone_name VARCHAR(45) NOT NULL UNIQUE,
-        PRIMARY KEY(timezone_id)
-    );
-*/

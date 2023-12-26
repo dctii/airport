@@ -11,22 +11,32 @@ public class PersonInfo {
     private String middleName;
     private Date birthdate;
     private String sex;
-    private int addressId;
-    private int contactInfoId;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final private static int NAME_MAX_WIDTH = 45;
+    final private static int SEX_MAX_WIDTH = 1;
 
     public PersonInfo() {
     }
 
-    public PersonInfo(int personInfoId, String surname, String givenName, String middleName, Date birthdate, String sex, int addressId, int contactInfoId) {
+    public PersonInfo(int personInfoId, String surname, String givenName, String middleName, Date birthdate, String sex) {
         this.personInfoId = personInfoId;
         this.surname = surname;
         this.givenName = givenName;
         this.middleName = middleName;
         this.birthdate = birthdate;
         this.sex = sex;
-        this.addressId = addressId;
-        this.contactInfoId = contactInfoId;
     }
+
+    public PersonInfo(String surname, String givenName, String middleName, Date birthdate, String sex) {
+        this.surname = surname;
+        this.givenName = givenName;
+        this.middleName = middleName;
+        this.birthdate = birthdate;
+        this.sex = sex;
+    }
+
+
 
     public int getPersonInfoId() {
         return personInfoId;
@@ -76,61 +86,19 @@ public class PersonInfo {
         this.sex = sex;
     }
 
-    public int getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
-    }
-
-    public int getContactInfoId() {
-        return contactInfoId;
-    }
-
-    public void setContactInfoId(int contactInfoId) {
-        this.contactInfoId = contactInfoId;
-    }
-
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = PersonInfo.class;
         String[] fieldNames = {
                 "personInfoId",
                 "surname",
                 "givenName",
                 "middleName",
                 "birthdate",
-                "sex",
-                "addressId",
-                "contactInfoId"
+                "sex"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-/*
-CREATE TABLE
-    person_info (
-        person_info_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        surname VARCHAR(45) NOT NULL,
-        given_name VARCHAR(45) NOT NULL,
-        middle_name VARCHAR(45),
-        birthdate DATE NOT NULL,
-        sex VARCHAR(1) NOT NULL
-            CHECK (
-                sex IN ('M', 'F')
-            ),
-        address_id INT UNSIGNED,
-        contact_info_id INT UNSIGNED,
-        PRIMARY KEY(person_info_id)
-    );
-
-    ALTER TABLE person_info
-    ADD
-        FOREIGN KEY(address_id) REFERENCES addresses(address_id),
-    ADD
-        FOREIGN KEY(contact_info_id) REFERENCES contact_info(contact_info_id);
-*/
