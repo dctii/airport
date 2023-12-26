@@ -35,6 +35,14 @@ public class StringFormatters {
         return leftBoundaryMarker + stringToWrap + rightBoundaryMarker;
     }
 
+    public static String nestInParentheses(String string) {
+        return nestInChars(
+                StringConstants.OPENING_PARENTHESIS,
+                StringConstants.CLOSING_PARENTHESIS,
+                string
+        );
+    }
+
     public static String nestInSingleQuotations(String string) {
         return nestInChars(
                 StringConstants.SINGLE_QUOTATION,
@@ -209,6 +217,29 @@ public class StringFormatters {
         NumberFormat usdFormat = NumberFormat.getCurrencyInstance(Locale.US);
         return usdFormat.format(cost);
     }
+
+    public static String createBaggageCode(String flightCode, String destinationAirportCode, String bookingNumber) {
+        return StringUtils.joinWith(
+                StringConstants.DASH_STRING,
+                flightCode, destinationAirportCode, bookingNumber
+        );
+    }
+
+    public static String createPhoneNumberString(String countryCode, String phoneNumber) {
+        if (!countryCode.startsWith("+")) {
+            throw new IllegalArgumentException("Invalid countryCode. It must start with '+'");
+        }
+
+        String sanitizedPhoneNumber =
+                phoneNumber.replaceAll(
+                        StringConstants.DASH_STRING,
+                        StringConstants.EMPTY_STRING
+                );
+        return countryCode + sanitizedPhoneNumber;
+    }
+
+
+
 
     private StringFormatters() {
         ExceptionUtils.preventUtilityInstantiation();

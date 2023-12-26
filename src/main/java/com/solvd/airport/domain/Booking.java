@@ -11,29 +11,55 @@ public class Booking {
     private Timestamp purchaseDatetime;
     private String seatClass;
     private String seatNumber;
-    private String bookingStatus;
+    private String status;
     private BigDecimal price;
-    private int passengerId;
-    private String flightId;
-    private int bookingAgencyId;
+    private String agency;
+    private String passportNumber;
+    private String flightCode;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int BOOKING_NUMBER_MAX_WIDTH = 45;
+    final static private int SEAT_CLASS_MAX_WIDTH = 45;
+    final static private int SEAT_NUMBER_MAX_WIDTH = 10;
+    final static private int STATUS_MAX_WIDTH = 45;
+    final static private int PRICE_DECIMAL_PRECISION = 10;
+    final static private int PRICE_DECIMAL_SCALE = 2;
+    final static private int AGENCY_MAX_WIDTH = 45;
+    final static private int PASSPORT_NUMBER_MAX_WIDTH = 45;
+    final static private int FLIGHT_CODE_MAX_WIDTH = 10;
 
 
     public Booking() {
     }
 
-    public Booking(int bookingId, String bookingNumber, Timestamp purchaseDatetime,
-                   String seatClass, String seatNumber, String bookingStatus,
-                   BigDecimal price, int passengerId, String flightId, int bookingAgencyId) {
+    public Booking(int bookingId, String bookingNumber,
+                   Timestamp purchaseDatetime, String seatClass, String status,
+                   BigDecimal price, String agency, String passportNumber, String flightCode
+    ) {
+        this.bookingId = bookingId;
+        this.bookingNumber = bookingNumber;
+        this.purchaseDatetime = purchaseDatetime;
+        this.seatClass = seatClass;
+        this.status = status;
+        this.price = price;
+        this.agency = agency;
+        this.passportNumber = passportNumber;
+        this.flightCode = flightCode;
+    }
+
+    public Booking(int bookingId, String bookingNumber, Timestamp purchaseDatetime, String seatClass,
+                   String seatNumber, String status, BigDecimal price, String agency, String passportNumber, String flightCode
+    ) {
         this.bookingId = bookingId;
         this.bookingNumber = bookingNumber;
         this.purchaseDatetime = purchaseDatetime;
         this.seatClass = seatClass;
         this.seatNumber = seatNumber;
-        this.bookingStatus = bookingStatus;
+        this.status = status;
         this.price = price;
-        this.passengerId = passengerId;
-        this.flightId = flightId;
-        this.bookingAgencyId = bookingAgencyId;
+        this.agency = agency;
+        this.passportNumber = passportNumber;
+        this.flightCode = flightCode;
     }
 
     public int getBookingId() {
@@ -76,12 +102,12 @@ public class Booking {
         this.seatNumber = seatNumber;
     }
 
-    public String getBookingStatus() {
-        return bookingStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setBookingStatus(String bookingStatus) {
-        this.bookingStatus = bookingStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public BigDecimal getPrice() {
@@ -92,44 +118,44 @@ public class Booking {
         this.price = price;
     }
 
-    public int getPassengerId() {
-        return passengerId;
+    public String getAgency() {
+        return agency;
     }
 
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
+    public void setAgency(String agency) {
+        this.agency = agency;
     }
 
-    public String getFlightId() {
-        return flightId;
+    public String getPassportNumber() {
+        return passportNumber;
     }
 
-    public void setFlightId(String flightId) {
-        this.flightId = flightId;
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
-    public int getBookingAgencyId() {
-        return bookingAgencyId;
+    public String getFlightCode() {
+        return flightCode;
     }
 
-    public void setBookingAgencyId(int bookingAgencyId) {
-        this.bookingAgencyId = bookingAgencyId;
+    public void setFlightCode(String flightCode) {
+        this.flightCode = flightCode;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Booking.class;
         String[] fieldNames = {
                 "bookingId",
                 "bookingNumber",
                 "purchaseDatetime",
                 "seatClass",
                 "seatNumber",
-                "bookingStatus",
+                "status",
                 "price",
-                "passengerId",
-                "flightId",
-                "bookingAgencyId"
+                "agency",
+                "passportNumber",
+                "flightCode"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
@@ -137,47 +163,3 @@ public class Booking {
     }
 
 }
-
-
-/*
-CREATE TABLE
-    bookings (
-        booking_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        booking_number VARCHAR(45),
-        purchase_datetime DATETIME NOT NULL,
-        seat_class VARCHAR(45) NOT NULL
-            CHECK (
-                seat_class IN (
-                    'economy',
-                    'premium',
-                    'business',
-                    'first')
-                ),
-        seat_number VARCHAR(10),
-        booking_status VARCHAR(45) NOT NULL
-            CHECK (
-                booking_status IN (
-                    'confirmed',
-                    'checked-in',
-                    'boarded',
-                    'no show',
-                    'cancelled',
-                    'pending',
-                    'waitlisted'
-                )
-            ),
-        price DECIMAL(10, 2)
-            CHECK (price >= 0.00),
-        passenger_id INT UNSIGNED NOT NULL,
-        flight_id VARCHAR(10),
-        booking_agency_id INT UNSIGNED,
-        PRIMARY KEY(booking_id)
-    );
-    ALTER TABLE bookings
-    ADD
-        FOREIGN KEY(passenger_id) REFERENCES passengers(passenger_id),
-    ADD
-        FOREIGN KEY(flight_id) REFERENCES flights(flight_code),
-    ADD
-        FOREIGN KEY(booking_agency_id) REFERENCES booking_agencies(booking_agency_id);
-*/

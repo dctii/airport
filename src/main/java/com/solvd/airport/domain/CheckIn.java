@@ -6,23 +6,33 @@ public class CheckIn {
     private int checkInId;
     private String checkInMethod;
     private boolean passIssued;
-    private int airportStaffId;
+    private int airlineStaffId;
     private int bookingId;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int CHECK_IN_METHOD_MAX_WIDTH = 10;
 
     public CheckIn() {
     }
 
-    public CheckIn(int checkInId, String checkInMethod, boolean passIssued, int airportStaffId, int bookingId) {
+    public CheckIn(int checkInId, String checkInMethod, boolean passIssued, int airlineStaffId, int bookingId) {
         this.checkInId = checkInId;
         this.checkInMethod = checkInMethod;
         this.passIssued = passIssued;
-        this.airportStaffId = airportStaffId;
+        this.airlineStaffId = airlineStaffId;
         this.bookingId = bookingId;
     }
 
-    public CheckIn(String checkInMethod, int airportStaffId, int bookingId) {
+    public CheckIn(String checkInMethod, int airlineStaffId, int bookingId) {
         this.checkInMethod = checkInMethod;
-        this.airportStaffId = airportStaffId;
+        this.airlineStaffId = airlineStaffId;
+        this.bookingId = bookingId;
+    }
+
+    public CheckIn(String checkInMethod, boolean passIssued, int airlineStaffId, int bookingId) {
+        this.checkInMethod = checkInMethod;
+        this.passIssued = passIssued;
+        this.airlineStaffId = airlineStaffId;
         this.bookingId = bookingId;
     }
 
@@ -50,12 +60,12 @@ public class CheckIn {
         this.passIssued = passIssued;
     }
 
-    public int getAirportStaffId() {
-        return airportStaffId;
+    public int getAirlineStaffId() {
+        return airlineStaffId;
     }
 
-    public void setAirportStaffId(int airportStaffId) {
-        this.airportStaffId = airportStaffId;
+    public void setAirlineStaffId(int airlineStaffId) {
+        this.airlineStaffId = airlineStaffId;
     }
 
     public int getBookingId() {
@@ -68,12 +78,12 @@ public class CheckIn {
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = CheckIn.class;
         String[] fieldNames = {
                 "checkInId",
                 "checkInMethod",
                 "passIssued",
-                "airportStaffId",
+                "airlineStaffId",
                 "bookingId"
         };
 
@@ -81,24 +91,3 @@ public class CheckIn {
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    check_ins (
-        check_in_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        check_in_method VARCHAR(10)
-            CHECK (
-                check_in_method IN ('self', 'staff')
-            ),
-        pass_issued BOOL NOT NULL DEFAULT 0,
-        airport_staff_id INT UNSIGNED NOT NULL,
-        booking_id INT UNSIGNED NOT NULL,
-        PRIMARY KEY(check_in_id)
-    );
-    ALTER TABLE check_ins
-    ADD
-        FOREIGN KEY(airport_staff_id) REFERENCES airport_staff(airport_staff_id),
-    ADD
-        FOREIGN KEY(booking_id) REFERENCES bookings(booking_id);
-*/

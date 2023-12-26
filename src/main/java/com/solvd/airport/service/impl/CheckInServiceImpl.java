@@ -1,13 +1,16 @@
 package com.solvd.airport.service.impl;
 
 import com.solvd.airport.domain.*;
-import com.solvd.airport.persistence.dao.*;
+import com.solvd.airport.persistence.mappers.*;
 import com.solvd.airport.persistence.impl.*;
 import com.solvd.airport.service.CheckInService;
 import com.solvd.airport.util.SQLUtils;
+import com.solvd.airport.util.StringFormatters;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class CheckInServiceImpl implements CheckInService {
     private final CheckInDAO checkInDAO = new CheckInDAOImpl();
@@ -15,62 +18,80 @@ public class CheckInServiceImpl implements CheckInService {
     private final BoardingPassDAO boardingPassDAO = new BoardingPassDAOImpl();
     private final BookingDAO bookingDAO = new BookingDAOImpl();
     private final PersonInfoDAO personInfoDAO = new PersonInfoDAOImpl();
-    private final AirportStaffMemberDAO airportStaffMemberDAO = new AirportStaffMemberDAOImpl();
+    private final PersonEmailAddressDAO personEmailAddressDAO = new PersonEmailAddressDAOImpl();
+    private final AirlineStaffMemberDAO airlineStaffMemberDAO = new AirlineStaffMemberDAOImpl();
+    private final FlightDAO flightDAO = new FlightDAOImpl();
 
     @Override
-    public void performCheckIn(String bookingNumber, String flightId) {
-
-        // Find Booking
+    public void performCheckIn(String staffEmailString, String bookingNumber, boolean hasBaggage, double baggageWeight) {
+        // Step 1: Find Booking
         Booking booking = bookingDAO.findByBookingNumber(bookingNumber);
+        String flightCode = booking.getFlightCode();
+        Flight flight = flightDAO.getFlightByCode(flightCode);
 
-        // Find Airport Staff Member for check-in
-        PersonInfo personInfo = personInfoDAO.findByName("Doe", "Jane");
-        AirportStaffMember staffMember = airportStaffMemberDAO.findByPersonInfoId(personInfo.getPersonInfoId());
+        // Step 2: Find Staff by Email and Assign for Check-In
+        PersonEmailAddress staffEmailAddress = personEmailAddressDAO.getPersonEmailAddressByEmail(staffEmailString);
+        PersonInfo staffInfo = personInfoDAO.getPersonInfoById(staffEmailAddress.getPersonInfoId());
+        AirlineStaffMember staffMember = airlineStaffMemberDAO.findByPersonInfoId(staffInfo.getPersonInfoId());
 
-        // Perform check-in
+        // Step 3: Perform Check-In
+        boolean checkInExists = checkInDAO.hasCheckInForBookingId(booking.getBookingId());
+        if (checkInExists) {
+            // TODO: set a handling method for this that will reroute the interface user to type in a new booking number or to exit
+            throw new IllegalStateException("Check-in already exists for booking number: " + bookingNumber);
+        }
         CheckIn checkIn = new CheckIn(
                 "staff",
-                staffMember.getAirportStaffId(),
+                true,
+                staffMember.getAirlineStaffId(),
                 booking.getBookingId()
         );
-        checkInDAO.insertCheckIn(checkIn);
+        checkInDAO.createCheckIn(checkIn);
 
-        // Handle baggage
-        Baggage baggage = new Baggage(
-                "DL123-A002-K12-20241220", // TODO: Create func to auto-generate baggage code
-                new BigDecimal("25.00"), // TODO: Prompt should allow to add weight during check-in
-                new BigDecimal("0.00")); // TODO: Price should generate based on weight
-        baggageDAO.insertBaggage(baggage);
+        // Step 4: Handle Baggage if applicable
+        if (hasBaggage) {
+            String destinationAirportCode = flight.getDestination();
+            String baggageCode = StringFormatters.createBaggageCode(
+                    flightCode,
+                    destinationAirportCode,
+                    bookingNumber
+            );
 
+            BigDecimal baggagePrice = BigDecimal.valueOf(0.00);
+            if (baggageWeight > 20.00) {
+                baggagePrice = BigDecimal.valueOf(baggageWeight * 1.05).setScale(2, RoundingMode.HALF_UP);
+            }
+            Baggage baggage = new Baggage(
+                    baggageCode,
+                    BigDecimal.valueOf(baggageWeight),
+                    BigDecimal.valueOf(baggageWeight).setScale(2, RoundingMode.HALF_UP),
+                    checkIn.getCheckInId()
+            );
+            baggageDAO.createBaggage(baggage);
+        }
 
-        // Create boarding pass
+        // Step 5: Create Boarding Pass
+        LocalDateTime departureTime = flight.getDepartureTime().toLocalDateTime();
+        String boardingGroup = SQLUtils.determineBoardingGroup(booking.getSeatClass());
+        Timestamp boardingTime = Timestamp.valueOf(departureTime.minusMinutes(30));
+
         BoardingPass boardingPass = new BoardingPass(
-                Timestamp.valueOf("2024-12-20 08:00:00"), // TODO: boarding pass time should
-                "Group 3", // TODO: Group should generate based on seat type, like economy, etc.
-                checkIn.getCheckInId(),
-                flightId,
-                baggage.getBaggageCode()
+                false,
+                boardingTime,
+                boardingGroup,
+                checkIn.getCheckInId()
         );
+        boardingPassDAO.createBoardingPass(boardingPass);
 
-        boardingPassDAO.insertBoardingPass(boardingPass);
-
-        // Update baggage with boarding pass ID
-        baggage.setBoardingPassId(boardingPass.getBoardingPassId());
-        baggageDAO.updateBaggageWithBoardingPassId(
-                baggage.getBaggageCode(),
-                boardingPass.getBoardingPassId()
-        );
-
-        // Update booking status
-        booking.setFlightId(flightId);
-        booking.setBookingStatus("checked-in");
+        // Step 6: Update Booking Status
+        booking.setStatus("Checked-in");
         bookingDAO.updateBooking(booking);
 
-        // Mark check-in as completed (issuing boarding pass)
+        // Step 7: Finalize Check-In
         checkIn.setPassIssued(true);
         checkInDAO.updateCheckIn(checkIn);
 
-        SQLUtils.displayBoardingPassInfo(bookingNumber);
-
+        // Display boarding pass info (if needed)
+        SQLUtils.displayBoardingPassInfo(bookingNumber, hasBaggage);
     }
 }

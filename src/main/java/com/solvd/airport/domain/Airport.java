@@ -1,39 +1,46 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class Airport {
-    private String iataAirportCode;
-    private String icaoAirportCode;
+    private String airportCode;
     private String airportName;
-    private String timezoneName;
     private int addressId;
+
+    final static private int AIRPORT_CODE_MAX_WIDTH = 3;
+    final static private int AIRPORT_NAME_MAX_WIDTH = 100;
 
     public Airport() {
     }
 
-    public Airport(String iataAirportCode, String icaoAirportCode, String airportName, String timezoneName, int addressId) {
-        this.iataAirportCode = iataAirportCode;
-        this.icaoAirportCode = icaoAirportCode;
-        this.airportName = airportName;
-        this.timezoneName = timezoneName;
+    public Airport(String airportCode) {
+        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
+        this.airportCode = airportCode;
+    }
+
+    public Airport(String airportCode, int addressId) {
+        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
+
+        this.airportCode = airportCode;
         this.addressId = addressId;
     }
 
-    public String getIataAirportCode() {
-        return iataAirportCode;
+    public Airport(String airportCode, String airportName, int addressId) {
+        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
+        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_NAME_MAX_WIDTH);
+
+        this.airportCode = airportCode;
+        this.airportName = airportName;
+        this.addressId = addressId;
     }
 
-    public void setIataAirportCode(String iataAirportCode) {
-        this.iataAirportCode = iataAirportCode;
+    public String getAirportCode() {
+        return airportCode;
     }
 
-    public String getIcaoAirportCode() {
-        return icaoAirportCode;
-    }
-
-    public void setIcaoAirportCode(String icaoAirportCode) {
-        this.icaoAirportCode = icaoAirportCode;
+    public void setAirportCode(String airportCode) {
+        this.airportCode = airportCode;
     }
 
     public String getAirportName() {
@@ -42,14 +49,6 @@ public class Airport {
 
     public void setAirportName(String airportName) {
         this.airportName = airportName;
-    }
-
-    public String getTimezoneName() {
-        return timezoneName;
-    }
-
-    public void setTimezoneName(String timezoneName) {
-        this.timezoneName = timezoneName;
     }
 
     public int getAddressId() {
@@ -62,12 +61,10 @@ public class Airport {
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Airport.class;
         String[] fieldNames = {
-                "iataAirportCode",
-                "icaoAirportCode",
+                "airportCode",
                 "airportName",
-                "timezoneName",
                 "addressId"
         };
 
@@ -75,30 +72,3 @@ public class Airport {
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    airports (
-        IATA_airport_code VARCHAR(3) NOT NULL UNIQUE
-            CHECK(
-                CHAR_LENGTH(IATA_airport_code) = 3
-                AND IATA_airport_code REGEXP '^[A-Z]+$'
-
-            ),
-        ICAO_airport_code VARCHAR(4) UNIQUE
-            CHECK(
-                CHAR_LENGTH(ICAO_airport_code) = 4
-                AND ICAO_airport_code REGEXP '^[A-Z]+$'
-            ),
-        airport_name VARCHAR(100) UNIQUE,
-        timezone_name VARCHAR(45),
-        address_id INT UNSIGNED,
-        PRIMARY KEY(IATA_airport_code)
-    );
-    ALTER TABLE airports
-    ADD
-        FOREIGN KEY(address_id) REFERENCES addresses(address_id),
-    ADD
-        FOREIGN KEY(timezone_name) REFERENCES timezones(timezone_name);
-*/

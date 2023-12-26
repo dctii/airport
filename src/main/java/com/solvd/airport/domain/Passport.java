@@ -10,6 +10,9 @@ public class Passport {
     private Date expiryDate;
     private int personInfoId;
 
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int PASSPORT_NUMBER_MAX_WIDTH = 45;
+
     public Passport() {
     }
 
@@ -19,6 +22,13 @@ public class Passport {
         this.expiryDate = expiryDate;
         this.personInfoId = personInfoId;
     }
+
+    public Passport(String passportNumber, Date issueDate, Date expiryDate) {
+        this.passportNumber = passportNumber;
+        this.issueDate = issueDate;
+        this.expiryDate = expiryDate;
+    }
+
 
     public String getPassportNumber() {
         return passportNumber;
@@ -54,7 +64,7 @@ public class Passport {
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Passport.class;
         String[] fieldNames = {
                 "passportNumber",
                 "issueDate",
@@ -66,19 +76,3 @@ public class Passport {
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    passports (
-        passport_number VARCHAR(45),
-        issue_date DATE,
-        expiry_date DATE,
-        person_info_id INT UNSIGNED NOT NULL,
-        PRIMARY KEY(passport_number)
-    );
-
-    ALTER TABLE passports
-    ADD
-        FOREIGN KEY(person_info_id) REFERENCES person_info(person_info_id);
-*/

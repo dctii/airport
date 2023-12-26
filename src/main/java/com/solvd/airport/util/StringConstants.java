@@ -8,6 +8,8 @@ public final class StringConstants {
     public static final String OPENING_BRACKET = "[";
     public static final String OPENING_CURLY_BRACE = "{";
     public static final String CLOSING_CURLY_BRACE = "}";
+    public static final String OPENING_PARENTHESIS = "(";
+    public static final String CLOSING_PARENTHESIS = ")";
     public static final String ESCAPE_SEQUENCE = "\033";
     public static final String CARRIAGE_RETURN = "\r";
     public static final String NEWLINE = "\n";
@@ -22,6 +24,7 @@ public final class StringConstants {
     public static final String MULTIPLY_STRING = "multiply";
     public static final String DIVIDE_STRING = "divide";
     public static final String DASH_STRING = "-";
+    public static final String AT_SIGN = "@";
 
 
     private StringConstants() {

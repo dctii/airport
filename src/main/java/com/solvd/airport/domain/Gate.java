@@ -5,15 +5,23 @@ import com.solvd.airport.util.StringFormatters;
 public class Gate {
     private int gateId;
     private String gateCode;
-    private int terminalId;
+    private int airportCode;
+    private int terminalCode;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int GATE_CODE_MAX_WIDTH = 10;
+    final static private int AIRPORT_CODE_MAX_WIDTH = 3;
+    final static private int TERMINAL_CODE_MAX_WIDTH = 10;
+
 
     public Gate() {
     }
 
-    public Gate(int gateId, String gateCode, int terminalId) {
+    public Gate(int gateId, String gateCode, int airportCode, int terminalCode) {
         this.gateId = gateId;
         this.gateCode = gateCode;
-        this.terminalId = terminalId;
+        this.airportCode = airportCode;
+        this.terminalCode = terminalCode;
     }
 
     public int getGateId() {
@@ -32,38 +40,33 @@ public class Gate {
         this.gateCode = gateCode;
     }
 
-    public int getTerminalId() {
-        return terminalId;
+    public int getAirportCode() {
+        return airportCode;
     }
 
-    public void setTerminalId(int terminalId) {
-        this.terminalId = terminalId;
+    public void setAirportCode(int airportCode) {
+        this.airportCode = airportCode;
+    }
+
+    public int getTerminalCode() {
+        return terminalCode;
+    }
+
+    public void setTerminalCode(int terminalCode) {
+        this.terminalCode = terminalCode;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = Gate.class;
         String[] fieldNames = {
                 "gateId",
                 "gateCode",
-                "terminalId"
+                "terminalCode",
+                "airportCode"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    gates (
-        gate_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        gate_code VARCHAR(10) NOT NULL,
-        terminal_id INT UNSIGNED NOT NULL,
-        PRIMARY KEY(gate_id)
-    );
-    ALTER TABLE gates
-    ADD
-        FOREIGN KEY(terminal_id) REFERENCES terminals(terminal_id);
-*/

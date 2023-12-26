@@ -4,19 +4,19 @@ import com.solvd.airport.util.StringFormatters;
 
 public class FlightCrew {
     private int flightCrewId;
-    private String airlineId;
-    private String flightId;
+    private String flightCode;
+
+    // TODO: Add length and precision checks from ExceptionUtils
+    final static private int FLIGHT_CODE_MAX_WIDTH = 10;
 
 
     public FlightCrew() {
     }
 
-    public FlightCrew(int flightCrewId, String airlineId, String flightId) {
+    public FlightCrew(int flightCrewId, String flightCode) {
         this.flightCrewId = flightCrewId;
-        this.airlineId = airlineId;
-        this.flightId = flightId;
+        this.flightCode = flightCode;
     }
-
 
     public int getFlightCrewId() {
         return flightCrewId;
@@ -26,48 +26,23 @@ public class FlightCrew {
         this.flightCrewId = flightCrewId;
     }
 
-    public String getAirlineId() {
-        return airlineId;
+    public String getFlightCode() {
+        return flightCode;
     }
 
-    public void setAirlineId(String airlineId) {
-        this.airlineId = airlineId;
-    }
-
-    public String getFlightId() {
-        return flightId;
-    }
-
-    public void setFlightId(String flightId) {
-        this.flightId = flightId;
+    public void setFlightCode(String flightCode) {
+        this.flightCode = flightCode;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = this.getClass();
+        Class<?> currClass = FlightCrew.class;
         String[] fieldNames = {
                 "flightCrewId",
-                "airlineId",
-                "flightId"
+                "flightCode"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
-
-
-/*
-CREATE TABLE
-    flight_crew (
-        flight_crew_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        airline_id VARCHAR(2),
-        flight_id VARCHAR(10),
-        PRIMARY KEY(flight_crew_id)
-    );
-    ALTER TABLE flight_crew
-    ADD
-        FOREIGN KEY(airline_id) REFERENCES airlines(IATA_airline_code),
-    ADD
-        FOREIGN KEY(flight_id) REFERENCES flights(flight_code);
-*/
