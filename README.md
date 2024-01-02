@@ -29,14 +29,17 @@ Plugins:
 ### Run `Main.class`
 
 ```shell
-# Drop `airport` database. Will be dropped if it exists.
+# 1. Drop `airport` database. Will be dropped if it exists.
 mysql -u {{username}} -p{{password}} < /path/to/airport_database_drop.sql
 
-# Create `airport` database.
+# 2. Create `airport` database.
 mysql -u {{username}} -p{{password}} < /path/to/airport_database_creation.sql
 
-# Create `airport` schema.
+# 3. Create `airport` schema.
 mysql -u {{username}} -p{{password}} -D airport < /path/to/airport_schema.sql
+
+# 4. Load preset `airport` data.
+mysql -u {{username}} -p{{password}} -D airport < /path/to/load_base_data.sql
 
 mvn clean install
 mvn exec:java
