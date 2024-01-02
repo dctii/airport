@@ -3,6 +3,7 @@ package com.solvd.airport.domain;
 import com.solvd.airport.util.StringFormatters;
 
 public class PersonAddress extends PersonContact {
+
     private int addressId;
 
     public PersonAddress(int addressId) {

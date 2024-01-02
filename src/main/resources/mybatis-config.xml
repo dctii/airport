@@ -1,19 +1,36 @@
-<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd"
+        >
 <configuration>
+    <properties resource="config.properties"/>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/airport"/>
-                <property name="username" value="your_username"/>
-                <property name="password" value="your_password"/>
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
-
-        <!-- TODO: add mappers -->
+        <mapper resource="mappers/AddressMapper.xml"/>
+        <mapper resource="mappers/AirlineStaffMemberMapper.xml"/>
+        <mapper resource="mappers/BaggageMapper.xml"/>
+        <mapper resource="mappers/BoardingPassMapper.xml"/>
+        <mapper resource="mappers/BookingMapper.xml"/>
+        <mapper resource="mappers/CheckInMapper.xml"/>
+        <mapper resource="mappers/CountryMapper.xml"/>
+        <mapper resource="mappers/EmailAddressMapper.xml"/>
+        <mapper resource="mappers/FlightMapper.xml"/>
+        <mapper resource="mappers/PassportMapper.xml"/>
+        <mapper resource="mappers/PersonAddressMapper.xml"/>
+        <mapper resource="mappers/PersonEmailAddressMapper.xml"/>
+        <mapper resource="mappers/PersonInfoMapper.xml"/>
+        <mapper resource="mappers/PersonPhoneNumberMapper.xml"/>
+        <mapper resource="mappers/PhoneNumberMapper.xml"/>
     </mappers>
 </configuration>

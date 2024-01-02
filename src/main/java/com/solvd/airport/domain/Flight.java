@@ -1,8 +1,12 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
+import com.solvd.airport.util.SQLUtils;
+import com.solvd.airport.util.StringConstants;
 import com.solvd.airport.util.StringFormatters;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 public class Flight {
     private String flightCode;
@@ -15,7 +19,6 @@ public class Flight {
     private int passengerCapacity;
     private String tailNumber;
 
-    // TODO: Add length and precision checks from ExceptionUtils
     final private static int FLIGHT_CODE_MAX_WIDTH = 10;
     final private static int DESTINATION_AIRPORT_MAX_WIDTH = 3;
     final private static int AIRLINE_CODE_MAX_WIDTH = 2;
@@ -28,6 +31,16 @@ public class Flight {
     public Flight(String flightCode, Timestamp departureTime, Timestamp arrivalTime,
                   String destination, String airlineCode, int gateId, String aircraftModel,
                   int passengerCapacity, String tailNumber) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        flightCode, FLIGHT_CODE_MAX_WIDTH,
+                        destination, DESTINATION_AIRPORT_MAX_WIDTH,
+                        airlineCode, AIRLINE_CODE_MAX_WIDTH,
+                        aircraftModel, AIRCRAFT_MODEL_MAX_WIDTH,
+                        tailNumber, TAIL_NUMBER_MAX_WIDTH
+                )
+        );
+
         this.flightCode = flightCode;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
@@ -44,6 +57,8 @@ public class Flight {
     }
 
     public void setFlightCode(String flightCode) {
+        ExceptionUtils.isStringLengthValid(flightCode, FLIGHT_CODE_MAX_WIDTH);
+
         this.flightCode = flightCode;
     }
 
@@ -55,6 +70,15 @@ public class Flight {
         this.departureTime = departureTime;
     }
 
+    public void setDepartureTime(String departureTime) {
+        ExceptionUtils.isValidTimestamp(
+                departureTime,
+                StringConstants.TIMESTAMP_PATTERN
+        );
+
+        this.departureTime = SQLUtils.toTimestamp(departureTime);
+    }
+
     public Timestamp getArrivalTime() {
         return arrivalTime;
     }
@@ -63,11 +87,21 @@ public class Flight {
         this.arrivalTime = arrivalTime;
     }
 
+    public void setArrivalTime(String arrivalTime) {
+        ExceptionUtils.isValidTimestamp(
+                arrivalTime,
+                StringConstants.TIMESTAMP_PATTERN
+        );
+
+        this.arrivalTime = SQLUtils.toTimestamp(arrivalTime);
+    }
+
     public String getDestination() {
         return destination;
     }
 
     public void setDestination(String destination) {
+        ExceptionUtils.isStringLengthValid(destination, DESTINATION_AIRPORT_MAX_WIDTH);
         this.destination = destination;
     }
 
@@ -76,6 +110,8 @@ public class Flight {
     }
 
     public void setAirlineCode(String airlineCode) {
+        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
+
         this.airlineCode = airlineCode;
     }
 
@@ -92,6 +128,7 @@ public class Flight {
     }
 
     public void setAircraftModel(String aircraftModel) {
+        ExceptionUtils.isStringLengthValid(aircraftModel, AIRCRAFT_MODEL_MAX_WIDTH);
         this.aircraftModel = aircraftModel;
     }
 
@@ -108,6 +145,7 @@ public class Flight {
     }
 
     public void setTailNumber(String tailNumber) {
+        ExceptionUtils.isStringLengthValid(tailNumber, TAIL_NUMBER_MAX_WIDTH);
         this.tailNumber = tailNumber;
     }
 

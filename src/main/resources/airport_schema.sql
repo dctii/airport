@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `airport`.`addresses` (
   `city_superdivision` VARCHAR(45) NULL COMMENT 'State, province, prefecture, etc.; parent relationship to the city',
   `country_code` VARCHAR(2) NOT NULL COMMENT 'ISO 3166-2 country code',
   `postal_code` VARCHAR(20) NULL,
-  `timezone` VARCHAR(45) NOT NULL,
+  `timezone` VARCHAR(45),
   PRIMARY KEY (`address_id`)
   )
 ENGINE = InnoDB;
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `airport`.`passports` (
   `passport_number` VARCHAR(45) NOT NULL,
   `issue_date` DATE NOT NULL COMMENT 'Date issued',
   `expiry_date` DATE NOT NULL COMMENT 'Expiration date',
-  `person_info_id` INT UNSIGNED NOT NULL,
+  `person_info_id` INT UNSIGNED,
   PRIMARY KEY (`passport_number`),
   UNIQUE INDEX `passport_number_UNIQUE` (`passport_number` ASC)
   )

@@ -1,9 +1,11 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ArrayUtils;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class Baggage {
     private String baggageCode;
@@ -28,8 +30,14 @@ public class Baggage {
     public Baggage(String baggageCode, BigDecimal weight,
                    BigDecimal price, int checkInId) {
         ExceptionUtils.isStringLengthValid(baggageCode, BAGGAGE_CODE_MAX_WIDTH);
-        ExceptionUtils.isDecimalValid(weight, WEIGHT_DECIMAL_PRECISION, WEIGHT_DECIMAL_SCALE);
-        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
+
+        ExceptionUtils.areDecimalsValid(
+                Map.of(
+                        weight, ArrayUtils.intArrayOf(WEIGHT_DECIMAL_PRECISION, WEIGHT_DECIMAL_SCALE),
+                        price, ArrayUtils.intArrayOf(PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE)
+                )
+        );
+
 
         this.baggageCode = baggageCode;
         this.weight = weight;

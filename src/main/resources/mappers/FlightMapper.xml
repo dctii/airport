@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.FlightDAO">
+
+    <resultMap id="flightMap" type="com.solvd.airport.domain.Flight">
+        <id column="flight_code" property="flightCode"/>
+        <result column="departure_time" property="departureTime"/>
+        <result column="arrival_time" property="arrivalTime"/>
+        <result column="destination" property="destination"/>
+        <result column="airline_code" property="airlineCode"/>
+        <result column="gate_id" property="gateId"/>
+        <result column="aircraft_model" property="aircraftModel"/>
+        <result column="passenger_capacity" property="passengerCapacity"/>
+        <result column="tail_number" property="tailNumber"/>
+    </resultMap>
+
+    <insert id="createFlight" parameterType="com.solvd.airport.domain.Flight">
+        INSERT INTO flights
+        (
+        flight_code, departure_time, arrival_time,
+        destination, airline_code, gate_id,
+        aircraft_model, passenger_capacity, tail_number
+        )
+        VALUES
+        (
+        #{flightObj.flightCode},
+        #{flightObj.departureTime},
+        #{flightObj.arrivalTime},
+        #{flightObj.destination},
+        #{flightObj.airlineCode},
+        #{flightObj.gateId},
+        #{flightObj.aircraftModel},
+        #{flightObj.passengerCapacity},
+        #{flightObj.tailNumber}
+        )
+    </insert>
+
+    <select id="getFlightByCode" resultType="com.solvd.airport.domain.Flight"
+            resultMap="flightMap">
+        SELECT * FROM flights WHERE flight_code = #{flightCode}
+    </select>
+
+    <update id="updateFlight" parameterType="com.solvd.airport.domain.Flight">
+        UPDATE flights
+        SET
+        departure_time = #{flightObj.departureTime},
+        arrival_time = #{flightObj.arrivalTime},
+        destination = #{flightObj.destination},
+        airline_code = #{flightObj.airlineCode},
+        gate_id = #{flightObj.gateId},
+        aircraft_model = #{flightObj.aircraftModel},
+        passenger_capacity = #{flightObj.passengerCapacity},
+        tail_number = #{flightObj.tailNumber}
+        WHERE flight_code = #{flightObj.flightCode}
+    </update>
+
+    <delete id="deleteFlight">
+        DELETE FROM flights WHERE flight_code = #{flightCode}
+    </delete>
+
+</mapper>

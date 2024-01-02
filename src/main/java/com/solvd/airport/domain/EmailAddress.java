@@ -1,23 +1,27 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class EmailAddress {
    private int emailAddressId;
    private String emailAddress;
 
-    // TODO: Add length and precision checks from ExceptionUtils
    final static private int EMAIL_ADDRESS_MAX_WIDTH = 100;
 
     public EmailAddress() {
     }
 
     public EmailAddress(int emailAddressId, String emailAddress) {
+        ExceptionUtils.isStringLengthValid(emailAddress, EMAIL_ADDRESS_MAX_WIDTH);
+
         this.emailAddressId = emailAddressId;
         this.emailAddress = emailAddress;
     }
 
     public EmailAddress(String emailAddress) {
+        ExceptionUtils.isStringLengthValid(emailAddress, EMAIL_ADDRESS_MAX_WIDTH);
+
         this.emailAddress = emailAddress;
     }
 
@@ -34,6 +38,8 @@ public class EmailAddress {
     }
 
     public void setEmailAddress(String emailAddress) {
+        ExceptionUtils.isStringLengthValid(emailAddress, EMAIL_ADDRESS_MAX_WIDTH);
+
         this.emailAddress = emailAddress;
     }
 

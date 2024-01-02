@@ -2,7 +2,7 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.Flight;
-import com.solvd.airport.persistence.mappers.FlightDAO;
+import com.solvd.airport.persistence.FlightDAO;
 
 import java.sql.*;
 
@@ -23,18 +23,18 @@ public class FlightDAOImpl implements FlightDAO {
             "DELETE FROM flights WHERE flight_code = ?";
 
     @Override
-    public void createFlight(Flight flight) {
+    public void createFlight(Flight flightObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(INSERT_FLIGHT_SQL)) {
-            ps.setString(1, flight.getFlightCode());
-            ps.setTimestamp(2, flight.getDepartureTime());
-            ps.setTimestamp(3, flight.getArrivalTime());
-            ps.setString(4, flight.getDestination());
-            ps.setString(5, flight.getAirlineCode());
-            ps.setInt(6, flight.getGateId());
-            ps.setString(7, flight.getAircraftModel());
-            ps.setInt(8, flight.getPassengerCapacity());
-            ps.setString(9, flight.getTailNumber());
+            ps.setString(1, flightObj.getFlightCode());
+            ps.setTimestamp(2, flightObj.getDepartureTime());
+            ps.setTimestamp(3, flightObj.getArrivalTime());
+            ps.setString(4, flightObj.getDestination());
+            ps.setString(5, flightObj.getAirlineCode());
+            ps.setInt(6, flightObj.getGateId());
+            ps.setString(7, flightObj.getAircraftModel());
+            ps.setInt(8, flightObj.getPassengerCapacity());
+            ps.setString(9, flightObj.getTailNumber());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,18 +68,18 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     @Override
-    public void updateFlight(Flight flight) {
+    public void updateFlight(Flight flightObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_FLIGHT_SQL)) {
-            ps.setTimestamp(1, flight.getDepartureTime());
-            ps.setTimestamp(2, flight.getArrivalTime());
-            ps.setString(3, flight.getDestination());
-            ps.setString(4, flight.getAirlineCode());
-            ps.setInt(5, flight.getGateId());
-            ps.setString(6, flight.getAircraftModel());
-            ps.setInt(7, flight.getPassengerCapacity());
-            ps.setString(8, flight.getTailNumber());
-            ps.setString(9, flight.getFlightCode());
+            ps.setTimestamp(1, flightObj.getDepartureTime());
+            ps.setTimestamp(2, flightObj.getArrivalTime());
+            ps.setString(3, flightObj.getDestination());
+            ps.setString(4, flightObj.getAirlineCode());
+            ps.setInt(5, flightObj.getGateId());
+            ps.setString(6, flightObj.getAircraftModel());
+            ps.setInt(7, flightObj.getPassengerCapacity());
+            ps.setString(8, flightObj.getTailNumber());
+            ps.setString(9, flightObj.getFlightCode());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

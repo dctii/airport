@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.PassportDAO">
+
+    <resultMap id="passportMap" type="com.solvd.airport.domain.Passport">
+        <id column="passport_number" property="passportNumber"/>
+        <result column="issue_date" property="issueDate"/>
+        <result column="expiry_date" property="expiryDate"/>
+        <result column="person_info_id" property="personInfoId"/>
+    </resultMap>
+
+    <insert id="createPassport" parameterType="com.solvd.airport.domain.Passport">
+        INSERT INTO passports (passport_number, issue_date, expiry_date, person_info_id)
+        VALUES
+        (
+        #{passportObj.passportNumber},
+        #{passportObj.issueDate},
+        #{passportObj.expiryDate},
+        #{passportObj.personInfoId}
+        )
+    </insert>
+
+    <select id="getPassportById" parameterType="String"
+            resultType="com.solvd.airport.domain.Passport" resultMap="passportMap">
+        SELECT * FROM passports WHERE passport_number = #{passportNumber}
+    </select>
+
+    <update id="updatePassport" parameterType="com.solvd.airport.domain.Passport">
+        UPDATE passports
+        SET
+        issue_date = #{passportObj.issueDate},
+        expiry_date = #{passportObj.expiryDate},
+        person_info_id = #{passportObj.personInfoId}
+        WHERE passport_number = #{passportObj.passportNumber}
+    </update>
+
+    <delete id="deletePassport" parameterType="String">
+        DELETE FROM passports WHERE passport_number = #{passportNumber}
+    </delete>
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AddressDAO">
+
+    <resultMap id="addressMap" type="com.solvd.airport.domain.Address">
+        <id column="address_id" property="addressId"/>
+        <result column="street" property="street"/>
+        <result column="city_subdivision" property="citySubdivision"/>
+        <result column="city" property="city"/>
+        <result column="city_superdivision" property="citySuperdivision"/>
+        <result column="country_code" property="countryCode"/>
+        <result column="postal_code" property="postalCode"/>
+        <result column="timezone" property="timezone"/>
+    </resultMap>
+
+    <!-- Insert Address -->
+    <insert id="createAddress" parameterType="com.solvd.airport.domain.Address"
+            useGeneratedKeys="true" keyProperty="addressId">
+        INSERT INTO addresses (street, city_subdivision, city, city_superdivision, country_code,
+        postal_code, timezone)
+        VALUES (
+        #{addressObj.street},
+        #{addressObj.citySubdivision},
+        #{addressObj.city},
+        #{addressObj.citySuperdivision},
+        #{addressObj.countryCode},
+        #{addressObj.postalCode},
+        #{addressObj.timezone}
+        )
+    </insert>
+
+    <!-- Select Address by ID -->
+    <select id="getAddressById" parameterType="int" resultType="com.solvd.airport.domain.Address"
+            resultMap="addressMap">
+        SELECT * FROM addresses WHERE address_id = #{addressId}
+    </select>
+
+    <!-- Select Address by Unique Fields -->
+    <select id="getAddressByUniqueFields" resultType="com.solvd.airport.domain.Address"
+            resultMap="addressMap">
+        SELECT * FROM addresses
+        WHERE street = #{street}
+        AND city = #{city}
+        AND postal_code = #{postalCode}
+        AND country_code = #{countryCode}
+    </select>
+
+    <!-- Update Address -->
+    <update id="updateAddress" parameterType="com.solvd.airport.domain.Address">
+        UPDATE addresses SET
+        street = #{addressObj.street},
+        city_subdivision = #{addressObj.citySubdivision},
+        city = #{addressObj.city},
+        city_superdivision = #{addressObj.citySuperdivision},
+        country_code = #{addressObj.countryCode},
+        postal_code = #{addressObj.postalCode},
+        timezone = #{addressObj.timezone}
+        WHERE address_id = #{addressObj.addressId}
+    </update>
+
+    <!-- Delete Address -->
+    <delete id="deleteAddress" parameterType="int">
+        DELETE FROM addresses WHERE address_id = #{addressId}
+    </delete>
+
+</mapper>

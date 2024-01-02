@@ -2,7 +2,7 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.Baggage;
-import com.solvd.airport.persistence.mappers.BaggageDAO;
+import com.solvd.airport.persistence.BaggageDAO;
 
 import java.sql.*;
 
@@ -21,14 +21,14 @@ public class BaggageDAOImpl implements BaggageDAO {
             "UPDATE baggage SET boarding_pass_id = ? WHERE baggage_code = ?";
 
     @Override
-    public void createBaggage(Baggage baggage) {
+    public void createBaggage(Baggage baggageObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(INSERT_BAGGAGE_SQL)
         ) {
-            statement.setString(1, baggage.getBaggageCode());
-            statement.setBigDecimal(2, baggage.getWeight());
-            statement.setBigDecimal(3, baggage.getPrice());
-            statement.setInt(4, baggage.getCheckInId());
+            statement.setString(1, baggageObj.getBaggageCode());
+            statement.setBigDecimal(2, baggageObj.getWeight());
+            statement.setBigDecimal(3, baggageObj.getPrice());
+            statement.setInt(4, baggageObj.getCheckInId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,12 +36,12 @@ public class BaggageDAOImpl implements BaggageDAO {
     }
 
     @Override
-    public Baggage getBaggageByCode(String code) {
+    public Baggage getBaggageByCode(String baggageCode) {
         Baggage baggage = null;
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(FIND_BY_CODE_SQL)
         ) {
-            statement.setString(1, code);
+            statement.setString(1, baggageCode);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     baggage = new Baggage();
@@ -58,13 +58,13 @@ public class BaggageDAOImpl implements BaggageDAO {
     }
 
     @Override
-    public void updateBaggage(Baggage baggage) {
+    public void updateBaggage(Baggage baggageObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(UPDATE_BAGGAGE_SQL)) {
-            statement.setBigDecimal(1, baggage.getWeight());
-            statement.setBigDecimal(2, baggage.getPrice());
-            statement.setInt(3, baggage.getCheckInId());
-            statement.setString(4, baggage.getBaggageCode());
+            statement.setBigDecimal(1, baggageObj.getWeight());
+            statement.setBigDecimal(2, baggageObj.getPrice());
+            statement.setInt(3, baggageObj.getCheckInId());
+            statement.setString(4, baggageObj.getBaggageCode());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,10 +72,10 @@ public class BaggageDAOImpl implements BaggageDAO {
     }
 
     @Override
-    public void deleteBaggage(String code) {
+    public void deleteBaggage(String baggageCode) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(DELETE_BAGGAGE_SQL)) {
-            statement.setString(1, code);
+            statement.setString(1, baggageCode);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,12 +1,12 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class FlightCrew {
     private int flightCrewId;
     private String flightCode;
 
-    // TODO: Add length and precision checks from ExceptionUtils
     final static private int FLIGHT_CODE_MAX_WIDTH = 10;
 
 
@@ -14,6 +14,8 @@ public class FlightCrew {
     }
 
     public FlightCrew(int flightCrewId, String flightCode) {
+        ExceptionUtils.isStringLengthValid(flightCode, FLIGHT_CODE_MAX_WIDTH);
+
         this.flightCrewId = flightCrewId;
         this.flightCode = flightCode;
     }
@@ -31,6 +33,8 @@ public class FlightCrew {
     }
 
     public void setFlightCode(String flightCode) {
+        ExceptionUtils.isStringLengthValid(flightCode, FLIGHT_CODE_MAX_WIDTH);
+
         this.flightCode = flightCode;
     }
 

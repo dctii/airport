@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.Booking;
-import com.solvd.airport.persistence.mappers.BookingDAO;
+import com.solvd.airport.persistence.BookingDAO;
 import com.solvd.airport.db.DBConnectionPool;
 
 import java.sql.*;
@@ -21,18 +21,18 @@ public class BookingDAOImpl implements BookingDAO {
             "DELETE FROM bookings WHERE booking_id = ?";
 
     @Override
-    public void createBooking(Booking booking) {
+    public void createBooking(Booking bookingObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(INSERT_BOOKING_SQL)) {
-            ps.setString(1, booking.getBookingNumber());
-            ps.setTimestamp(2, booking.getPurchaseDatetime());
-            ps.setString(3, booking.getSeatClass());
-            ps.setString(4, booking.getSeatNumber());
-            ps.setString(5, booking.getStatus());
-            ps.setBigDecimal(6, booking.getPrice());
-            ps.setString(7, booking.getAgency());
-            ps.setString(8, booking.getPassportNumber());
-            ps.setString(9, booking.getFlightCode());
+            ps.setString(1, bookingObj.getBookingNumber());
+            ps.setTimestamp(2, bookingObj.getPurchaseDatetime());
+            ps.setString(3, bookingObj.getSeatClass());
+            ps.setString(4, bookingObj.getSeatNumber());
+            ps.setString(5, bookingObj.getStatus());
+            ps.setBigDecimal(6, bookingObj.getPrice());
+            ps.setString(7, bookingObj.getAgency());
+            ps.setString(8, bookingObj.getPassportNumber());
+            ps.setString(9, bookingObj.getFlightCode());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,11 +40,11 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
-    public Booking getBookingById(int id) {
+    public Booking getBookingById(int bookingId) {
         Booking booking = null;
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, bookingId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     booking = extractBookingFromResultSet(rs);
@@ -74,17 +74,17 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
-    public void updateBooking(Booking booking) {
+    public void updateBooking(Booking bookingObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_BOOKING_SQL)) {
-            ps.setString(1, booking.getSeatClass());
-            ps.setString(2, booking.getSeatNumber());
-            ps.setString(3, booking.getStatus());
-            ps.setBigDecimal(4, booking.getPrice());
-            ps.setString(5, booking.getAgency());
-            ps.setString(6, booking.getPassportNumber());
-            ps.setString(7, booking.getFlightCode());
-            ps.setInt(8, booking.getBookingId());
+            ps.setString(1, bookingObj.getSeatClass());
+            ps.setString(2, bookingObj.getSeatNumber());
+            ps.setString(3, bookingObj.getStatus());
+            ps.setBigDecimal(4, bookingObj.getPrice());
+            ps.setString(5, bookingObj.getAgency());
+            ps.setString(6, bookingObj.getPassportNumber());
+            ps.setString(7, bookingObj.getFlightCode());
+            ps.setInt(8, bookingObj.getBookingId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,10 +92,10 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
-    public void deleteBooking(int id) {
+    public void deleteBooking(int bookingId) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(DELETE_BOOKING_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, bookingId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

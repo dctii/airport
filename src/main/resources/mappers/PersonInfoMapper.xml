@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.PersonInfoDAO">
+
+    <resultMap id="personInfoMap" type="com.solvd.airport.domain.PersonAddress">
+        <id column="person_info_id" property="personAddressId"/>
+        <result column="given_name" property="givenName"/>
+        <result column="middle_name" property="middleName"/>
+        <result column="birthdate" property="birthdate"/>
+        <result column="sex" property="sex"/>
+    </resultMap>
+
+    <insert id="createPersonInfo" parameterType="com.solvd.airport.domain.PersonInfo"
+            useGeneratedKeys="true" keyProperty="personInfoId">
+        INSERT INTO person_info (surname, given_name, middle_name, birthdate, sex)
+        VALUES (
+        #{personInfoObj.surname},
+        #{personInfoObj.givenName},
+        #{personInfoObj.middleName},
+        #{personInfoObj.birthdate},
+        #{personInfoObj.sex}
+        )
+    </insert>
+
+    <select id="getPersonInfoById" resultType="com.solvd.airport.domain.PersonInfo"
+            resultMap="personInfoMap">
+        SELECT * FROM person_info WHERE person_info_id = #{personInfoId}
+    </select>
+
+    <select id="findByName" resultType="com.solvd.airport.domain.PersonInfo"
+            resultMap="personInfoMap">
+        SELECT * FROM person_info
+        WHERE
+        surname = #{surname}
+        AND given_name = #{givenName}
+    </select>
+
+    <update id="updatePersonInfo" parameterType="com.solvd.airport.domain.PersonInfo">
+        UPDATE person_info
+        SET
+        surname = #{personInfoObj.surname},
+        given_name = #{personInfoObj.givenName},
+        middle_name = #{personInfoObj.middleName},
+        birthdate = #{personInfoObj.birthdate},
+        sex = #{personInfoObj.sex}
+        WHERE person_info_id = #{personInfoObj.personInfoId}
+    </update>
+
+    <delete id="deletePersonInfo">
+        DELETE FROM person_info WHERE person_info_id = #{personInfoId}
+    </delete>
+
+</mapper>

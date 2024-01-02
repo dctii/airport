@@ -1,12 +1,8 @@
 package com.solvd.airport;
 
-import com.solvd.airport.service.BoardPassengerService;
-import com.solvd.airport.service.CheckInService;
-import com.solvd.airport.service.RegisterPassportHolderService;
-import com.solvd.airport.service.impl.BoardPassengerServiceImpl;
-import com.solvd.airport.service.impl.CheckInServiceImpl;
-import com.solvd.airport.service.impl.RegisterPassportHolderServiceImpl;
 import com.solvd.airport.util.AnsiCodes;
+import com.solvd.airport.util.MenuUtils;
+import com.solvd.airport.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,76 +22,53 @@ NOTES:
     source /path/to/airport_script.sql
 */
 
+// TODO: Remove logs from doesCountryExist check
+// TODO: add exist checks to passport, staff email, and booking number -- need to update DAOs
+// TODO: make constants out of repetitive strings, create constants out of the table column names and table names
+// TODO: create SQL query builder, use constants in SQLConstants to help with it
+// TODO: create database loader that can be run via Java
+// TODO: refactor to abstract away what can be abstracted away
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
-    private static final CheckInService checkInService = new CheckInServiceImpl();
-    private static final BoardPassengerService boardPassengerService = new BoardPassengerServiceImpl();
-    private static final RegisterPassportHolderService registerPassportHolderService = new RegisterPassportHolderServiceImpl();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            LOGGER.info("=== Airport Check-In System ===");
+            LOGGER.info(StringConstants.NEWLINE);
+
+            LOGGER.info("{}{}=== Airport Check-in System: ==={}",
+                    AnsiCodes.BOLD, AnsiCodes.YELLOW, AnsiCodes.RESET_ALL);
             LOGGER.info("[0] Exit");
-            LOGGER.info("[1] Perform Check-In");
+            LOGGER.info("[1] Register Passport Holder");
+            LOGGER.info("[2] Perform Check-In");
             LOGGER.info("[3] Board Passengers");
-            LOGGER.info("Enter your choice: ");
+
+            LOGGER.info(StringConstants.NEWLINE + "Enter your choice: ");
 
             int choice = scanner.nextInt();
+            LOGGER.info(StringConstants.NEWLINE);
+
+            scanner.nextLine();
+
             switch (choice) {
                 case 1:
-                    performCheckIn(scanner);
+                    MenuUtils.registerPassportHolder(scanner);
                     break;
                 case 2:
-                    boardPassenger(scanner);
+                    MenuUtils.performCheckIn(scanner);
+                    break;
+                case 3:
+                    MenuUtils.boardPassenger(scanner);
+                    break;
                 case 0:
                     LOGGER.info("Exiting...");
                     System.exit(0);
                 default:
                     LOGGER.info("Invalid choice. Please try again.");
+                    break;
             }
         }
     }
 
-    private static void performCheckIn(Scanner scanner) {
-        // Test with "emi_sato@air-japan.co.jp";
-        LOGGER.info("Enter Airline Staff Email:");
-        String staffEmail = scanner.next();
-
-        // Test with KAYAK654321;
-        LOGGER.info("Enter Booking Number:");
-        String bookingNumber = scanner.next();
-
-        LOGGER.info("Does the passenger have baggage? y/n");
-        String hasBaggageString = scanner.next();
-        boolean hasBaggage = hasBaggageString.equalsIgnoreCase("y");
-        double weight = 0.00;
-
-        if (hasBaggage) {
-            LOGGER.info("How much does the baggage weigh? Type in the weight (e.g., 23.00)");
-            String weightString = scanner.next();
-            weight = Double.parseDouble(weightString);
-        }
-
-        try {
-            // TODO: Gets stuck here
-            checkInService.performCheckIn(staffEmail, bookingNumber, hasBaggage, weight);
-            LOGGER.info("{}Check-In completed successfully.{}\n", AnsiCodes.GREEN, AnsiCodes.RESET_ALL);
-        } catch (Exception e) {
-            LOGGER.error("Error during check-in process: ", e);
-        }
-    }
-
-    private static void boardPassenger(Scanner scanner) {
-        LOGGER.info("Enter Booking Number for Boarding:");
-        String bookingNumber = scanner.next();
-
-        try {
-            boardPassengerService.boardPassenger(bookingNumber);
-            LOGGER.info("{}Boarding completed successfully.{}\n", AnsiCodes.GREEN, AnsiCodes.RESET_ALL);
-        } catch (Exception e) {
-            LOGGER.error("Error during boarding process: ", e);
-        }
-    }
 }

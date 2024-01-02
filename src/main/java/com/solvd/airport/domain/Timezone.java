@@ -1,17 +1,19 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class Timezone {
     private String timezone;
 
-    // TODO: Add length and precision checks from ExceptionUtils
     final static private int TIMEZONE_MAX_WIDTH = 45;
 
     public Timezone() {
     }
 
     public Timezone(String timezone) {
+        ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_MAX_WIDTH);
+
         this.timezone = timezone;
     }
 
@@ -20,6 +22,8 @@ public class Timezone {
     }
 
     public void setTimezone(String timezone) {
+        ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_MAX_WIDTH);
+
         this.timezone = timezone;
     }
 

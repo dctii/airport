@@ -2,15 +2,15 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.PersonInfo;
-import com.solvd.airport.persistence.mappers.PersonInfoDAO;
+import com.solvd.airport.persistence.PersonInfoDAO;
 import com.solvd.airport.util.SQLUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PersonInfoDAOImpl implements PersonInfoDAO {
+    private static final Logger LOGGER = LogManager.getLogger(PersonInfoDAOImpl.class);
     private DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     private static final String INSERT_PERSON_INFO_SQL =
@@ -25,28 +25,32 @@ public class PersonInfoDAOImpl implements PersonInfoDAO {
             "DELETE FROM person_info WHERE person_info_id = ?";
 
     @Override
-    public void createPersonInfo(PersonInfo personInfo) {
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(INSERT_PERSON_INFO_SQL)) {
-            ps.setString(1, personInfo.getSurname());
-            ps.setString(2, personInfo.getGivenName());
-            ps.setString(3, personInfo.getMiddleName());
-            ps.setDate(4, personInfo.getBirthdate());
-            ps.setString(5, personInfo.getSex());
+    public void createPersonInfo(PersonInfo personInfoObj) {
+        try (
+                Connection conn = connectionPool.getConnection();
+                PreparedStatement ps = conn.prepareStatement(INSERT_PERSON_INFO_SQL, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, personInfoObj.getSurname());
+            ps.setString(2, personInfoObj.getGivenName());
+            ps.setString(3, personInfoObj.getMiddleName());
+            ps.setDate(4, personInfoObj.getBirthdate());
+            ps.setString(5, personInfoObj.getSex());
+
             ps.executeUpdate();
 
-            SQLUtils.setGeneratedKey(ps, personInfo::setPersonInfoId);
+            SQLUtils.setGeneratedKey(ps, personInfoObj::setPersonInfoId);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public PersonInfo getPersonInfoById(int id) {
+    public PersonInfo getPersonInfoById(int personInfoId) {
         PersonInfo personInfo = null;
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, personInfoId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     personInfo = extractPersonInfoFromResultSet(rs);
@@ -77,15 +81,15 @@ public class PersonInfoDAOImpl implements PersonInfoDAO {
     }
 
     @Override
-    public void updatePersonInfo(PersonInfo personInfo) {
+    public void updatePersonInfo(PersonInfo personInfoObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_PERSON_INFO_SQL)) {
-            ps.setString(1, personInfo.getSurname());
-            ps.setString(2, personInfo.getGivenName());
-            ps.setString(3, personInfo.getMiddleName());
-            ps.setDate(4, personInfo.getBirthdate());
-            ps.setString(5, personInfo.getSex());
-            ps.setInt(6, personInfo.getPersonInfoId());
+            ps.setString(1, personInfoObj.getSurname());
+            ps.setString(2, personInfoObj.getGivenName());
+            ps.setString(3, personInfoObj.getMiddleName());
+            ps.setDate(4, personInfoObj.getBirthdate());
+            ps.setString(5, personInfoObj.getSex());
+            ps.setInt(6, personInfoObj.getPersonInfoId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,10 +97,10 @@ public class PersonInfoDAOImpl implements PersonInfoDAO {
     }
 
     @Override
-    public void deletePersonInfo(int id) {
+    public void deletePersonInfo(int personInfoId) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(DELETE_PERSON_INFO_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, personInfoId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

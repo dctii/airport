@@ -1,19 +1,22 @@
 package com.solvd.airport.util;
 
 import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.exception.InvalidDateFormatException;
+import com.solvd.airport.persistence.CountryDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.function.IntConsumer;
 
 
 public class SQLUtils {
-    // utils for SQL-related actions, like SQL statement generations, etc.
     private static final Logger LOGGER = LogManager.getLogger(SQLUtils.class);
 
-    public static void setGeneratedKey(PreparedStatement statement, IntConsumer setIdConsumer) throws SQLException {
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+    public static void setGeneratedKey(PreparedStatement preparedStatement, IntConsumer setIdConsumer) throws SQLException {
+        try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 int id = generatedKeys.getInt(1);
                 setIdConsumer.accept(id);
@@ -37,9 +40,9 @@ public class SQLUtils {
                         "WHERE b.booking_number = ?";
 
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(GET_BOARDING_PASS_INFO_SQL)) {
-            statement.setString(1, bookingNumber);
-            try (ResultSet rs = statement.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(GET_BOARDING_PASS_INFO_SQL)) {
+            ps.setString(1, bookingNumber);
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String boardingGroup = rs.getString("boarding_group");
                     Timestamp boardingTime = rs.getTimestamp("boarding_time");
@@ -78,6 +81,40 @@ public class SQLUtils {
             default:
                 return "Unknown Group";
         }
+    }
+
+    public static java.sql.Timestamp toTimestamp(String datetimeString) {
+        java.sql.Timestamp newTimestamp;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(StringConstants.TIMESTAMP_PATTERN);
+            java.util.Date parsedDate = formatter.parse(datetimeString);
+            newTimestamp = new java.sql.Timestamp(parsedDate.getTime());
+        } catch (ParseException e) {
+            throw new InvalidDateFormatException("Invalid timestamp format: " + e);
+        }
+        return newTimestamp;
+    }
+
+    public static java.sql.Date toDate(String dateString) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(StringConstants.YEAR_FIRST_DATE_PATTERN);
+            java.util.Date parsedDate = formatter.parse(dateString);
+            return new java.sql.Date(parsedDate.getTime());
+        } catch (ParseException e) {
+            throw new InvalidDateFormatException("Invalid date format: " + e.getMessage());
+        }
+    }
+
+    public static boolean doesCountryCodeExist(String countryCode) {
+        final CountryDAO countryDAO = DataAccessProvider.getCountryDAO();
+
+        boolean exists = countryDAO.doesCountryCodeExist(countryCode);
+
+        if (!exists) {
+            LOGGER.error("Country code doesn't exist in DB, returning false.");
+        }
+
+        return exists;
     }
 
 

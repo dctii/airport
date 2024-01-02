@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.PhoneNumber;
-import com.solvd.airport.persistence.mappers.PhoneNumberDAO;
+import com.solvd.airport.persistence.PhoneNumberDAO;
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.util.SQLUtils;
 
@@ -16,25 +16,25 @@ public class PhoneNumberDAOImpl implements PhoneNumberDAO {
     private static final String DELETE_PHONE_SQL = "DELETE FROM phone_numbers WHERE phone_number_id = ?";
 
     @Override
-    public void createPhoneNumber(PhoneNumber phoneNumber) {
+    public void createPhoneNumber(PhoneNumber phoneNumberObj) {
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(INSERT_PHONE_SQL)) {
-            ps.setString(1, phoneNumber.getPhoneNumber());
-            ps.setString(2, phoneNumber.getExtension());
-
-            SQLUtils.setGeneratedKey(ps, phoneNumber::setPhoneNumberId);
+             PreparedStatement ps = conn.prepareStatement(INSERT_PHONE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, phoneNumberObj.getPhoneNumber());
+            ps.setString(2, phoneNumberObj.getExtension());
             ps.executeUpdate();
+
+            SQLUtils.setGeneratedKey(ps, phoneNumberObj::setPhoneNumberId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public PhoneNumber getPhoneNumberById(int id) {
+    public PhoneNumber getPhoneNumberById(int phoneNumberId) {
         PhoneNumber phoneNumber = null;
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_PHONE_BY_ID_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, phoneNumberId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 phoneNumber = new PhoneNumber();
@@ -69,12 +69,12 @@ public class PhoneNumberDAOImpl implements PhoneNumberDAO {
 
 
     @Override
-    public void updatePhoneNumber(PhoneNumber phoneNumber) {
+    public void updatePhoneNumber(PhoneNumber phoneNumberObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_PHONE_SQL)) {
-            ps.setString(1, phoneNumber.getPhoneNumber());
-            ps.setString(2, phoneNumber.getExtension());
-            ps.setInt(3, phoneNumber.getPhoneNumberId());
+            ps.setString(1, phoneNumberObj.getPhoneNumber());
+            ps.setString(2, phoneNumberObj.getExtension());
+            ps.setInt(3, phoneNumberObj.getPhoneNumberId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,10 +82,10 @@ public class PhoneNumberDAOImpl implements PhoneNumberDAO {
     }
 
     @Override
-    public void deletePhoneNumber(int id) {
+    public void deletePhoneNumber(int phoneNumberId) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(DELETE_PHONE_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, phoneNumberId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

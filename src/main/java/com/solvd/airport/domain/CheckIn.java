@@ -1,5 +1,6 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class CheckIn {
@@ -9,13 +10,14 @@ public class CheckIn {
     private int airlineStaffId;
     private int bookingId;
 
-    // TODO: Add length and precision checks from ExceptionUtils
     final static private int CHECK_IN_METHOD_MAX_WIDTH = 10;
 
     public CheckIn() {
     }
 
     public CheckIn(int checkInId, String checkInMethod, boolean passIssued, int airlineStaffId, int bookingId) {
+        ExceptionUtils.isStringLengthValid(checkInMethod, CHECK_IN_METHOD_MAX_WIDTH);
+
         this.checkInId = checkInId;
         this.checkInMethod = checkInMethod;
         this.passIssued = passIssued;
@@ -24,12 +26,16 @@ public class CheckIn {
     }
 
     public CheckIn(String checkInMethod, int airlineStaffId, int bookingId) {
+        ExceptionUtils.isStringLengthValid(checkInMethod, CHECK_IN_METHOD_MAX_WIDTH);
+
         this.checkInMethod = checkInMethod;
         this.airlineStaffId = airlineStaffId;
         this.bookingId = bookingId;
     }
 
     public CheckIn(String checkInMethod, boolean passIssued, int airlineStaffId, int bookingId) {
+        ExceptionUtils.isStringLengthValid(checkInMethod, CHECK_IN_METHOD_MAX_WIDTH);
+
         this.checkInMethod = checkInMethod;
         this.passIssued = passIssued;
         this.airlineStaffId = airlineStaffId;
@@ -49,6 +55,8 @@ public class CheckIn {
     }
 
     public void setCheckInMethod(String checkInMethod) {
+        ExceptionUtils.isStringLengthValid(checkInMethod, CHECK_IN_METHOD_MAX_WIDTH);
+
         this.checkInMethod = checkInMethod;
     }
 

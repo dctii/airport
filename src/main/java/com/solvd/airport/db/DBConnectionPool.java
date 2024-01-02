@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.stream.IntStream;
 
-// TODO: modify this for database
-
 public class DBConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger(DBConnectionPool.class);
     private static DBConnectionPool dbConnectionPool = null;

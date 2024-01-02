@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.EmailAddress;
-import com.solvd.airport.persistence.mappers.EmailAddressDAO;
+import com.solvd.airport.persistence.EmailAddressDAO;
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.util.SQLUtils;
 
@@ -16,24 +16,24 @@ public class EmailAddressDAOImpl implements EmailAddressDAO {
     private static final String DELETE_EMAIL_SQL = "DELETE FROM email_addresses WHERE email_address_id = ?";
 
     @Override
-    public void createEmailAddress(EmailAddress emailAddress) {
+    public void createEmailAddress(EmailAddress emailAddressObj) {
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(INSERT_EMAIL_SQL)) {
-            ps.setString(1, emailAddress.getEmailAddress());
-
-            SQLUtils.setGeneratedKey(ps, emailAddress::setEmailAddressId);
+             PreparedStatement ps = conn.prepareStatement(INSERT_EMAIL_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, emailAddressObj.getEmailAddress());
             ps.executeUpdate();
+
+            SQLUtils.setGeneratedKey(ps, emailAddressObj::setEmailAddressId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public EmailAddress getEmailAddressById(int id) {
+    public EmailAddress getEmailAddressById(int emailAddressId) {
         EmailAddress emailAddress = null;
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_EMAIL_BY_ID_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, emailAddressId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 emailAddress = new EmailAddress();
@@ -65,11 +65,11 @@ public class EmailAddressDAOImpl implements EmailAddressDAO {
     }
 
     @Override
-    public void updateEmailAddress(EmailAddress emailAddress) {
+    public void updateEmailAddress(EmailAddress emailAddressObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_EMAIL_SQL)) {
-            ps.setString(1, emailAddress.getEmailAddress());
-            ps.setInt(2, emailAddress.getEmailAddressId());
+            ps.setString(1, emailAddressObj.getEmailAddress());
+            ps.setInt(2, emailAddressObj.getEmailAddressId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,10 +77,10 @@ public class EmailAddressDAOImpl implements EmailAddressDAO {
     }
 
     @Override
-    public void deleteEmailAddress(int id) {
+    public void deleteEmailAddress(int emailAddressId) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(DELETE_EMAIL_SQL)) {
-            ps.setInt(1, id);
+            ps.setInt(1, emailAddressId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

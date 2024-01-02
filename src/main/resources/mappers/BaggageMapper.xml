@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.BaggageDAO">
+
+    <resultMap id="baggageMap" type="com.solvd.airport.domain.Baggage">
+        <id column="baggage_code" property="baggageCode"/>
+        <result column="weight" property="weight"/>
+        <result column="price" property="price"/>
+        <result column="check_in_id" property="checkInId"/>
+    </resultMap>
+
+    <insert id="createBaggage" parameterType="com.solvd.airport.domain.Baggage">
+        INSERT INTO baggage (baggage_code, weight, price, check_in_id)
+        VALUES (
+        #{baggageObj.baggageCode},
+        #{baggageObj.weight},
+        #{baggageObj.price},
+        #{baggageObj.checkInId}
+        )
+    </insert>
+
+    <select id="getBaggageByCode" resultType="com.solvd.airport.domain.Baggage"
+            resultMap="baggageMap">
+        SELECT * FROM baggage WHERE baggage_code = #{baggageCode}
+    </select>
+
+    <update id="updateBaggage" parameterType="com.solvd.airport.domain.Baggage">
+        UPDATE baggage
+        SET
+        weight = #{baggageObj.weight}, price = #{baggageObj.price},
+        check_in_id = #{baggageObj.checkInId}
+        WHERE baggage_code = #{baggageObj.baggageCode}
+    </update>
+
+    <delete id="deleteBaggage">
+        DELETE FROM baggage WHERE baggage_code = #{baggageCode}
+    </delete>
+
+    <update id="updateBaggageWithBoardingPassId">
+        UPDATE baggage
+        SET
+        boarding_pass_id = #{boardingPassId}
+        WHERE baggage_code = #{baggageCode}
+    </update>
+
+</mapper>

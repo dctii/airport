@@ -1,12 +1,14 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
+
+import java.util.Map;
 
 public class Country {
     private String countryCode;
     private String countryName;
-
-    // TODO: Add length and precision checks from ExceptionUtils
+    
     final static private int COUNTRY_CODE_MAX_WIDTH = 2;
     final static private int COUNTRY_NAME_MAX_WIDTH = 75;
 
@@ -15,6 +17,12 @@ public class Country {
     }
 
     public Country(String countryCode, String countryName) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        countryCode, COUNTRY_CODE_MAX_WIDTH,
+                        countryName, COUNTRY_NAME_MAX_WIDTH
+                )
+        );
         this.countryCode = countryCode;
         this.countryName = countryName;
     }
@@ -24,6 +32,7 @@ public class Country {
     }
 
     public void setCountryCode(String countryCode) {
+        ExceptionUtils.isStringLengthValid(countryCode, COUNTRY_CODE_MAX_WIDTH);
         this.countryCode = countryCode;
     }
 
@@ -32,6 +41,8 @@ public class Country {
     }
 
     public void setCountryName(String countryName) {
+        ExceptionUtils.isStringLengthValid(countryName, COUNTRY_NAME_MAX_WIDTH);
+
         this.countryName = countryName;
     }
 

@@ -52,8 +52,8 @@ public class BoardingPass {
         return isBoarded;
     }
 
-    public void setBoarded(boolean boarded) {
-        isBoarded = boarded;
+    public void setBoarded(boolean isBoarded) {
+        this.isBoarded = isBoarded;
     }
 
     public Timestamp getBoardingTime() {

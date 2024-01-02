@@ -1,9 +1,13 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
+import com.solvd.airport.util.SQLUtils;
+import com.solvd.airport.util.StringConstants;
 import com.solvd.airport.util.StringFormatters;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Map;
 
 public class Booking {
     private int bookingId;
@@ -17,7 +21,6 @@ public class Booking {
     private String passportNumber;
     private String flightCode;
 
-    // TODO: Add length and precision checks from ExceptionUtils
     final static private int BOOKING_NUMBER_MAX_WIDTH = 45;
     final static private int SEAT_CLASS_MAX_WIDTH = 45;
     final static private int SEAT_NUMBER_MAX_WIDTH = 10;
@@ -36,6 +39,17 @@ public class Booking {
                    Timestamp purchaseDatetime, String seatClass, String status,
                    BigDecimal price, String agency, String passportNumber, String flightCode
     ) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        bookingNumber, BOOKING_NUMBER_MAX_WIDTH,
+                        seatClass, SEAT_CLASS_MAX_WIDTH,
+                        status, STATUS_MAX_WIDTH,
+                        agency, AGENCY_MAX_WIDTH,
+                        passportNumber, PASSPORT_NUMBER_MAX_WIDTH,
+                        flightCode, FLIGHT_CODE_MAX_WIDTH
+                ));
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
+
         this.bookingId = bookingId;
         this.bookingNumber = bookingNumber;
         this.purchaseDatetime = purchaseDatetime;
@@ -50,6 +64,18 @@ public class Booking {
     public Booking(int bookingId, String bookingNumber, Timestamp purchaseDatetime, String seatClass,
                    String seatNumber, String status, BigDecimal price, String agency, String passportNumber, String flightCode
     ) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        bookingNumber, BOOKING_NUMBER_MAX_WIDTH,
+                        seatClass, SEAT_CLASS_MAX_WIDTH,
+                        seatNumber, SEAT_NUMBER_MAX_WIDTH,
+                        status, STATUS_MAX_WIDTH,
+                        agency, AGENCY_MAX_WIDTH,
+                        passportNumber, PASSPORT_NUMBER_MAX_WIDTH,
+                        flightCode, FLIGHT_CODE_MAX_WIDTH
+                ));
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
+
         this.bookingId = bookingId;
         this.bookingNumber = bookingNumber;
         this.purchaseDatetime = purchaseDatetime;
@@ -75,6 +101,8 @@ public class Booking {
     }
 
     public void setBookingNumber(String bookingNumber) {
+        ExceptionUtils.isStringLengthValid(bookingNumber, BOOKING_NUMBER_MAX_WIDTH);
+
         this.bookingNumber = bookingNumber;
     }
 
@@ -86,11 +114,23 @@ public class Booking {
         this.purchaseDatetime = purchaseDatetime;
     }
 
+    public void setPurchaseDatetime(String purchaseDatetime) {
+        ExceptionUtils.isValidTimestamp(
+                purchaseDatetime,
+                StringConstants.TIMESTAMP_PATTERN
+        );
+
+        this.purchaseDatetime = SQLUtils.toTimestamp(purchaseDatetime);
+    }
+
+
+
     public String getSeatClass() {
         return seatClass;
     }
 
     public void setSeatClass(String seatClass) {
+        ExceptionUtils.isStringLengthValid(seatClass, SEAT_CLASS_MAX_WIDTH);
         this.seatClass = seatClass;
     }
 
@@ -99,6 +139,7 @@ public class Booking {
     }
 
     public void setSeatNumber(String seatNumber) {
+        ExceptionUtils.isStringLengthValid(seatNumber, SEAT_NUMBER_MAX_WIDTH);
         this.seatNumber = seatNumber;
     }
 
@@ -107,6 +148,7 @@ public class Booking {
     }
 
     public void setStatus(String status) {
+        ExceptionUtils.isStringLengthValid(status, STATUS_MAX_WIDTH);
         this.status = status;
     }
 
@@ -115,6 +157,7 @@ public class Booking {
     }
 
     public void setPrice(BigDecimal price) {
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
         this.price = price;
     }
 
@@ -123,6 +166,7 @@ public class Booking {
     }
 
     public void setAgency(String agency) {
+        ExceptionUtils.isStringLengthValid(agency, AGENCY_MAX_WIDTH);
         this.agency = agency;
     }
 
@@ -131,6 +175,7 @@ public class Booking {
     }
 
     public void setPassportNumber(String passportNumber) {
+        ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
         this.passportNumber = passportNumber;
     }
 
@@ -139,6 +184,7 @@ public class Booking {
     }
 
     public void setFlightCode(String flightCode) {
+        ExceptionUtils.isStringLengthValid(flightCode, FLIGHT_CODE_MAX_WIDTH);
         this.flightCode = flightCode;
     }
 

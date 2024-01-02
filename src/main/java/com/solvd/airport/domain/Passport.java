@@ -1,5 +1,8 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
+import com.solvd.airport.util.SQLUtils;
+import com.solvd.airport.util.StringConstants;
 import com.solvd.airport.util.StringFormatters;
 
 import java.sql.Date;
@@ -9,14 +12,14 @@ public class Passport {
     private Date issueDate;
     private Date expiryDate;
     private int personInfoId;
-
-    // TODO: Add length and precision checks from ExceptionUtils
     final static private int PASSPORT_NUMBER_MAX_WIDTH = 45;
 
     public Passport() {
     }
 
     public Passport(String passportNumber, Date issueDate, Date expiryDate, int personInfoId) {
+        ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
+
         this.passportNumber = passportNumber;
         this.issueDate = issueDate;
         this.expiryDate = expiryDate;
@@ -24,6 +27,8 @@ public class Passport {
     }
 
     public Passport(String passportNumber, Date issueDate, Date expiryDate) {
+        ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
+
         this.passportNumber = passportNumber;
         this.issueDate = issueDate;
         this.expiryDate = expiryDate;
@@ -35,6 +40,8 @@ public class Passport {
     }
 
     public void setPassportNumber(String passportNumber) {
+        ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
+
         this.passportNumber = passportNumber;
     }
 
@@ -46,6 +53,15 @@ public class Passport {
         this.issueDate = issueDate;
     }
 
+    public void setIssueDate(String issueDate) {
+        ExceptionUtils.isValidDate(
+                issueDate,
+                StringConstants.YEAR_FIRST_DATE_PATTERN
+        );
+
+        this.expiryDate = SQLUtils.toDate(issueDate);
+    }
+
     public Date getExpiryDate() {
         return expiryDate;
     }
@@ -53,6 +69,16 @@ public class Passport {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
+
+    public void setExpiryDate(String expiryDate) {
+        ExceptionUtils.isValidDate(
+                expiryDate,
+                StringConstants.YEAR_FIRST_DATE_PATTERN
+        );
+
+        this.expiryDate = SQLUtils.toDate(expiryDate);
+    }
+
 
     public int getPersonInfoId() {
         return personInfoId;

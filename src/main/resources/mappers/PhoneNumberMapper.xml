@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.PhoneNumberDAO">
+
+    <resultMap id="phoneNumberMap" type="com.solvd.airport.domain.PhoneNumber">
+        <id column="phone_number_id" property="phoneNumberId"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="extension" property="extension"/>
+    </resultMap>
+
+    <insert id="createPhoneNumber" parameterType="com.solvd.airport.domain.PhoneNumber"
+            useGeneratedKeys="true" keyProperty="phoneNumberId">
+        INSERT INTO phone_numbers (phone_number, extension)
+        VALUES (
+        #{phoneNumberObj.phoneNumber},
+        #{phoneNumberObj.extension}
+        )
+    </insert>
+
+    <select id="getPhoneNumberById" resultType="com.solvd.airport.domain.PhoneNumber"
+            resultMap="phoneNumberMap">
+        SELECT * FROM phone_numbers WHERE phone_number_id = #{phoneNumberId}
+    </select>
+
+    <select id="getPhoneNumberByNumber" resultType="com.solvd.airport.domain.PhoneNumber"
+            resultMap="phoneNumberMap">
+        SELECT * FROM phone_numbers WHERE phone_number = #{phoneNumber}
+    </select>
+
+    <update id="updatePhoneNumber" parameterType="com.solvd.airport.domain.PhoneNumber">
+        UPDATE phone_numbers
+        SET
+        phone_number = #{phoneNumberObj.phoneNumber},
+        extension = #{phoneNumberObj.extension}
+        WHERE phone_number_id = #{phoneNumberObj.phoneNumberId}
+    </update>
+
+    <delete id="deletePhoneNumber">
+        DELETE FROM phone_numbers WHERE phone_number_id = #{phoneNumberId}
+    </delete>
+
+</mapper>

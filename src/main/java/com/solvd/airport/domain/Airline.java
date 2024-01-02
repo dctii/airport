@@ -3,6 +3,8 @@ package com.solvd.airport.domain;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
+import java.util.Map;
+
 public class Airline {
     private String airlineCode;
     private String airlineName;
@@ -22,14 +24,43 @@ public class Airline {
     }
 
     public Airline(String airlineCode, String airlineName, int addressId) {
-        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
-        ExceptionUtils.isStringLengthValid(airlineName, AIRLINE_NAME_MAX_WIDTH);
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        airlineCode, AIRLINE_CODE_MAX_WIDTH,
+                        airlineName, AIRLINE_NAME_MAX_WIDTH
+                ));
 
         this.airlineCode = airlineCode;
         this.airlineName = airlineName;
         this.addressId = addressId;
     }
 
+    public String getAirlineCode() {
+        return airlineCode;
+    }
+
+    public void setAirlineCode(String airlineCode) {
+        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
+        this.airlineCode = airlineCode;
+    }
+
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public void setAirlineName(String airlineName) {
+        ExceptionUtils.isStringLengthValid(airlineName, AIRLINE_NAME_MAX_WIDTH);
+
+        this.airlineName = airlineName;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
 
     @Override
     public String toString() {

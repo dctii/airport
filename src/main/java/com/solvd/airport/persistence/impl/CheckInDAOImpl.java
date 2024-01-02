@@ -2,7 +2,7 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.CheckIn;
-import com.solvd.airport.persistence.mappers.CheckInDAO;
+import com.solvd.airport.persistence.CheckInDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,15 +27,15 @@ public class CheckInDAOImpl implements CheckInDAO {
             "SELECT COUNT(*) FROM check_ins WHERE booking_id = ?";
 
     @Override
-    public void createCheckIn(CheckIn checkIn) {
+    public void createCheckIn(CheckIn checkInObj) {
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(INSERT_CHECK_IN_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
-            ps.setString(1, checkIn.getCheckInMethod());
-            ps.setBoolean(2, checkIn.isPassIssued());
-            ps.setInt(3, checkIn.getAirlineStaffId());
-            ps.setInt(4, checkIn.getBookingId());
+            ps.setString(1, checkInObj.getCheckInMethod());
+            ps.setBoolean(2, checkInObj.isPassIssued());
+            ps.setInt(3, checkInObj.getAirlineStaffId());
+            ps.setInt(4, checkInObj.getBookingId());
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating check-in failed, no rows affected.");
@@ -43,7 +43,7 @@ public class CheckInDAOImpl implements CheckInDAO {
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    checkIn.setCheckInId(generatedKeys.getInt(1));
+                    checkInObj.setCheckInId(generatedKeys.getInt(1));
                 } else {
                     throw new SQLException("Creating check-in failed, no ID obtained.");
                 }
@@ -54,13 +54,13 @@ public class CheckInDAOImpl implements CheckInDAO {
     }
 
     @Override
-    public CheckIn getCheckInById(int id) {
+    public CheckIn getCheckInById(int checkInId) {
         CheckIn checkIn = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)
         ) {
-            ps.setInt(1, id);
+            ps.setInt(1, checkInId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     checkIn = extractCheckInFromResultSet(rs);
@@ -92,13 +92,13 @@ public class CheckInDAOImpl implements CheckInDAO {
     }
 
     @Override
-    public void updateCheckIn(CheckIn checkIn) {
+    public void updateCheckIn(CheckIn checkInObj) {
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(UPDATE_CHECK_IN_SQL)
         ) {
-            ps.setBoolean(1, checkIn.isPassIssued());
-            ps.setInt(2, checkIn.getCheckInId());
+            ps.setBoolean(1, checkInObj.isPassIssued());
+            ps.setInt(2, checkInObj.getCheckInId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Error updating CheckIn: ", e);
@@ -106,12 +106,12 @@ public class CheckInDAOImpl implements CheckInDAO {
     }
 
     @Override
-    public void deleteCheckIn(int id) {
+    public void deleteCheckIn(int checkInId) {
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(DELETE_CHECK_IN_SQL)
         ) {
-            ps.setInt(1, id);
+            ps.setInt(1, checkInId);
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Error deleting CheckIn: ", e);

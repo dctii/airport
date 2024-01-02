@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.PersonAddress;
-import com.solvd.airport.persistence.mappers.PersonAddressDAO;
+import com.solvd.airport.persistence.PersonAddressDAO;
 import com.solvd.airport.db.DBConnectionPool;
 
 import java.sql.*;
@@ -15,12 +15,12 @@ public class PersonAddressDAOImpl implements PersonAddressDAO {
     private static final String DELETE_PERSON_ADDRESS_SQL = "DELETE FROM person_addresses WHERE person_info_id = ? AND address_id = ?";
 
     @Override
-    public void createPersonAddress(PersonAddress personAddress) {
+    public void createPersonAddress(PersonAddress personAddressObj) {
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(INSERT_PERSON_ADDRESS_SQL)) {
-            statement.setInt(1, personAddress.getPersonInfoId());
-            statement.setInt(2, personAddress.getAddressId());
-            statement.executeUpdate();
+             PreparedStatement ps = conn.prepareStatement(INSERT_PERSON_ADDRESS_SQL)) {
+            ps.setInt(1, personAddressObj.getPersonInfoId());
+            ps.setInt(2, personAddressObj.getAddressId());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -29,10 +29,10 @@ public class PersonAddressDAOImpl implements PersonAddressDAO {
     @Override
     public PersonAddress getPersonAddressById(int personInfoId, int addressId) {
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(SELECT_PERSON_ADDRESS_SQL)) {
-            statement.setInt(1, personInfoId);
-            statement.setInt(2, addressId);
-            ResultSet rs = statement.executeQuery();
+             PreparedStatement ps = conn.prepareStatement(SELECT_PERSON_ADDRESS_SQL)) {
+            ps.setInt(1, personInfoId);
+            ps.setInt(2, addressId);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new PersonAddress(rs.getInt("person_info_id"), rs.getInt("address_id"));
             }
@@ -43,12 +43,12 @@ public class PersonAddressDAOImpl implements PersonAddressDAO {
     }
 
     @Override
-    public void updatePersonAddress(PersonAddress personAddress) {
+    public void updatePersonAddress(PersonAddress personAddressObj) {
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(UPDATE_PERSON_ADDRESS_SQL)) {
-            statement.setInt(1, personAddress.getAddressId());
-            statement.setInt(2, personAddress.getPersonInfoId());
-            statement.executeUpdate();
+             PreparedStatement ps = conn.prepareStatement(UPDATE_PERSON_ADDRESS_SQL)) {
+            ps.setInt(1, personAddressObj.getAddressId());
+            ps.setInt(2, personAddressObj.getPersonInfoId());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -57,10 +57,10 @@ public class PersonAddressDAOImpl implements PersonAddressDAO {
     @Override
     public void deletePersonAddress(int personInfoId, int addressId) {
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(DELETE_PERSON_ADDRESS_SQL)) {
-            statement.setInt(1, personInfoId);
-            statement.setInt(2, addressId);
-            statement.executeUpdate();
+             PreparedStatement ps = conn.prepareStatement(DELETE_PERSON_ADDRESS_SQL)) {
+            ps.setInt(1, personInfoId);
+            ps.setInt(2, addressId);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -2,7 +2,7 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.BoardingPass;
-import com.solvd.airport.persistence.mappers.BoardingPassDAO;
+import com.solvd.airport.persistence.BoardingPassDAO;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,22 +25,22 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
             "SELECT * FROM boarding_passes WHERE check_in_id = ?";
 
     @Override
-    public void createBoardingPass(BoardingPass boardingPass) {
+    public void createBoardingPass(BoardingPass boardingPassObj) {
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement statement = conn.prepareStatement(INSERT_BOARDING_PASS_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setBoolean(1, boardingPass.isBoarded());
-            statement.setTimestamp(2, boardingPass.getBoardingTime());
-            statement.setString(3, boardingPass.getBoardingGroup());
-            statement.setInt(4, boardingPass.getCheckInId());
+            statement.setBoolean(1, boardingPassObj.isBoarded());
+            statement.setTimestamp(2, boardingPassObj.getBoardingTime());
+            statement.setString(3, boardingPassObj.getBoardingGroup());
+            statement.setInt(4, boardingPassObj.getCheckInId());
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
                 throw new SQLException("Creating boarding pass failed, no rows affected.");
             }
 
-            SQLUtils.setGeneratedKey(statement, boardingPass::setBoardingPassId);
+            SQLUtils.setGeneratedKey(statement, boardingPassObj::setBoardingPassId);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,13 +48,13 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
     }
 
     @Override
-    public BoardingPass getBoardingPassById(int id) {
+    public BoardingPass getBoardingPassById(int boardingPassId) {
         BoardingPass boardingPass = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement statement = conn.prepareStatement(FIND_BY_ID_SQL)
         ) {
-            statement.setInt(1, id);
+            statement.setInt(1, boardingPassId);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     boardingPass = new BoardingPass();
@@ -91,16 +91,16 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
     }
 
     @Override
-    public void updateBoardingPass(BoardingPass boardingPass) {
+    public void updateBoardingPass(BoardingPass boardingPassObj) {
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement statement = conn.prepareStatement(UPDATE_BOARDING_PASS_SQL)
         ) {
-            statement.setBoolean(1, boardingPass.isBoarded());
-            statement.setTimestamp(2, boardingPass.getBoardingTime());
-            statement.setString(3, boardingPass.getBoardingGroup());
-            statement.setInt(4, boardingPass.getCheckInId());
-            statement.setInt(5, boardingPass.getBoardingPassId());
+            statement.setBoolean(1, boardingPassObj.isBoarded());
+            statement.setTimestamp(2, boardingPassObj.getBoardingTime());
+            statement.setString(3, boardingPassObj.getBoardingGroup());
+            statement.setInt(4, boardingPassObj.getCheckInId());
+            statement.setInt(5, boardingPassObj.getBoardingPassId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,12 +108,12 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
     }
 
     @Override
-    public void deleteBoardingPass(int id) {
+    public void deleteBoardingPass(int boardingPassId) {
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement statement = conn.prepareStatement(DELETE_BOARDING_PASS_SQL)
         ) {
-            statement.setInt(1, id);
+            statement.setInt(1, boardingPassId);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

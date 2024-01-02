@@ -1,13 +1,15 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
+
+import java.util.Map;
 
 public class PhoneNumber {
     private int phoneNumberId;
     private String phoneNumber;
     private String extension;
-
-    // TODO: Add length and precision checks from ExceptionUtils
+    
     final static private int PHONE_NUMBER_MAX_WIDTH = 50;
     final static private int EXTENSION_MAX_WIDTH = 45;
 
@@ -15,12 +17,22 @@ public class PhoneNumber {
     }
 
     public PhoneNumber(int phoneNumberId, String phoneNumber, String extension) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        phoneNumber, PHONE_NUMBER_MAX_WIDTH,
+                        extension, EXTENSION_MAX_WIDTH
+                )
+        );
+
+
         this.phoneNumberId = phoneNumberId;
         this.phoneNumber = phoneNumber;
         this.extension = extension;
     }
 
     public PhoneNumber(String phoneNumber) {
+        ExceptionUtils.isStringLengthValid(phoneNumber, PHONE_NUMBER_MAX_WIDTH);
+
         this.phoneNumber = phoneNumber;
     }
 
@@ -37,6 +49,8 @@ public class PhoneNumber {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        ExceptionUtils.isStringLengthValid(phoneNumber, PHONE_NUMBER_MAX_WIDTH);
+
         this.phoneNumber = phoneNumber;
     }
 
@@ -45,6 +59,8 @@ public class PhoneNumber {
     }
 
     public void setExtension(String extension) {
+        ExceptionUtils.isStringLengthValid(extension, EXTENSION_MAX_WIDTH);
+
         this.extension = extension;
     }
 

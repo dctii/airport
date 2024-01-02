@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.Passport;
-import com.solvd.airport.persistence.mappers.PassportDAO;
+import com.solvd.airport.persistence.PassportDAO;
 import com.solvd.airport.db.DBConnectionPool;
 
 import java.sql.Connection;
@@ -18,13 +18,13 @@ public class PassportDAOImpl implements PassportDAO {
     private DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     @Override
-    public void createPassport(Passport passport) {
+    public void createPassport(Passport passportObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(INSERT_PASSPORT)) {
-            preparedStatement.setString(1, passport.getPassportNumber());
-            preparedStatement.setDate(2, passport.getIssueDate());
-            preparedStatement.setDate(3, passport.getExpiryDate());
-            preparedStatement.setInt(4, passport.getPersonInfoId());
+            preparedStatement.setString(1, passportObj.getPassportNumber());
+            preparedStatement.setDate(2, passportObj.getIssueDate());
+            preparedStatement.setDate(3, passportObj.getExpiryDate());
+            preparedStatement.setInt(4, passportObj.getPersonInfoId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error creating passport", e);
@@ -53,16 +53,16 @@ public class PassportDAOImpl implements PassportDAO {
     }
 
     @Override
-    public void updatePassport(Passport passport) {
+    public void updatePassport(Passport passportObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(UPDATE_PASSPORT)) {
-            preparedStatement.setDate(1, passport.getIssueDate());
-            preparedStatement.setDate(2, passport.getExpiryDate());
-            preparedStatement.setInt(3, passport.getPersonInfoId());
-            preparedStatement.setString(4, passport.getPassportNumber());
+            preparedStatement.setDate(1, passportObj.getIssueDate());
+            preparedStatement.setDate(2, passportObj.getExpiryDate());
+            preparedStatement.setInt(3, passportObj.getPersonInfoId());
+            preparedStatement.setString(4, passportObj.getPassportNumber());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating passport with number " + passport.getPassportNumber(), e);
+            throw new RuntimeException("Error updating passport with number " + passportObj.getPassportNumber(), e);
         }
     }
 

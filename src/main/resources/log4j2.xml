@@ -18,7 +18,12 @@
         <Logger name="com.solvd.airport.service" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>
-
+        <Logger name="com.solvd.airport.util.ScannerUtils" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.airport.util.MenuUtils" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
         <Logger name="com.solvd.airport" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
@@ -26,5 +31,15 @@
         <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
+
+        <!--  Debugging MyBatis      -->
+        <!--        <Logger name="org.apache.ibatis" level="debug">-->
+        <!--            <AppenderRef ref="Console"/>-->
+        <!--            <AppenderRef ref="File"/>-->
+        <!--        </Logger>-->
+        <!--        <Logger name="java.sql" level="debug">-->
+        <!--            <AppenderRef ref="Console"/>-->
+        <!--            <AppenderRef ref="File"/>-->
+        <!--        </Logger>-->
     </Loggers>
 </Configuration>

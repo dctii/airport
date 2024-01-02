@@ -1,6 +1,5 @@
 package com.solvd.airport.db;
 
-import com.solvd.airport.util.AnsiCodes;
 import com.solvd.airport.util.ConfigConstants;
 import com.solvd.airport.util.ConfigLoader;
 import com.solvd.airport.util.StringFormatters;
@@ -42,13 +41,6 @@ public class AuthConnection {
         String password = properties.getProperty(ConfigConstants.JDBC_PASSWORD_KEY);
 
         this.authConnection = DriverManager.getConnection(url, user, password);
-
-        final String SUCCESSFUL_CONNECTION_MSG =
-                "Connected to the data base successfully.";
-        LOGGER.info(
-                "{}" + SUCCESSFUL_CONNECTION_MSG + "{}",
-                AnsiCodes.GREEN, AnsiCodes.RESET_ALL
-        );
     }
 
     public java.sql.Connection getConnection() {

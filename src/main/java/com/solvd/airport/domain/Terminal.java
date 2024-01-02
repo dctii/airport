@@ -1,6 +1,9 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
+
+import java.util.Map;
 
 public class Terminal {
     private String airportCode;
@@ -9,7 +12,6 @@ public class Terminal {
     private boolean isInternational;
     private boolean isDomestic;
 
-    // TODO: Add length and precision checks from ExceptionUtils
     final static private int AIRPORT_CODE_MAX_WIDTH = 3;
     final static private int TERMINAL_CODE_MAX_WIDTH = 10;
     final static private int TERMINAL_NAME_MAX_WIDTH = 100;
@@ -18,6 +20,14 @@ public class Terminal {
     }
 
     public Terminal(String airportCode, String terminalCode, String terminalName, boolean isInternational, boolean isDomestic) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        airportCode, AIRPORT_CODE_MAX_WIDTH,
+                        terminalCode, TERMINAL_CODE_MAX_WIDTH,
+                        terminalName, TERMINAL_NAME_MAX_WIDTH
+                )
+        );
+
         this.airportCode = airportCode;
         this.terminalCode = terminalCode;
         this.terminalName = terminalName;
@@ -30,6 +40,8 @@ public class Terminal {
     }
 
     public void setAirportCode(String airportCode) {
+        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
+
         this.airportCode = airportCode;
     }
 
@@ -38,6 +50,8 @@ public class Terminal {
     }
 
     public void setTerminalCode(String terminalCode) {
+        ExceptionUtils.isStringLengthValid(terminalCode, TERMINAL_CODE_MAX_WIDTH);
+
         this.terminalCode = terminalCode;
     }
 
@@ -46,6 +60,8 @@ public class Terminal {
     }
 
     public void setTerminalName(String terminalName) {
+        ExceptionUtils.isStringLengthValid(terminalName, TERMINAL_NAME_MAX_WIDTH);
+
         this.terminalName = terminalName;
     }
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.CheckInDAO">
+
+    <resultMap id="checkInMap" type="com.solvd.airport.domain.CheckIn">
+        <id column="check_in_id" property="checkInId"/>
+        <result column="check_in_method" property="checkInMethod"/>
+        <result column="pass_issued" property="passIssued"/>
+        <result column="airline_staff_id" property="airlineStaffId"/>
+        <result column="booking_id" property="bookingId"/>
+    </resultMap>
+
+    <insert id="createCheckIn" parameterType="com.solvd.airport.domain.CheckIn"
+            useGeneratedKeys="true" keyProperty="checkInId">
+        INSERT INTO check_ins (check_in_method, pass_issued, airline_staff_id, booking_id)
+        VALUES (
+            #{checkInObj.checkInMethod},
+            #{checkInObj.passIssued},
+            #{checkInObj.airlineStaffId},
+            #{checkInObj.bookingId}
+        )
+    </insert>
+
+    <select id="getCheckInById" parameterType="int" resultType="com.solvd.airport.domain.CheckIn"
+            resultMap="checkInMap">
+        SELECT * FROM check_ins WHERE check_in_id = #{checkInId}
+    </select>
+
+    <select id="getCheckInByBookingNumber" parameterType="String"
+            resultType="com.solvd.airport.domain.CheckIn" resultMap="checkInMap">
+        SELECT check_ins.* FROM check_ins
+        JOIN
+        bookings ON check_ins.booking_id = bookings.booking_id
+        WHERE bookings.booking_number = #{bookingNumber}
+    </select>
+
+    <update id="updateCheckIn" parameterType="com.solvd.airport.domain.CheckIn">
+        UPDATE check_ins
+        SET
+        pass_issued = #{checkInObj.passIssued}
+        WHERE check_in_id = #{checkInObj.checkInId}
+    </update>
+
+    <delete id="deleteCheckIn" parameterType="int">
+        DELETE FROM check_ins WHERE check_in_id = #{checkInId}
+    </delete>
+
+    <select id="hasCheckInForBookingId" parameterType="int" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM check_ins WHERE booking_id = #{bookingId}
+    </select>
+
+</mapper>

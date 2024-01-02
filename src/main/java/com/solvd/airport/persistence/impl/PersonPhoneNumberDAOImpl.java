@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.PersonPhoneNumber;
-import com.solvd.airport.persistence.mappers.PersonPhoneNumberDAO;
+import com.solvd.airport.persistence.PersonPhoneNumberDAO;
 import com.solvd.airport.db.DBConnectionPool;
 
 import java.sql.*;
@@ -15,11 +15,11 @@ public class PersonPhoneNumberDAOImpl implements PersonPhoneNumberDAO {
     private static final String DELETE_PERSON_PHONE_SQL = "DELETE FROM person_phone_numbers WHERE person_info_id = ? AND phone_number_id = ?";
 
     @Override
-    public void createPersonPhoneNumber(PersonPhoneNumber personPhoneNumber) {
+    public void createPersonPhoneNumber(PersonPhoneNumber personPhoneNumberObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(INSERT_PERSON_PHONE_SQL)) {
-            statement.setInt(1, personPhoneNumber.getPersonInfoId());
-            statement.setInt(2, personPhoneNumber.getPhoneNumberId());
+            statement.setInt(1, personPhoneNumberObj.getPersonInfoId());
+            statement.setInt(2, personPhoneNumberObj.getPhoneNumberId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,11 +43,11 @@ public class PersonPhoneNumberDAOImpl implements PersonPhoneNumberDAO {
     }
 
     @Override
-    public void updatePersonPhoneNumber(PersonPhoneNumber personPhoneNumber) {
+    public void updatePersonPhoneNumber(PersonPhoneNumber personPhoneNumberObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(UPDATE_PERSON_PHONE_SQL)) {
-            statement.setInt(1, personPhoneNumber.getPhoneNumberId());
-            statement.setInt(2, personPhoneNumber.getPersonInfoId());
+            statement.setInt(1, personPhoneNumberObj.getPhoneNumberId());
+            statement.setInt(2, personPhoneNumberObj.getPersonInfoId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

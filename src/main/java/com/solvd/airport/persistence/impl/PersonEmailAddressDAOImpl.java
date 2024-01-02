@@ -1,7 +1,7 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.PersonEmailAddress;
-import com.solvd.airport.persistence.mappers.PersonEmailAddressDAO;
+import com.solvd.airport.persistence.PersonEmailAddressDAO;
 import com.solvd.airport.db.DBConnectionPool;
 
 import java.sql.*;
@@ -15,11 +15,11 @@ public class PersonEmailAddressDAOImpl implements PersonEmailAddressDAO {
     private static final String DELETE_PERSON_EMAIL_SQL = "DELETE FROM person_email_addresses WHERE person_info_id = ? AND email_address_id = ?";
 
     @Override
-    public void createPersonEmailAddress(PersonEmailAddress personEmailAddress) {
+    public void createPersonEmailAddress(PersonEmailAddress personEmailAddressObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(INSERT_PERSON_EMAIL_SQL)) {
-            statement.setInt(1, personEmailAddress.getPersonInfoId());
-            statement.setInt(2, personEmailAddress.getEmailAddressId());
+            statement.setInt(1, personEmailAddressObj.getPersonInfoId());
+            statement.setInt(2, personEmailAddressObj.getEmailAddressId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,17 +46,17 @@ public class PersonEmailAddressDAOImpl implements PersonEmailAddressDAO {
     }
 
     @Override
-    public PersonEmailAddress getPersonEmailAddressByEmail(String email) {
+    public PersonEmailAddress getPersonEmailAddressByEmail(String emailAddress) {
         PersonEmailAddress personEmailAddress = null;
         final String SELECT_PERSON_EMAIL_BY_EMAIL_SQL =
                 "SELECT pea.* " +
-                        "FROM person_email_addresses pea " +
-                        "JOIN email_addresses ea ON pea.email_address_id = ea.email_address_id " +
+                        "FROM person_email_addresses AS pea " +
+                        "JOIN email_addresses AS ea ON pea.email_address_id = ea.email_address_id " +
                         "WHERE ea.email_address = ?";
 
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(SELECT_PERSON_EMAIL_BY_EMAIL_SQL)) {
-            statement.setString(1, email);
+            statement.setString(1, emailAddress);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 personEmailAddress = new PersonEmailAddress(
@@ -71,11 +71,11 @@ public class PersonEmailAddressDAOImpl implements PersonEmailAddressDAO {
     }
 
     @Override
-    public void updatePersonEmailAddress(PersonEmailAddress personEmailAddress) {
+    public void updatePersonEmailAddress(PersonEmailAddress personEmailAddressObj) {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(UPDATE_PERSON_EMAIL_SQL)) {
-            statement.setInt(1, personEmailAddress.getEmailAddressId());
-            statement.setInt(2, personEmailAddress.getPersonInfoId());
+            statement.setInt(1, personEmailAddressObj.getEmailAddressId());
+            statement.setInt(2, personEmailAddressObj.getPersonInfoId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

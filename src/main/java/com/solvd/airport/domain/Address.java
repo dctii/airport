@@ -30,17 +30,17 @@ public class Address {
     public Address(int addressId, String street, String citySubdivision, String city,
                    String citySuperdivision, String countryCode, String postalCode,
                    String timezone) {
-        Map<String, Integer> addressMap = Map.of(
-                street, STREET_MAX_WIDTH,
-                citySubdivision, CITY_SUBDIVISION_MAX_WIDTH,
-                city, CITY_MAX_WIDTH,
-                citySuperdivision, CITY_SUPERDIVISION_MAX_WIDTH,
-                countryCode, COUNTRY_CODE_MAX_WIDTH,
-                postalCode, POSTAL_CODE_MAX_WIDTH,
-                timezone, TIMEZONE_CODE_MAX_WIDTH
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        street, STREET_MAX_WIDTH,
+                        citySubdivision, CITY_SUBDIVISION_MAX_WIDTH,
+                        city, CITY_MAX_WIDTH,
+                        citySuperdivision, CITY_SUPERDIVISION_MAX_WIDTH,
+                        countryCode, COUNTRY_CODE_MAX_WIDTH,
+                        postalCode, POSTAL_CODE_MAX_WIDTH,
+                        timezone, TIMEZONE_CODE_MAX_WIDTH
+                )
         );
-
-        addressMap.forEach(ExceptionUtils::isStringLengthValid);
 
         this.addressId = addressId;
         this.street = street;

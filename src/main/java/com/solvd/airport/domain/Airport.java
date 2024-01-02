@@ -3,6 +3,8 @@ package com.solvd.airport.domain;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
+import java.util.Map;
+
 public class Airport {
     private String airportCode;
     private String airportName;
@@ -27,8 +29,12 @@ public class Airport {
     }
 
     public Airport(String airportCode, String airportName, int addressId) {
-        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
-        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_NAME_MAX_WIDTH);
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        airportCode, AIRPORT_CODE_MAX_WIDTH,
+                        airportName, AIRPORT_NAME_MAX_WIDTH
+                )
+        );
 
         this.airportCode = airportCode;
         this.airportName = airportName;
@@ -40,6 +46,8 @@ public class Airport {
     }
 
     public void setAirportCode(String airportCode) {
+        ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
+
         this.airportCode = airportCode;
     }
 
@@ -48,6 +56,8 @@ public class Airport {
     }
 
     public void setAirportName(String airportName) {
+        ExceptionUtils.isStringLengthValid(airportName, AIRPORT_NAME_MAX_WIDTH);
+
         this.airportName = airportName;
     }
 

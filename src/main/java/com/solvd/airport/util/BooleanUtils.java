@@ -48,6 +48,15 @@ public class BooleanUtils {
                 .contains(dayOfWeek);
     }
 
+    public static boolean isValidEmail(String email) {
+        int atSignPosition = email.indexOf(StringConstants.AT_SIGN);
+        int dotPosition = email.lastIndexOf(StringConstants.FULL_STOP);
+
+        return atSignPosition > 0
+                && dotPosition > atSignPosition + 1
+                && dotPosition < email.length() - 1;
+    }
+
 
     private BooleanUtils() {
         ExceptionUtils.preventUtilityInstantiation();
