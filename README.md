@@ -49,7 +49,28 @@ mvn exec:java
 
 <hr />
 
-### Assignment 3: JDBC. DAO classes.
+### Assignment 5: DOM, SAX, StAX, JAXB, Jackson
+
+<hr />
+
+#### Requirements
+
+##### Comments and Required changes to consider from previous assignment:
+
+- N/A
+
+##### Requirements for Assignment 5
+
+1. Use 2 xml files to represent some not used 2 tables from database and not used their  2 java representation.
+2. Create DOM or SAX or STAX parser for 1st xml file and include this into project logic to get and record data from xml
+3. Create JAXB utility for 2nd xml file to get and record data from xml file
+4. For JAXB also use xml schema validation
+5. Represent some other 1 table which was not used in project and corresponding java class with json file
+6. Create utility with Jackson to read and record data from and to json file by java class
+
+<hr />
+
+### Assignment 4: JDBC. DAO classes.
 
 <hr />
 
@@ -68,7 +89,7 @@ mvn exec:java
       a relationship between.
     - Try not to have more than two relationships per table.
 
-##### Requirements for Assignment 3
+##### Requirements for Assignment 4
 
 1. Automate same business logic but using MyBatis and provide ability to switch between
    implementations from properties file
