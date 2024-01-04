@@ -1,10 +1,6 @@
 package com.solvd.airport.util;
 
 import com.solvd.airport.domain.*;
-import com.solvd.airport.persistence.AirlineStaffMemberDAO;
-import com.solvd.airport.persistence.BookingDAO;
-import com.solvd.airport.persistence.CountryDAO;
-import com.solvd.airport.persistence.PassportDAO;
 import com.solvd.airport.service.BoardPassengerService;
 import com.solvd.airport.service.CheckInService;
 import com.solvd.airport.service.RegisterPassportHolderService;
@@ -25,10 +21,6 @@ public class MenuUtils {
     private static final CheckInService checkInService = new CheckInServiceImpl();
     private static final BoardPassengerService boardPassengerService = new BoardPassengerServiceImpl();
     private static final RegisterPassportHolderService registerPassportHolderService = new RegisterPassportHolderServiceImpl();
-    private final PassportDAO passportDAO = DataAccessProvider.getPassportDAO();
-    private final CountryDAO countriesDAO = DataAccessProvider.getCountryDAO();
-    private final AirlineStaffMemberDAO airlineStaffMemberDAO = DataAccessProvider.getAirlineStaffMemberDAO();
-    private final BookingDAO bookingDAO = DataAccessProvider.getBookingDAO();
 
 
     public static void registerPassportHolder(Scanner scanner) {

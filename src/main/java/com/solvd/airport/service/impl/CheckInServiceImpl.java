@@ -39,7 +39,15 @@ public class CheckInServiceImpl implements CheckInService {
         // Step 3: Perform Check-In
         boolean checkInExists = checkInDAO.hasCheckInForBookingId(booking.getBookingId());
         if (checkInExists) {
-            // TODO: set a handling method for this that will reroute the interface user to type in a new booking number or to exit
+            /* TODO: set a handling method for this that will reroute the interface user to type in a new booking number
+                or to exit or you get this error:
+                    java.lang.IllegalStateException: Check-in already exists for booking number: KAYAK654321
+                    at com.solvd.airport.service.impl.CheckInServiceImpl.performCheckIn(CheckInServiceImpl.java:43) ~[classes/:?]
+                    at com.solvd.airport.util.MenuUtils.performCheckIn(MenuUtils.java:125) [classes/:?]
+                    at com.solvd.airport.Main.main(Main.java:59) [classes/:?]
+                    at org.codehaus.mojo.exec.ExecJavaMojo$1.run(ExecJavaMojo.java:279) [exec-maven-plugin-3.1.0.jar:?]
+                    at java.base/java.lang.Thread.run(Thread.java:829) [?:?]
+            */
             throw new IllegalStateException("Check-in already exists for booking number: " + bookingNumber);
         }
 

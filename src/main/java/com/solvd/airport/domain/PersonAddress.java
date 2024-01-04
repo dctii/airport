@@ -15,6 +15,9 @@ public class PersonAddress extends PersonContact {
         this.addressId = addressId;
     }
 
+    public PersonAddress() {
+    }
+
     public int getAddressId() {
         return addressId;
     }

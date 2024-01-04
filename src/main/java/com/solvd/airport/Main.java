@@ -10,24 +10,19 @@ import java.util.Scanner;
 
 /*
 NOTES:
-    Need to start from a specific point in the DB.
-    DROP DATABASE airport;
+    To set up from inside mysql console:
 
-    CREATE DATABASE airport;
-    USE airport;
+        Need to start from a specific point in the DB.
+        DROP DATABASE airport;
 
-        # will create schema for db
-    source /path/to/airport_schema.sql
-        # will set up data to the current point to run CheckInServiceImpl.performCheckIn
-    source /path/to/airport_script.sql
+        CREATE DATABASE airport;
+        USE airport;
+
+            # will create schema for db
+        source /path/to/airport_schema.sql
+            # will set up data to the current point to run CheckInServiceImpl.performCheckIn
+        source /path/to/load_base_data.sql
 */
-
-// TODO: Remove logs from doesCountryExist check
-// TODO: add exist checks to passport, staff email, and booking number -- need to update DAOs
-// TODO: make constants out of repetitive strings, create constants out of the table column names and table names
-// TODO: create SQL query builder, use constants in SQLConstants to help with it
-// TODO: create database loader that can be run via Java
-// TODO: refactor to abstract away what can be abstracted away
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -53,12 +48,16 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    // Testable as long as schemas are established for db
                     MenuUtils.registerPassportHolder(scanner);
                     break;
                 case 2:
+                    // Test with "emi_sato@air-japan.co.jp";
+                    // Test with KAYAK654321;
                     MenuUtils.performCheckIn(scanner);
                     break;
                 case 3:
+                    // Test with KAYAK654321 after checking in with it;
                     MenuUtils.boardPassenger(scanner);
                     break;
                 case 0:

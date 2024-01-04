@@ -10,7 +10,6 @@ import com.solvd.airport.persistence.BoardingPassDAO;
 import com.solvd.airport.persistence.BookingDAO;
 import com.solvd.airport.persistence.CheckInDAO;
 import com.solvd.airport.service.BoardPassengerService;
-import com.solvd.airport.util.AnsiCodes;
 import com.solvd.airport.util.DataAccessProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +22,6 @@ public class BoardPassengerServiceImpl implements BoardPassengerService {
 
     @Override
     public void boardPassenger(String bookingNumber) {
-        LOGGER.info("{}Parameter 'bookingNumber': " + bookingNumber + "{}", AnsiCodes.RED, AnsiCodes.RESET_ALL);
         Booking booking = bookingDAO.findByBookingNumber(bookingNumber);
         if (booking == null) {
             LOGGER.error("No booking found with booking number: " + bookingNumber);

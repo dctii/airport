@@ -3,13 +3,19 @@ package com.solvd.airport.util;
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.exception.InvalidDateFormatException;
 import com.solvd.airport.persistence.CountryDAO;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jooq.Condition;
+import org.jooq.impl.DSL;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.function.IntConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class SQLUtils {
@@ -25,6 +31,7 @@ public class SQLUtils {
             }
         }
     }
+
     public static void displayBoardingPassInfo(String bookingNumber, boolean hasBaggage) {
         DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
@@ -115,6 +122,28 @@ public class SQLUtils {
         }
 
         return exists;
+    }
+
+    public static String qualifyColumnName(String tableName, String columnName) {
+        return StringUtils.joinWith(StringConstants.FULL_STOP, tableName.strip(), columnName.strip());
+    }
+
+    public static String qualifyTableWithWildcard(String tableName) {
+        return qualifyColumnName(tableName, SQLConstants.WILDCARD);
+    }
+
+    public static List<?> createPlaceholders(int numberOfPlaceholders) {
+        return IntStream.range(0, numberOfPlaceholders)
+                .mapToObj(SQLConstants.VALUE_PLACEHOLDERS)
+                .collect(Collectors.toList());
+    }
+
+    public static Condition eqFields(String columnName1, String columnName2) {
+        return DSL.field(columnName1).eq(DSL.field(columnName2));
+    }
+
+    public static Condition eqPlaceholder(String columnName) {
+        return DSL.field(columnName).eq(SQLConstants.PLACEHOLDER);
     }
 
 

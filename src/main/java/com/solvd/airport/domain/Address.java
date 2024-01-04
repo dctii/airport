@@ -107,7 +107,7 @@ public class Address {
         return countryCode;
     }
 
-    public void setCountry(String countryCode) {
+    public void setCountryCode(String countryCode) {
         ExceptionUtils.isStringLengthValid(countryCode, COUNTRY_CODE_MAX_WIDTH);
         this.countryCode = countryCode;
     }

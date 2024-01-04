@@ -1,1 +1,1 @@
-DROP DATBASE airport;
+DROP DATABASE airport;

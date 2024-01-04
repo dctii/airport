@@ -3,29 +3,30 @@ package com.solvd.airport.persistence.impl;
 import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.Flight;
 import com.solvd.airport.persistence.FlightDAO;
+import com.solvd.airport.util.SQLConstants;
+import com.solvd.airport.util.SQLUtils;
+import org.jooq.DSLContext;
+import org.jooq.Field;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class FlightDAOImpl implements FlightDAO {
-    private DBConnectionPool connectionPool = DBConnectionPool.getInstance();
+    private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
+    private static final DSLContext create = DSL.using(SQLDialect.MYSQL);
 
-    private static final String INSERT_FLIGHT_SQL =
-            "INSERT INTO flights (flight_code, departure_time, arrival_time, destination, " +
-                    "airline_code, gate_id, aircraft_model, passenger_capacity, tail_number) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String FIND_BY_CODE_SQL =
-            "SELECT * FROM flights WHERE flight_code = ?";
-    private static final String UPDATE_FLIGHT_SQL =
-            "UPDATE flights SET departure_time = ?, arrival_time = ?, destination = ?, airline_code = ?, " +
-                    "gate_id = ?, aircraft_model = ?, passenger_capacity = ?, tail_number = ? " +
-                    "WHERE flight_code = ?";
-    private static final String DELETE_FLIGHT_SQL =
-            "DELETE FROM flights WHERE flight_code = ?";
 
     @Override
     public void createFlight(Flight flightObj) {
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(INSERT_FLIGHT_SQL)) {
+        try (
+                Connection conn = connectionPool.getConnection();
+                PreparedStatement ps = conn.prepareStatement(INSERT_FLIGHT_SQL)
+        ) {
             ps.setString(1, flightObj.getFlightCode());
             ps.setTimestamp(2, flightObj.getDepartureTime());
             ps.setTimestamp(3, flightObj.getArrivalTime());
@@ -43,34 +44,29 @@ public class FlightDAOImpl implements FlightDAO {
 
     @Override
     public Flight getFlightByCode(String flightCode) {
-        Flight flight = null;
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(FIND_BY_CODE_SQL)) {
+        try (
+                Connection conn = connectionPool.getConnection();
+                PreparedStatement ps = conn.prepareStatement(FIND_BY_CODE_SQL)
+        ) {
             ps.setString(1, flightCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    flight = new Flight();
-                    flight.setFlightCode(rs.getString("flight_code"));
-                    flight.setDepartureTime(rs.getTimestamp("departure_time"));
-                    flight.setArrivalTime(rs.getTimestamp("arrival_time"));
-                    flight.setDestination(rs.getString("destination"));
-                    flight.setAirlineCode(rs.getString("airline_code"));
-                    flight.setGateId(rs.getInt("gate_id"));
-                    flight.setAircraftModel(rs.getString("aircraft_model"));
-                    flight.setPassengerCapacity(rs.getInt("passenger_capacity"));
-                    flight.setTailNumber(rs.getString("tail_number"));
+                    return extractFlightFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return flight;
+        return null;
     }
+
 
     @Override
     public void updateFlight(Flight flightObj) {
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(UPDATE_FLIGHT_SQL)) {
+        try (
+                Connection conn = connectionPool.getConnection();
+                PreparedStatement ps = conn.prepareStatement(UPDATE_FLIGHT_SQL)
+        ) {
             ps.setTimestamp(1, flightObj.getDepartureTime());
             ps.setTimestamp(2, flightObj.getArrivalTime());
             ps.setString(3, flightObj.getDestination());
@@ -88,12 +84,89 @@ public class FlightDAOImpl implements FlightDAO {
 
     @Override
     public void deleteFlight(String flightCode) {
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(DELETE_FLIGHT_SQL)) {
+        try (
+                Connection conn = connectionPool.getConnection();
+                PreparedStatement ps = conn.prepareStatement(DELETE_FLIGHT_SQL)
+        ) {
             ps.setString(1, flightCode);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private static Flight extractFlightFromResultSet(ResultSet rs) throws SQLException {
+        Flight flight = new Flight();
+        flight.setFlightCode(rs.getString(COL_FLIGHT_CODE));
+        flight.setDepartureTime(rs.getTimestamp(COL_DEPARTURE_TIME));
+        flight.setArrivalTime(rs.getTimestamp(COL_ARRIVAL_TIME));
+        flight.setDestination(rs.getString(COL_DESTINATION));
+        flight.setAirlineCode(rs.getString(COL_AIRLINE_CODE));
+        flight.setGateId(rs.getInt(COL_GATE_ID));
+        flight.setAircraftModel(rs.getString(COL_AIRCRAFT_MODEL));
+        flight.setPassengerCapacity(rs.getInt(COL_PASSENGER_CAPACITY));
+        flight.setTailNumber(rs.getString(COL_TAIL_NUMBER));
+
+        return flight;
+    }
+
+        /*
+        "INSERT INTO flights (flight_code, departure_time, arrival_time, destination, " +
+                    "airline_code, gate_id, aircraft_model, passenger_capacity, tail_number) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    */
+
+    private static final List<Field<?>> INSERT_FLIGHT_FIELDS = List.of(
+            DSL.field(COL_FLIGHT_CODE),
+            DSL.field(COL_DEPARTURE_TIME),
+            DSL.field(COL_ARRIVAL_TIME),
+            DSL.field(COL_DESTINATION),
+            DSL.field(COL_AIRLINE_CODE),
+            DSL.field(COL_GATE_ID),
+            DSL.field(COL_AIRCRAFT_MODEL),
+            DSL.field(COL_PASSENGER_CAPACITY),
+            DSL.field(COL_TAIL_NUMBER)
+    );
+
+    private static final String INSERT_FLIGHT_SQL = create
+            .insertInto(DSL.table(TABLE_NAME), INSERT_FLIGHT_FIELDS)
+            .values(SQLUtils.createPlaceholders(INSERT_FLIGHT_FIELDS.size()))
+            .getSQL();
+
+    /*
+        "SELECT * FROM flights WHERE flight_code = ?";
+     */
+
+    private static final String FIND_BY_CODE_SQL = create
+            .selectFrom(DSL.table(TABLE_NAME))
+            .where(SQLUtils.eqPlaceholder(COL_FLIGHT_CODE))
+            .getSQL();
+
+    /*
+        "UPDATE flights SET departure_time = ?, arrival_time = ?, destination = ?, airline_code = ?, " +
+                    "gate_id = ?, aircraft_model = ?, passenger_capacity = ?, tail_number = ? " +
+                    "WHERE flight_code = ?";
+     */
+
+    private static final String UPDATE_FLIGHT_SQL = create
+            .update(DSL.table(TABLE_NAME))
+            .set(DSL.field(COL_DEPARTURE_TIME), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_ARRIVAL_TIME), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_DESTINATION), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_AIRLINE_CODE), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_GATE_ID), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_AIRCRAFT_MODEL), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_PASSENGER_CAPACITY), SQLConstants.PLACEHOLDER)
+            .set(DSL.field(COL_TAIL_NUMBER), SQLConstants.PLACEHOLDER)
+            .where(COL_FLIGHT_CODE)
+            .getSQL();
+
+    /*
+        "DELETE FROM flights WHERE flight_code = ?";
+     */
+
+    private static final String DELETE_FLIGHT_SQL = create
+            .deleteFrom(DSL.table(TABLE_NAME))
+            .where(COL_FLIGHT_CODE)
+            .getSQL();
 }

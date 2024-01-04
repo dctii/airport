@@ -14,6 +14,10 @@ public class PersonPhoneNumber extends PersonContact {
         this.phoneNumberId = phoneNumberId;
     }
 
+    public PersonPhoneNumber() {
+
+    }
+
     public int getPhoneNumberId() {
         return phoneNumberId;
     }
