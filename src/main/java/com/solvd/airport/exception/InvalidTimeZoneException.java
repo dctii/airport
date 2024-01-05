@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class InvalidTimeZoneException {
-    public static void main(String[] args) {
-        
+
+public class InvalidTimeZoneException extends RuntimeException{
+    public InvalidTimeZoneException(String message) {
+        super(message);
     }
 }
