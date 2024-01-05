@@ -8,7 +8,7 @@ import java.util.Map;
 public class Country {
     private String countryCode;
     private String countryName;
-    
+
     final static private int COUNTRY_CODE_MAX_WIDTH = 2;
     final static private int COUNTRY_NAME_MAX_WIDTH = 75;
 
@@ -23,6 +23,8 @@ public class Country {
                         countryName, COUNTRY_NAME_MAX_WIDTH
                 )
         );
+        ExceptionUtils.isValidCountryCode(countryCode);
+
         this.countryCode = countryCode;
         this.countryName = countryName;
     }
@@ -33,6 +35,8 @@ public class Country {
 
     public void setCountryCode(String countryCode) {
         ExceptionUtils.isStringLengthValid(countryCode, COUNTRY_CODE_MAX_WIDTH);
+        ExceptionUtils.isValidCountryCode(countryCode);
+
         this.countryCode = countryCode;
     }
 

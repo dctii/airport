@@ -126,7 +126,8 @@ public class Address {
     }
 
     public void setTimezone(String timezone) {
-        ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_CODE_MAX_WIDTH);
+        ExceptionUtils.isNullOrStringLengthValid(timezone, TIMEZONE_CODE_MAX_WIDTH);
+        ExceptionUtils.isNullOrValidTimeZone(timezone);
         this.timezone = timezone;
     }
 
