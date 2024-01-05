@@ -61,12 +61,12 @@ mvn exec:java
 
 ##### Requirements for Assignment 5
 
-1. Use 2 xml files to represent some not used 2 tables from database and not used their  2 java representation.
-2. Create DOM or SAX or STAX parser for 1st xml file and include this into project logic to get and record data from xml
-3. Create JAXB utility for 2nd xml file to get and record data from xml file
-4. For JAXB also use xml schema validation
-5. Represent some other 1 table which was not used in project and corresponding java class with json file
-6. Create utility with Jackson to read and record data from and to json file by java class
+1. Use 2 `xml` files to represent 2 tables _which have not been used_ from your database and are not used their  2 java representation.
+2. Create DOM or SAX or STAX parser for the 1st `xml` file and include this into your project logic to get and record data from the 1st `xml`.
+3. Create a `JAXB` utility for the 2nd `xml` file to get and record data from xml file
+4. For `JAXB` also use `xml` schema validation
+5. Represent 1 other table which was not used in the project and corresponding Java `class` with a `json` file
+6. Create a utility with _Jackson_ to read and record data from and to the `json` file by java `class`.
 
 <hr />
 
