@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `airport`.`boarding_passes` (
   `is_boarded` BOOLEAN NULL,
   `boarding_time` DATETIME NULL,
   `boarding_group` VARCHAR(25) NULL COMMENT 'The boarding group or boarding number since sometimes different groups board.',
-  `check_in_id` INT UNSIGNED NOT NULL,
+  `check_in_id` INT UNSIGNED NULL,
   PRIMARY KEY (`boarding_pass_id`)
   )
 ENGINE = InnoDB;
@@ -142,8 +142,8 @@ CREATE TABLE IF NOT EXISTS `airport`.`check_ins` (
   `check_in_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `check_in_method` VARCHAR(10) NULL COMMENT '‘staff’ or ‘self’',
   `pass_issued` BOOLEAN NOT NULL DEFAULT 0 COMMENT '‘1’ means boarding pass has been issued, ‘0’ means one has not been issued',
-  `airline_staff_id` INT UNSIGNED NOT NULL COMMENT 'If method is ‘staff’, then the ID',
-  `booking_id` INT UNSIGNED NOT NULL,
+  `airline_staff_id` INT UNSIGNED NULL COMMENT 'If method is ‘staff’, then the ID',
+  `booking_id` INT UNSIGNED NULL,
   PRIMARY KEY (`check_in_id`)
   )
 ENGINE = InnoDB;
@@ -394,107 +394,133 @@ SHOW WARNINGS;
 
 ALTER TABLE `airport`.`addresses`
     ADD
-        FOREIGN KEY(`country_code`) REFERENCES `airport`.`countries`(`country_code`),
+        FOREIGN KEY(`country_code`) REFERENCES `airport`.`countries`(`country_code`)
+        ON UPDATE CASCADE,
     ADD
         FOREIGN KEY(`timezone`) REFERENCES `airport`.`timezones`(`timezone`)
+        ON UPDATE CASCADE
         ;
 
 
 
 ALTER TABLE `airport`.`person_addresses`
     ADD
-        FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`),
+        FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`)
+        ON DELETE CASCADE,
     ADD
         FOREIGN KEY(`address_id`) REFERENCES `airport`.`addresses`(`address_id`)
+        ON DELETE CASCADE
     ;
 
 ALTER TABLE `airport`.`person_phone_numbers`
     ADD
-        FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`),
+        FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`)
+        ON DELETE CASCADE,
     ADD
         FOREIGN KEY(`phone_number_id`) REFERENCES `airport`.`phone_numbers`(`phone_number_id`)
+        ON DELETE CASCADE
     ;
 
 
 ALTER TABLE `airport`.`person_email_addresses`
     ADD
-        FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`),
+        FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`)
+        ON DELETE CASCADE,
     ADD
         FOREIGN KEY(`email_address_id`) REFERENCES `airport`.`email_addresses`(`email_address_id`)
+        ON DELETE CASCADE
     ;
 
 
 ALTER TABLE `airport`.`passports`
     ADD
         FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`)
+        ON DELETE SET NULL
     ;
 
 
 ALTER TABLE `airport`.`airports`
     ADD
         FOREIGN KEY(`address_id`) REFERENCES `airport`.`addresses`(`address_id`)
+        ON DELETE SET NULL
     ;
 
 ALTER TABLE `airport`.`terminals`
     ADD
         FOREIGN KEY(`airport_code`) REFERENCES `airport`.`airports`(`airport_code`)
+        ON UPDATE CASCADE
     ;
 
 ALTER TABLE `airport`.`gates`
     ADD
         FOREIGN KEY(`airport_code`, `terminal_code`) REFERENCES `airport`.`terminals`(`airport_code`, `terminal_code`)
+        ON UPDATE CASCADE
     ;
 
 ALTER TABLE `airport`.`airlines`
     ADD
         FOREIGN KEY(`address_id`) REFERENCES `airport`.`addresses`(`address_id`)
+        ON DELETE SET NULL
     ;
 
 ALTER TABLE `airport`.`airline_staff`
     ADD
         FOREIGN KEY(`person_info_id`) REFERENCES `airport`.`person_info`(`person_info_id`)
+        ON DELETE CASCADE
     ;
 
 ALTER TABLE `airport`.`flight_staff`
     ADD
-        FOREIGN KEY(`airline_staff_id`) REFERENCES `airport`.`airline_staff`(`airline_staff_id`),
+        FOREIGN KEY(`airline_staff_id`) REFERENCES `airport`.`airline_staff`(`airline_staff_id`)
+        ON DELETE CASCADE,
     ADD
         FOREIGN KEY(`flight_crew_id`) REFERENCES `airport`.`flight_crew`(`flight_crew_id`)
+        ON DELETE SET NULL
     ;
 
 ALTER TABLE `airport`.`flight_crew`
     ADD
         FOREIGN KEY(`flight_code`) REFERENCES `airport`.`flights`(`flight_code`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
     ;
 
 
 ALTER TABLE `airport`.`flights`
     ADD
-        FOREIGN KEY(`airline_code`) REFERENCES `airport`.`airlines`(`airline_code`),
+        FOREIGN KEY(`airline_code`) REFERENCES `airport`.`airlines`(`airline_code`)
+        ON UPDATE CASCADE,
     ADD
         FOREIGN KEY(`gate_id`) REFERENCES `airport`.`gates`(`gate_id`)
+        ON DELETE SET NULL
     ;
 
 ALTER TABLE `airport`.`bookings`
     ADD
-        FOREIGN KEY(`passport_number`) REFERENCES `airport`.`passports`(`passport_number`),
+        FOREIGN KEY(`passport_number`) REFERENCES `airport`.`passports`(`passport_number`)
+        ON UPDATE CASCADE,
     ADD
         FOREIGN KEY(`flight_code`) REFERENCES `airport`.`flights`(`flight_code`)
+        ON UPDATE CASCADE
     ;
 
 ALTER TABLE `airport`.`check_ins`
     ADD
-        FOREIGN KEY(`airline_staff_id`) REFERENCES `airport`.`airline_staff`(`airline_staff_id`),
+        FOREIGN KEY(`airline_staff_id`) REFERENCES `airport`.`airline_staff`(`airline_staff_id`)
+        ON DELETE SET NULL,
     ADD
         FOREIGN KEY(`booking_id`) REFERENCES `airport`.`bookings`(`booking_id`)
+        ON DELETE SET NULL
     ;
 
 ALTER TABLE `airport`.`boarding_passes`
     ADD
         FOREIGN KEY(`check_in_id`) REFERENCES `airport`.`check_ins`(`check_in_id`)
+        ON DELETE SET NULL
     ;
 
 ALTER TABLE `airport`.`baggage`
     ADD
         FOREIGN KEY(`check_in_id`) REFERENCES `airport`.`check_ins`(`check_in_id`)
+        ON DELETE SET NULL
     ;
