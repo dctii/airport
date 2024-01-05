@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class MenuUtils {
@@ -57,12 +58,10 @@ public class MenuUtils {
         String countryCode = ScannerUtils.checkAndCleanCountryCode(scanner, "Enter Country Code (e.g., US, JP):",
                 String::toUpperCase,
                 input -> {
+                    // Sets input to uppercase and checks if it matches the list of ISO country codes
                     String upperCaseInput = input.toUpperCase();
                     return input.length() == 2
-                            && Arrays
-                            .stream(Countries.values())
-                            .anyMatch(country -> country.getCountryCode()
-                                    .equals(upperCaseInput));
+                            && Arrays.asList(Locale.getISOCountries()).contains(upperCaseInput);
                 });
 
         // phone number
