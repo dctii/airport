@@ -1,8 +1,6 @@
 package com.solvd.airport.util;
 
-import com.solvd.airport.exception.InvalidDateFormatException;
-import com.solvd.airport.exception.InvalidDecimalException;
-import com.solvd.airport.exception.StringLengthException;
+import com.solvd.airport.exception.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +10,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class ExceptionUtils {
     private static final Logger LOGGER = LogManager.getLogger(ExceptionUtils.class);
@@ -31,7 +32,34 @@ public class ExceptionUtils {
         throw new UnsupportedOperationException(NO_CONSTANTS_INSTANTIATION_MESSAGE);
     }
 
+    public static void isValidTimeZone(String timezone) {
+        if (!Arrays.asList(TimeZone.getAvailableIDs()).contains(timezone)) {
+            throw new InvalidTimeZoneException("Invalid timezone: " + timezone);
+        }
+    }
+
+    public static void isNullOrValidTimeZone(String timezone) {
+        if (timezone == null) return; // null is acceptable, so we return immediately
+        isValidTimeZone(timezone);
+    }
+
+    public static void isValidCountryCode(String countryCode) {
+        if (!Arrays.asList(Locale.getISOCountries()).contains(countryCode)) {
+            throw new InvalidCountryException("Invalid country code: " + countryCode);
+        }
+    }
+
     public static void isStringLengthValid(String string, int maxLength) {
+        if (string.length() > maxLength) {
+            final String stringLengthMessage =
+                    "String length is invalid. Cannot be more than " + maxLength + " characters";
+            throw new StringLengthException(stringLengthMessage);
+        }
+    }
+
+    public static void isNullOrStringLengthValid(String string, int maxLength) {
+        if (string == null) return;
+
         if (string.length() > maxLength) {
             final String stringLengthMessage =
                     "String length is invalid. Cannot be more than " + maxLength + " characters";
