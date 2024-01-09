@@ -2,13 +2,25 @@ package com.solvd.airport.domain;
 
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import java.util.Map;
 
+// TODO: JAXB
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Gate {
+    @XmlAttribute(name = "id")
     private int gateId;
+    @XmlElement(name = "gateCode")
     private String gateCode;
+    @XmlElement(name = "airportCode")
     private String airportCode;
+
+    @XmlElement(name = "terminalCode")
     private String terminalCode;
 
     final static private int GATE_CODE_MAX_WIDTH = 10;

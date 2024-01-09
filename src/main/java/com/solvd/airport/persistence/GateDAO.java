@@ -1,8 +1,19 @@
 package com.solvd.airport.persistence;
 
+import com.solvd.airport.domain.Gate;
 import com.solvd.airport.util.SQLUtils;
+import org.apache.ibatis.annotations.Param;
 
-public interface GatesDAO {
+public interface GateDAO {
+
+    void createGate(@Param("gateObj") Gate gateObj);
+
+    boolean doesGateExist(
+            @Param("airportCode") String airportCode,
+            @Param("terminalCode") String terminalCode,
+            @Param("gateCode") String gateCode
+    );
+
     String TABLE_NAME = "gates";
     String ALL_COLUMNS = SQLUtils.qualifyTableWithWildcard(TABLE_NAME);
 

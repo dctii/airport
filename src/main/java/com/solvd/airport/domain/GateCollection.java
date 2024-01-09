@@ -1,22 +1,23 @@
 package com.solvd.airport.domain;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.*;
 
 import java.util.List;
 
+// TODO: JAXB
 @XmlRootElement(name = "gates")
-public class Gates {
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+public class GateCollection {
     private List<Gate> gates;
 
-    public Gates() {
+    public GateCollection() {
     }
 
-    public Gates(List<Gate> gates) {
+    public GateCollection(List<Gate> gates) {
         this.gates = gates;
     }
 
-    @XmlElementWrapper(name = "gates")
+
     @XmlElement(name = "gate")
     public List<Gate> getGates() {
         return gates;
