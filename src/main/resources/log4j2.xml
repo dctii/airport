@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -13,6 +14,9 @@
     </Appenders>
     <Loggers>
         <Logger name="com.solvd.airport.Main" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.airport.BaseDataLoader" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>
         <Logger name="com.solvd.airport.service" level="info" additivity="false">
