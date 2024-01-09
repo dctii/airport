@@ -53,6 +53,16 @@ public class Address {
     }
 
     public Address(String street, String city, String postalCode, String countryCode) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        street, STREET_MAX_WIDTH,
+                        city, CITY_MAX_WIDTH,
+                        countryCode, COUNTRY_CODE_MAX_WIDTH,
+                        postalCode, POSTAL_CODE_MAX_WIDTH
+                )
+        );
+
+
         this.street = street;
         this.city = city;
         this.countryCode = countryCode;
