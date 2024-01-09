@@ -10,29 +10,75 @@
     <version>1.0.0</version>
 
     <properties>
+        <!--   Project Package Name     -->
+        <self.groupId>com.solvd.airport</self.groupId>
+
+        <!--   Java Properties     -->
         <java.version>11</java.version>
 
+        <!--   org.apache Properties     -->
         <apache.superGroupId>org.apache</apache.superGroupId>
 
-        <log4j.groupId>${apache.superGroupId}.logging.log4j</log4j.groupId>
+        <!--   Apache log4j Properties     -->
+        <log4j.affix>log4j</log4j.affix>
+        <log4j.groupId>${apache.superGroupId}.logging.${log4j.affix}</log4j.groupId>
         <log4j.version>2.21.1</log4j.version>
 
+        <!--   Apache Commons Properties     -->
+        <apache-commons.affix>commons</apache-commons.affix>
+        <apache-commons.groupId>${apache.superGroupId}.${apache-commons.affix}
+        </apache-commons.groupId>
         <apache-commons-lang3.version>3.12.0</apache-commons-lang3.version>
+        <apache-commons-text.version>1.11.0</apache-commons-text.version>
+        <apache-commons-csv.version>1.10.0</apache-commons-csv.version>
 
+        <!--   Apache Commons-IO Properties     -->
         <apache-commons-io.version>2.15.0</apache-commons-io.version>
 
-        <jooq.groupId>org.jooq</jooq.groupId>
+        <!--   JOOQ Properties     -->
+        <jooq.affix>jooq</jooq.affix>
+        <jooq.groupId>org.${jooq.affix}</jooq.groupId>
         <jooq.version>3.15.12</jooq.version>
 
+        <!--   MySQL Connector J Properties     -->
+        <mysql.affix>mysql</mysql.affix>
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
 
+        <!--   MyBatis Properties     -->
+        <mybatis.affix>mybatis</mybatis.affix>
         <mybatis.version>3.5.15</mybatis.version>
 
+        <!--   JAXB Properties     -->
+        <jaxb.affix>jaxb</jaxb.affix>
+        <jaxb.groupId>org.glassfish.${jaxb.affix}</jaxb.groupId>
+        <jaxb-core.version>4.0.4</jaxb-core.version>
+        <jaxb-runtime.version>4.0.4</jaxb-runtime.version>
+
+        <!--   Jackson Properties     -->
+        <jackson.affix>jackson</jackson.affix>
+        <jackson-core.groupId>com.fasterxml.${jackson.affix}.core</jackson-core.groupId>
+        <jacksoncore.version>2.16.1</jacksoncore.version>
+        <jackson-databind.version>2.16.1</jackson-databind.version>
+
+        <!--   Google libphonenumber     -->
+        <libphonenumber.affix>libphonenumber</libphonenumber.affix>
+        <google-libphonenumber.version>8.13.27</google-libphonenumber.version>
+
+        <!--   maven Compiler Plugin Properties     -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
+        <!--   exec-maven Plugin Properties     -->
+        <exec-maven-plugin.groupId>org.codehaus.mojo</exec-maven-plugin.groupId>
+        <exec-maven-plugin.artifactId>exec-maven-plugin</exec-maven-plugin.artifactId>
         <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
-        <mainEntrypoint>com.solvd.airport.Main</mainEntrypoint>
+        <mainEntrypoint>${self.groupId}.Main</mainEntrypoint>
+        <baseDataLoaderEntrypoint>${self.groupId}.BaseDataLoader</baseDataLoaderEntrypoint>
 
+        <!--
+        To resolve these warning flags:
+             [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+             [WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+         -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
@@ -57,13 +103,12 @@
 
                 <!-- https://www.mojohaus.org/exec-maven-plugin/ -->
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
+                    <groupId>${exec-maven-plugin.groupId}</groupId>
+                    <artifactId>${exec-maven-plugin.artifactId}</artifactId>
                     <version>${exec-maven-plugin.version}</version>
                     <configuration>
                         <mainClass>${mainEntrypoint}</mainClass>
                         <systemProperties>
-                            <!--  We are here  -->
                             <systemProperty>
                                 <key>${jooq.groupId}.no-tips</key>
                                 <value>true</value>
@@ -80,12 +125,44 @@
         </pluginManagement>
     </build>
 
+    <profiles>
+        <profile>
+            <id>base-data-loader</id>
+            <build>
+                <plugins>
+
+                    <!-- https://www.mojohaus.org/exec-maven-plugin/ -->
+                    <plugin>
+                        <groupId>${exec-maven-plugin.groupId}</groupId>
+                        <artifactId>${exec-maven-plugin.artifactId}</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <configuration>
+                            <mainClass>${baseDataLoaderEntrypoint}</mainClass>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>${jooq.groupId}.no-tips</key>
+                                    <value>true</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>${jooq.groupId}.no-logo</key>
+                                    <value>true</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
         <dependency>
             <groupId>${log4j.groupId}</groupId>
-            <artifactId>log4j-api</artifactId>
+            <artifactId>${log4j.affix}-api</artifactId>
             <version>${log4j.version}</version>
         </dependency>
 
@@ -93,46 +170,99 @@
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>${log4j.groupId}</groupId>
-            <artifactId>log4j-core</artifactId>
+            <artifactId>${log4j.affix}-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3-->
         <dependency>
-            <groupId>${apache.superGroupId}.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>${apache-commons.groupId}</groupId>
+            <artifactId>${apache-commons.affix}-lang3</artifactId>
             <version>${apache-commons-lang3.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+        <dependency>
+            <groupId>${apache-commons.groupId}</groupId>
+            <artifactId>${apache-commons.affix}-text</artifactId>
+            <version>${apache-commons-text.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+        <dependency>
+            <groupId>${apache-commons.groupId}</groupId>
+            <artifactId>${apache-commons.affix}-csv</artifactId>
+            <version>${apache-commons-csv.version}</version>
         </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>${apache-commons.affix}-io</groupId>
+            <artifactId>${apache-commons.affix}-io</artifactId>
             <version>${apache-commons-io.version}</version>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.jooq/jooq -->
         <dependency>
             <groupId>${jooq.groupId}</groupId>
-            <artifactId>jooq</artifactId>
+            <artifactId>${jooq.affix}</artifactId>
             <version>${jooq.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>com.${mysql.affix}</groupId>
+            <artifactId>${mysql.affix}-connector-j</artifactId>
             <version>${mysql-connector-j.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
+            <groupId>org.${mybatis.affix}</groupId>
+            <artifactId>${mybatis.affix}</artifactId>
             <version>${mybatis.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber -->
+        <dependency>
+            <groupId>com.googlecode.${libphonenumber.affix}</groupId>
+            <artifactId>${libphonenumber.affix}</artifactId>
+            <version>${google-libphonenumber.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-core -->
+        <dependency>
+            <groupId>${jaxb.groupId}</groupId>
+            <artifactId>${jaxb.affix}-core</artifactId>
+            <version>${jaxb-core.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <dependency>
+            <groupId>${jaxb.groupId}</groupId>
+            <artifactId>${jaxb.affix}-runtime</artifactId>
+            <version>${jaxb-runtime.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>${jackson-core.groupId}</groupId>
+            <artifactId>${jackson.affix}-core</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>${jackson-core.groupId}</groupId>
+            <artifactId>${jackson.affix}-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+
+
 
     </dependencies>
 </project>
