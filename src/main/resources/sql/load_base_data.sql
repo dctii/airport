@@ -329,7 +329,7 @@ VALUES
         (SELECT address_id FROM addresses WHERE street = '14A Nemiga Street' AND postal_code = '220004')
     ),
     (
-        'JX', 'Air Japan',
+        'NQ', 'Air Japan',
         (SELECT address_id FROM addresses WHERE street = 'ANA House' AND postal_code = '105-7133')
     ),
     (
@@ -351,9 +351,9 @@ VALUES
         'MSQ', 'DL', 'Boeing 777', 'N123DL', 300
     ),
     (
-        'JX456', '2024-12-24 11:00:00', '2024-12-25 07:00:00',
+        'NQ456', '2024-12-24 11:00:00', '2024-12-25 07:00:00',
         (SELECT gate_id FROM gates WHERE gate_code = '149' AND airport_code = 'LAX'),
-        'HND', 'JX', 'Boeing 787', 'N123JX', 250
+        'HND', 'NQ', 'Boeing 787', 'N123NQ', 250
     );
 
 SHOW WARNINGS;
@@ -364,7 +364,7 @@ VALUES
     ('Pilot', (SELECT person_info_id FROM person_info WHERE surname = 'Johnson' AND given_name = 'Alice')),
     ('Flight Attendant', (SELECT person_info_id FROM person_info WHERE surname = 'Ericson' AND given_name = 'Alexa')),
     ('Check-in Staff', (SELECT person_info_id FROM person_info WHERE surname = 'Blart' AND given_name = 'Paul')),
-    -- JX
+    -- NQ
     ('Pilot', (SELECT person_info_id FROM person_info WHERE surname = 'Tanaka' AND given_name = 'Hiro')),
     ('Flight Attendant', (SELECT person_info_id FROM person_info WHERE surname = 'Kurosawa' AND given_name = 'Joy')),
     ('Check-in Staff', (SELECT person_info_id FROM person_info WHERE surname = 'Sato' AND given_name = 'Emi'));
@@ -385,7 +385,7 @@ VALUES
       )
       ), -- Flight Attendant
 
-    -- JX456
+    -- NQ456
     (
     (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'LA456'),
      (SELECT airline_staff_id FROM airline_staff WHERE person_info_id =
@@ -448,7 +448,7 @@ VALUES
         'KAYAK654321', CURRENT_DATE, 'Business', '2B',
         'Confirmed', 4000.00, 'Kayak',
         'USA1234567',
-        'JX456'
+        'NQ456'
     )
     ;
 
