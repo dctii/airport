@@ -21,6 +21,18 @@ public class Airport {
         this.airportCode = airportCode;
     }
 
+    public Airport(String airportCode, String airportName) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        airportCode, AIRPORT_CODE_MAX_WIDTH,
+                        airportName, AIRPORT_NAME_MAX_WIDTH
+                )
+        );
+        
+        this.airportCode = airportCode;
+        this.airportName = airportName;
+    }
+
     public Airport(String airportCode, int addressId) {
         ExceptionUtils.isStringLengthValid(airportCode, AIRPORT_CODE_MAX_WIDTH);
 
