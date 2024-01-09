@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PersonEmailAddressDAOImpl implements PersonEmailAddressDAO {
+public class PersonEmailAddressJDBCImpl implements PersonEmailAddressDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);

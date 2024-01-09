@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class FlightDAOImpl implements FlightDAO {
+public class FlightJDBCImpl implements FlightDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);
 

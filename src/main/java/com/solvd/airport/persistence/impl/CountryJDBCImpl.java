@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CountryDAOImpl implements CountryDAO {
+public class CountryJDBCImpl implements CountryDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);
 

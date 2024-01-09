@@ -11,7 +11,7 @@ import org.jooq.impl.DSL;
 
 import java.sql.*;
 
-public class EmailAddressDAOImpl implements EmailAddressDAO {
+public class EmailAddressJDBCImpl implements EmailAddressDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);
 

@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TimezoneDAOImpl implements TimezoneDAO {
+public class TimezoneJDBCImpl implements TimezoneDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);
 

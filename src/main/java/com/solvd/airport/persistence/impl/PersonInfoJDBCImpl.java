@@ -15,8 +15,8 @@ import org.jooq.impl.DSL;
 import java.sql.*;
 import java.util.List;
 
-public class PersonInfoDAOImpl implements PersonInfoDAO {
-    private static final Logger LOGGER = LogManager.getLogger(PersonInfoDAOImpl.class);
+public class PersonInfoJDBCImpl implements PersonInfoDAO {
+    private static final Logger LOGGER = LogManager.getLogger(PersonInfoJDBCImpl.class);
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);

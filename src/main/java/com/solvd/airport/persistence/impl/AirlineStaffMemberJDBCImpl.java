@@ -16,7 +16,7 @@ import org.jooq.impl.DSL;
 import java.sql.*;
 import java.util.List;
 
-public class AirlineStaffMemberDAOImpl implements AirlineStaffMemberDAO {
+public class AirlineStaffMemberJDBCImpl implements AirlineStaffMemberDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);

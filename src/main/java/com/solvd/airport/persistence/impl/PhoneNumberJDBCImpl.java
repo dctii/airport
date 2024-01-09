@@ -13,7 +13,7 @@ import org.jooq.impl.DSL;
 import java.sql.*;
 import java.util.List;
 
-public class PhoneNumberDAOImpl implements PhoneNumberDAO {
+public class PhoneNumberJDBCImpl implements PhoneNumberDAO {
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);

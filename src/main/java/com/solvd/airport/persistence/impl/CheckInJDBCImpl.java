@@ -16,8 +16,8 @@ import org.jooq.impl.DSL;
 import java.sql.*;
 import java.util.List;
 
-public class CheckInDAOImpl implements CheckInDAO {
-    private static final Logger LOGGER = LogManager.getLogger(CheckInDAOImpl.class);
+public class CheckInJDBCImpl implements CheckInDAO {
+    private static final Logger LOGGER = LogManager.getLogger(CheckInJDBCImpl.class);
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
     private static final DSLContext create = DSL.using(SQLDialect.MYSQL);
 
