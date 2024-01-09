@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.PhoneNumber;
 import com.solvd.airport.persistence.PhoneNumberDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -56,21 +56,22 @@ public class PhoneNumberDAOImpl implements PhoneNumberDAO {
 
     @Override
     public PhoneNumber getPhoneNumberByNumber(String phoneNumber) {
+        PhoneNumber phoneNumberObj = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_PHONE_BY_PHONE_NUMBER_SQL)
         ) {
 
             ps.setString(1, phoneNumber);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return extractPhoneNumberFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    phoneNumberObj = extractPhoneNumberFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return phoneNumberObj;
     }
 
 

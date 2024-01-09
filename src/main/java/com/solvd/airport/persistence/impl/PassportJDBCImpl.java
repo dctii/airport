@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Passport;
 import com.solvd.airport.persistence.PassportDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -36,6 +36,7 @@ public class PassportDAOImpl implements PassportDAO {
 
     @Override
     public Passport getPassportById(String passportNumber) {
+        Passport passport = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(GET_PASSPORT_BY_ID_SQL)
@@ -43,13 +44,13 @@ public class PassportDAOImpl implements PassportDAO {
             ps.setString(1, passportNumber);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractPassportFromResultSet(rs);
+                    passport = extractPassportFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving passport with number " + passportNumber, e);
         }
-        return null;
+        return passport;
     }
 
 

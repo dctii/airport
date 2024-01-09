@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.PersonEmailAddress;
 import com.solvd.airport.persistence.EmailAddressDAO;
 import com.solvd.airport.persistence.PersonEmailAddressDAO;
@@ -39,38 +39,43 @@ public class PersonEmailAddressDAOImpl implements PersonEmailAddressDAO {
 
     @Override
     public PersonEmailAddress getPersonEmailAddressById(int personInfoId, int emailAddressId) {
+        PersonEmailAddress personEmailAddress = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_PERSON_EMAIL_SQL)
         ) {
             ps.setInt(1, personInfoId);
             ps.setInt(2, emailAddressId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractPersonEmailAddressFromResultSet(rs);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    personEmailAddress = extractPersonEmailAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return personEmailAddress;
     }
 
 
     @Override
     public PersonEmailAddress getPersonEmailAddressByEmail(String emailAddress) {
+        PersonEmailAddress personEmailAddress = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_PERSON_EMAIL_BY_EMAIL_SQL)
         ) {
             ps.setString(1, emailAddress);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractPersonEmailAddressFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    personEmailAddress = extractPersonEmailAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return personEmailAddress;
     }
 
     @Override

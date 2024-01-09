@@ -2,7 +2,7 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.Booking;
 import com.solvd.airport.persistence.BookingDAO;
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.util.SQLConstants;
 import com.solvd.airport.util.SQLUtils;
 import org.jooq.DSLContext;
@@ -42,6 +42,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public Booking getBookingById(int bookingId) {
+        Booking booking = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)
@@ -49,17 +50,18 @@ public class BookingDAOImpl implements BookingDAO {
             ps.setInt(1, bookingId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractBookingFromResultSet(rs);
+                    booking = extractBookingFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return booking;
     }
 
     @Override
     public Booking findByBookingNumber(String bookingNumber) {
+        Booking booking = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_BOOKING_NUMBER_SQL)
@@ -67,13 +69,13 @@ public class BookingDAOImpl implements BookingDAO {
             ps.setString(1, bookingNumber);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractBookingFromResultSet(rs);
+                    booking = extractBookingFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return booking;
     }
 
     @Override

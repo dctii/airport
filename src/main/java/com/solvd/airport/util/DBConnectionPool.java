@@ -1,6 +1,5 @@
-package com.solvd.airport.db;
+package com.solvd.airport.util;
 
-import com.solvd.airport.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,6 +47,7 @@ public class DBConnectionPool {
         dbConnections.offer(dbConnection);
         notifyAll();
     }
+
 
     public synchronized void shutdown() {
         dbConnections.forEach(dbConnection -> {

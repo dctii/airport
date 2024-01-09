@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Flight;
 import com.solvd.airport.persistence.FlightDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -44,6 +44,7 @@ public class FlightDAOImpl implements FlightDAO {
 
     @Override
     public Flight getFlightByCode(String flightCode) {
+        Flight flight = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_CODE_SQL)
@@ -51,13 +52,13 @@ public class FlightDAOImpl implements FlightDAO {
             ps.setString(1, flightCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractFlightFromResultSet(rs);
+                    flight = extractFlightFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return flight;
     }
 
 

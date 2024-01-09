@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Airline;
 import com.solvd.airport.persistence.AirlineDAO;
 import com.solvd.airport.util.SQLUtils;

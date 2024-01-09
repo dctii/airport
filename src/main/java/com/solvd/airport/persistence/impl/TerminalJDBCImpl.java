@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Terminal;
 import com.solvd.airport.persistence.TerminalDAO;
 import com.solvd.airport.util.SQLUtils;
@@ -39,6 +39,7 @@ public class TerminalDAOImpl implements TerminalDAO {
 
     @Override
     public boolean doesTerminalExist(String airportCode, String terminalCode) {
+        boolean doesExist = false;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(DOES_TERMINAL_EXIST_SQL)
@@ -46,13 +47,13 @@ public class TerminalDAOImpl implements TerminalDAO {
             ps.setString(1, airportCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    doesExist = rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return doesExist;
     }
 
 

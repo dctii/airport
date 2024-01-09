@@ -1,9 +1,9 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.Baggage;
 import com.solvd.airport.persistence.BaggageDAO;
 import com.solvd.airport.persistence.BoardingPassDAO;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.util.SQLConstants;
 import com.solvd.airport.util.SQLUtils;
 import org.jooq.DSLContext;
@@ -40,6 +40,7 @@ public class BaggageDAOImpl implements BaggageDAO {
 
     @Override
     public Baggage getBaggageByCode(String baggageCode) {
+        Baggage baggage = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_CODE_SQL)
@@ -47,13 +48,14 @@ public class BaggageDAOImpl implements BaggageDAO {
             ps.setString(1, baggageCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractBaggageFromResultSet(rs);
+
+                    baggage = extractBaggageFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return baggage;
     }
 
 

@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Airport;
 import com.solvd.airport.persistence.AirportDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -51,6 +51,7 @@ public class AirportDAOImpl implements AirportDAO {
 
     @Override
     public Airport getAirportByCode(String airportCode) {
+        Airport airport = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_AIRPORT_BY_CODE_SQL)
@@ -58,18 +59,13 @@ public class AirportDAOImpl implements AirportDAO {
             ps.setString(1, airportCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Airport airport = new Airport();
-                    airport.setAirportCode(rs.getString(COL_AIRPORT_CODE));
-                    airport.setAirportName(rs.getString(COL_AIRPORT_NAME));
-                    airport.setAddressId(rs.getInt(COL_ADDRESS_ID));
-
-                    return airport;
+                    airport = extractAirportFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return airport;
     }
 
     @Override
@@ -115,6 +111,14 @@ public class AirportDAOImpl implements AirportDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private static Airport extractAirportFromResultSet(ResultSet rs) throws SQLException {
+        Airport airport = new Airport();
+        airport.setAirportCode(rs.getString(COL_AIRPORT_CODE));
+        airport.setAirportName(rs.getString(COL_AIRPORT_NAME));
+        airport.setAddressId(rs.getInt(COL_ADDRESS_ID));
+        return airport;
     }
 
     // SQL Statements

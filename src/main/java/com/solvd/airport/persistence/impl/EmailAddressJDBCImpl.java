@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.EmailAddress;
 import com.solvd.airport.persistence.EmailAddressDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -33,38 +33,41 @@ public class EmailAddressDAOImpl implements EmailAddressDAO {
 
     @Override
     public EmailAddress getEmailAddressById(int emailAddressId) {
+        EmailAddress emailAddress = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_EMAIL_BY_ID_SQL)
         ) {
             ps.setInt(1, emailAddressId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractEmailAddressFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    emailAddress = extractEmailAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return emailAddress;
     }
 
     @Override
     public EmailAddress getEmailAddressByEmail(String email) {
+        EmailAddress emailAddress = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_EMAIL_BY_EMAIL_ADDRESS_SQL)
         ) {
             ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractEmailAddressFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    emailAddress = extractEmailAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return emailAddress;
     }
-
 
 
     @Override

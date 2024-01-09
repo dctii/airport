@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.PersonAddress;
 import com.solvd.airport.persistence.PersonAddressDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -38,20 +38,22 @@ public class PersonAddressDAOImpl implements PersonAddressDAO {
 
     @Override
     public PersonAddress getPersonAddressById(int personInfoId, int addressId) {
+        PersonAddress personAddress = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_PERSON_ADDRESS_SQL)
         ) {
             ps.setInt(1, personInfoId);
             ps.setInt(2, addressId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractPersonAddressFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    personAddress = extractPersonAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return personAddress;
     }
 
     @Override

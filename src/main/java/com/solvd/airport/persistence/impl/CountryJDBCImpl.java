@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Country;
 import com.solvd.airport.persistence.CountryDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -38,19 +38,21 @@ public class CountryDAOImpl implements CountryDAO {
 
     @Override
     public Country getCountryByCode(String countryCode) {
+        Country country = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_COUNTRY_BY_CODE_SQL)
         ) {
             ps.setString(1, countryCode);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractCountryFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    country = extractCountryFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return country;
     }
 
 
@@ -83,6 +85,7 @@ public class CountryDAOImpl implements CountryDAO {
 
     @Override
     public boolean doesCountryCodeExist(String countryCode) {
+        boolean doesExist = false;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(DOES_COUNTRY_EXIST_SQL)
@@ -90,13 +93,13 @@ public class CountryDAOImpl implements CountryDAO {
             ps.setString(1, countryCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    doesExist = rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return doesExist;
     }
 
     private static Country extractCountryFromResultSet(ResultSet rs) throws SQLException {

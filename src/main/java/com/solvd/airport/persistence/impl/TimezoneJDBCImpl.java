@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Timezone;
 import com.solvd.airport.persistence.TimezoneDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -33,21 +33,21 @@ public class TimezoneDAOImpl implements TimezoneDAO {
 
     @Override
     public Timezone getTimezoneByTz(String timezone) {
+        Timezone timezoneObj = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_TIMEZONE_BY_TZ_SQL)
         ) {
             ps.setString(1, timezone);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Timezone timezoneObj = new Timezone();
-                timezoneObj.setTimezone(rs.getString(COL_TIMEZONE));
-                return timezoneObj;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    timezoneObj = extractTimezoneFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return timezoneObj;
     }
 
     @Override
@@ -79,6 +79,7 @@ public class TimezoneDAOImpl implements TimezoneDAO {
 
     @Override
     public boolean doesTimezoneExist(String timezone) {
+        boolean doesExist = false;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(DOES_TIMEZONE_EXIST_SQL)
@@ -86,13 +87,19 @@ public class TimezoneDAOImpl implements TimezoneDAO {
             ps.setString(1, timezone);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    doesExist = rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return doesExist;
+    }
+
+    private static Timezone extractTimezoneFromResultSet(ResultSet rs) throws SQLException {
+        Timezone timezoneObj = new Timezone();
+        timezoneObj.setTimezone(rs.getString(COL_TIMEZONE));
+        return timezoneObj;
     }
 
     private static final String INSERT_TIMEZONE_SQL = create

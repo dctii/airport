@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Gate;
 import com.solvd.airport.persistence.GateDAO;
 import com.solvd.airport.util.SQLUtils;
@@ -36,6 +36,7 @@ public class GateDAOImpl implements GateDAO {
 
     @Override
     public boolean doesGateExist(String airportCode, String terminalCode, String gateCode) {
+        boolean doesExist = false;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(DOES_GATE_EXIST_SQL)
@@ -43,13 +44,13 @@ public class GateDAOImpl implements GateDAO {
             ps.setString(1, airportCode);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    doesExist = rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return doesExist;
     }
 
 

@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.PersonInfo;
 import com.solvd.airport.persistence.PersonInfoDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -45,6 +45,7 @@ public class PersonInfoDAOImpl implements PersonInfoDAO {
 
     @Override
     public PersonInfo getPersonInfoById(int personInfoId) {
+        PersonInfo personInfo = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)
@@ -52,17 +53,18 @@ public class PersonInfoDAOImpl implements PersonInfoDAO {
             ps.setInt(1, personInfoId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractPersonInfoFromResultSet(rs);
+                    personInfo = extractPersonInfoFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return personInfo;
     }
 
     @Override
     public PersonInfo findByName(String surname, String givenName) {
+        PersonInfo personInfo = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_NAME_SQL)
@@ -71,13 +73,13 @@ public class PersonInfoDAOImpl implements PersonInfoDAO {
             ps.setString(2, givenName);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractPersonInfoFromResultSet(rs);
+                    personInfo = extractPersonInfoFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return personInfo;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.BoardingPass;
 import com.solvd.airport.persistence.BoardingPassDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -47,6 +47,7 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
 
     @Override
     public BoardingPass getBoardingPassById(int boardingPassId) {
+        BoardingPass boardingPass = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)
@@ -54,17 +55,18 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
             ps.setInt(1, boardingPassId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractBoardingPassFromResultSet(rs);
+                    boardingPass = extractBoardingPassFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return boardingPass;
     }
 
     @Override
     public BoardingPass getBoardingPassByCheckInId(int checkInId) {
+        BoardingPass boardingPass = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_CHECK_IN_ID_SQL)
@@ -72,13 +74,13 @@ public class BoardingPassDAOImpl implements BoardingPassDAO {
             ps.setInt(1, checkInId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractBoardingPassFromResultSet(rs);
+                    boardingPass = extractBoardingPassFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting BoardingPass by CheckIn ID: ", e);
         }
-        return null;
+        return boardingPass;
     }
 
     @Override

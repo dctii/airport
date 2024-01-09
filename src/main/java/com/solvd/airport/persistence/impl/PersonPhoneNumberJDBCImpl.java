@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.PersonPhoneNumber;
 import com.solvd.airport.persistence.PersonPhoneNumberDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -38,20 +38,22 @@ public class PersonPhoneNumberDAOImpl implements PersonPhoneNumberDAO {
 
     @Override
     public PersonPhoneNumber getPersonPhoneNumberById(int personInfoId, int phoneNumberId) {
+        PersonPhoneNumber personPhoneNumber = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_PERSON_PHONE_SQL)
         ) {
             ps.setInt(1, personInfoId);
             ps.setInt(2, phoneNumberId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractPersonPhoneNumberFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    personPhoneNumber = extractPersonPhoneNumberFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return personPhoneNumber;
     }
 
     @Override

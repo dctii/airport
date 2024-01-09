@@ -1,8 +1,11 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.domain.AirlineStaffMember;
-import com.solvd.airport.persistence.*;
+import com.solvd.airport.persistence.AirlineStaffMemberDAO;
+import com.solvd.airport.persistence.EmailAddressDAO;
+import com.solvd.airport.persistence.PersonEmailAddressDAO;
+import com.solvd.airport.persistence.PersonInfoDAO;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.util.SQLConstants;
 import com.solvd.airport.util.SQLUtils;
 import org.jooq.DSLContext;
@@ -42,6 +45,7 @@ public class AirlineStaffMemberDAOImpl implements AirlineStaffMemberDAO {
 
     @Override
     public AirlineStaffMember getAirlineStaffMemberById(int airlineStaffId) {
+        AirlineStaffMember airlineStaffMember = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)
@@ -50,17 +54,18 @@ public class AirlineStaffMemberDAOImpl implements AirlineStaffMemberDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractAirlineStaffMemberFromResultSet(rs);
+                    airlineStaffMember = extractAirlineStaffMemberFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return airlineStaffMember;
     }
 
     @Override
     public AirlineStaffMember findByPersonInfoId(int personInfoId) {
+        AirlineStaffMember airlineStaffMember = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_PERSON_INFO_ID_SQL)
@@ -68,17 +73,18 @@ public class AirlineStaffMemberDAOImpl implements AirlineStaffMemberDAO {
             ps.setInt(1, personInfoId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractAirlineStaffMemberFromResultSet(rs);
+                    airlineStaffMember = extractAirlineStaffMemberFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return airlineStaffMember;
     }
 
     @Override
     public AirlineStaffMember findByEmailAddress(String emailAddress) {
+        AirlineStaffMember airlineStaffMember = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_EMAIL_ADDRESS_SQL)
@@ -86,13 +92,13 @@ public class AirlineStaffMemberDAOImpl implements AirlineStaffMemberDAO {
             ps.setString(1, emailAddress);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractAirlineStaffMemberFromResultSet(rs);
+                    airlineStaffMember = extractAirlineStaffMemberFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return airlineStaffMember;
     }
 
 
@@ -125,12 +131,12 @@ public class AirlineStaffMemberDAOImpl implements AirlineStaffMemberDAO {
     }
 
     private static AirlineStaffMember extractAirlineStaffMemberFromResultSet(ResultSet rs) throws SQLException {
-        AirlineStaffMember staffMember = new AirlineStaffMember();
-        staffMember.setAirlineStaffId(rs.getInt(COL_AIRLINE_STAFF_ID));
-        staffMember.setMemberRole(rs.getString(COL_MEMBER_ROLE));
-        staffMember.setPersonInfoId(rs.getInt(COL_PERSON_INFO_ID));
+        AirlineStaffMember airlineStaffMember = new AirlineStaffMember();
+        airlineStaffMember.setAirlineStaffId(rs.getInt(COL_AIRLINE_STAFF_ID));
+        airlineStaffMember.setMemberRole(rs.getString(COL_MEMBER_ROLE));
+        airlineStaffMember.setPersonInfoId(rs.getInt(COL_PERSON_INFO_ID));
 
-        return staffMember;
+        return airlineStaffMember;
     }
 
         /*

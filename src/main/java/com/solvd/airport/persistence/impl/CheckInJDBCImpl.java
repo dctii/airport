@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.CheckIn;
 import com.solvd.airport.persistence.BookingDAO;
 import com.solvd.airport.persistence.CheckInDAO;
@@ -47,6 +47,7 @@ public class CheckInDAOImpl implements CheckInDAO {
 
     @Override
     public CheckIn getCheckInById(int checkInId) {
+        CheckIn checkIn = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_ID_SQL)
@@ -54,17 +55,18 @@ public class CheckInDAOImpl implements CheckInDAO {
             ps.setInt(1, checkInId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractCheckInFromResultSet(rs);
+                    checkIn = extractCheckInFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting CheckIn by ID: ", e);
         }
-        return null;
+        return checkIn;
     }
 
     @Override
     public CheckIn getCheckInByBookingNumber(String bookingNumber) {
+        CheckIn checkIn = null;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(FIND_BY_BOOKING_NUMBER_SQL)
@@ -72,13 +74,13 @@ public class CheckInDAOImpl implements CheckInDAO {
             ps.setString(1, bookingNumber);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return extractCheckInFromResultSet(rs);
+                    checkIn = extractCheckInFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting CheckIn by Booking Number: ", e);
         }
-        return null;
+        return checkIn;
     }
 
     @Override
@@ -110,6 +112,7 @@ public class CheckInDAOImpl implements CheckInDAO {
 
     @Override
     public boolean hasCheckInForBookingId(int bookingId) {
+        boolean hasCheckIn = false;
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(CHECK_IF_CHECK_IN_EXISTS_SQL)
@@ -117,13 +120,13 @@ public class CheckInDAOImpl implements CheckInDAO {
             ps.setInt(1, bookingId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    hasCheckIn = rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
             LOGGER.error("Error checking if CheckIn exists for Booking ID: ", e);
         }
-        return false;
+        return hasCheckIn;
     }
 
     private CheckIn extractCheckInFromResultSet(ResultSet rs) throws SQLException {

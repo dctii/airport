@@ -1,6 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.db.DBConnectionPool;
+import com.solvd.airport.util.DBConnectionPool;
 import com.solvd.airport.domain.Address;
 import com.solvd.airport.persistence.AddressDAO;
 import com.solvd.airport.util.SQLConstants;
@@ -41,24 +41,30 @@ public class AddressDAOImpl implements AddressDAO {
 
     @Override
     public Address getAddressById(int addressId) {
+        Address address = null;
+
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_ADDRESS_BY_ID_SQL)
         ) {
             ps.setInt(1, addressId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractAddressFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    address = extractAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return address;
     }
 
 
     @Override
     public Address getAddressByUniqueFields(String street, String city, String postalCode, String countryCode) {
+        Address address = null;
+
         try (
                 Connection conn = connectionPool.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SELECT_ADDRESS_BY_UNIQUE_FIELDS_SQL)
@@ -67,14 +73,15 @@ public class AddressDAOImpl implements AddressDAO {
             ps.setString(2, city);
             ps.setString(3, postalCode);
             ps.setString(4, countryCode);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return extractAddressFromResultSet(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    address = extractAddressFromResultSet(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return address;
     }
 
     @Override
