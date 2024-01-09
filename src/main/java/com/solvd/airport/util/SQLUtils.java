@@ -118,7 +118,7 @@ public class SQLUtils {
         boolean exists = countryDAO.doesCountryCodeExist(countryCode);
 
         if (!exists) {
-            LOGGER.error("Country code doesn't exist in DB, returning false.");
+            LOGGER.error("Country code doesn't exist in DB, please try another country.");
         }
 
         return exists;
