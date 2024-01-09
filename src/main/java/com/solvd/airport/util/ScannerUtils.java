@@ -106,6 +106,9 @@ public class ScannerUtils {
             isValid = stringValidator != null
                     && stringValidator.test(input)
                     && SQLUtils.doesCountryCodeExist(input);
+            if (!isValid) {
+                LOGGER.info("Invalid country code. Please try again.");
+            }
         } while (!isValid);
         return input;
     }
