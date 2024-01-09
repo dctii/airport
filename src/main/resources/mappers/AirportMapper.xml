@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AirportDAO">
+
+    <resultMap id="airportMap" type="com.solvd.airport.domain.Airport">
+        <id column="airport_code" property="airportCode"/>
+        <result column="airport_name" property="airportName"/>
+        <result column="address_id" property="addressId"/>
+    </resultMap>
+
+    <insert id="createAirport" parameterType="com.solvd.airport.domain.Airport">
+        INSERT INTO airports (airport_code, airport_name, address_id)
+        VALUES (
+        #{airportObj.airportCode},
+        #{airportObj.airportName},
+        #{airportObj.addressId}
+        )
+    </insert>
+
+    <insert id="createAirportWithoutAddress" parameterType="com.solvd.airport.domain.Airport">
+        INSERT INTO airports (airport_code, airport_name)
+        VALUES (
+        #{airportObj.airportCode},
+        #{airportObj.airportName}
+        )
+    </insert>
+
+    <select id="getAirportByCode" resultType="com.solvd.airport.domain.Airport"
+            resultMap="airportMap">
+        SELECT * FROM airports
+        WHERE airport_code = #{airportCode}
+    </select>
+
+    <update id="updateAirport" parameterType="com.solvd.airport.domain.Airport">
+        UPDATE airports
+        SET
+        airport_name = #{airportObj.airportName}
+        WHERE airport_code = #{airportObj.airportCode}
+    </update>
+
+    <delete id="deleteAirport">
+        DELETE FROM airports
+        WHERE airport_code = #{airportCode}
+    </delete>
+
+    <select id="doesAirportExist" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM airports
+        WHERE airport_code = #{airportCode}
+    </select>
+
+</mapper>

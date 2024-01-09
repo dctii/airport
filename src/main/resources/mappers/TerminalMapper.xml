@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.TerminalDAO">
+
+    <resultMap id="terminalMap" type="com.solvd.airport.domain.Terminal">
+        <id column="airport_code" property="airportCode"/>
+        <id column="terminal_code" property="terminalCode"/>
+        <result column="terminal_name" property="terminalName"/>
+        <result column="is_international" property="isInternational"/>
+        <result column="is_domestic" property="isDomestic"/>
+    </resultMap>
+
+    <insert id="createTerminal" parameterType="com.solvd.airport.domain.Terminal">
+        INSERT INTO terminals (airport_code, terminal_code, terminal_name, is_international,
+        is_domestic)
+        VALUES (
+        #{terminalObj.airportCode},
+        #{terminalObj.terminalCode},
+        #{terminalObj.terminalName},
+        #{terminalObj.isInternational},
+        #{terminalObj.isDomestic}
+        )
+    </insert>
+
+    <select id="doesTerminalExist" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM terminals
+        WHERE airport_code = #{airportCode} AND terminal_code = #{terminalCode}
+    </select>
+
+</mapper>

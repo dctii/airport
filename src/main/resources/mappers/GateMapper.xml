@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.GateDAO">
+
+    <resultMap id="gateMap" type="com.solvd.airport.domain.Gate">
+        <id column="gate_id" property="gateId"/>
+        <result column="gate_code" property="gateCode"/>
+        <result column="airport_code" property="airportCode"/>
+        <result column="terminal_code" property="terminalCode"/>
+    </resultMap>
+
+    <insert id="createGate" parameterType="com.solvd.airport.domain.Gate">
+        INSERT INTO gates (gate_code, airport_code, terminal_code)
+        VALUES (
+        #{gateObj.gateCode},
+        #{gateObj.airportCode},
+        #{gateObj.terminalCode}
+        )
+    </insert>
+
+    <select id="doesGateExist" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM gates
+        WHERE airport_code = #{airportCode} AND terminal_code = #{terminalCode} AND gate_code = #{gateCode}
+    </select>
+
+</mapper>
