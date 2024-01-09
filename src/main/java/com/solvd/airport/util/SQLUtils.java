@@ -1,6 +1,5 @@
 package com.solvd.airport.util;
 
-import com.solvd.airport.db.DBConnectionPool;
 import com.solvd.airport.exception.InvalidDateFormatException;
 import com.solvd.airport.persistence.CountryDAO;
 import org.apache.commons.lang3.StringUtils;
