@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class NotInternationalPhoneNumberException {
-    public static void main(String[] args) {
-        
+
+public class NotInternationalPhoneNumberException extends RuntimeException {
+    public NotInternationalPhoneNumberException(String message) {
+        super(message);
     }
 }

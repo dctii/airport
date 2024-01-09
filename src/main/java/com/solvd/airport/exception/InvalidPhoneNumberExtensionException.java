@@ -1,5 +1,7 @@
 package com.solvd.airport.exception;
 
-public class InvalidPhoneNumberExtension extends RuntimeException {
-
+public class InvalidPhoneNumberExtensionException extends RuntimeException {
+    public InvalidPhoneNumberExtensionException (String message) {
+        super(message);
+    }
 }
