@@ -1,8 +1,15 @@
 package com.solvd.airport.persistence;
 
+import com.solvd.airport.domain.Terminal;
 import com.solvd.airport.util.SQLUtils;
+import org.apache.ibatis.annotations.Param;
 
 public interface TerminalDAO {
+
+    void createTerminal(@Param("terminalObj") Terminal terminalObj);
+
+    boolean doesTerminalExist(@Param("airportCode") String airportCode, @Param("terminalCode") String terminalCode);
+
     String TABLE_NAME = "terminals";
     String ALL_COLUMNS = SQLUtils.qualifyTableWithWildcard(TABLE_NAME);
     String COL_AIRPORT_CODE = AirportDAO.COL_AIRPORT_CODE;

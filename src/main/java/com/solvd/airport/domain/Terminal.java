@@ -5,6 +5,7 @@ import com.solvd.airport.util.StringFormatters;
 
 import java.util.Map;
 
+// TODO: Use StAX here
 public class Terminal {
     private String airportCode;
     private String terminalCode;
@@ -19,7 +20,8 @@ public class Terminal {
     public Terminal() {
     }
 
-    public Terminal(String airportCode, String terminalCode, String terminalName, boolean isInternational, boolean isDomestic) {
+    public Terminal(String airportCode, String terminalCode, String terminalName,
+                    boolean isInternational, boolean isDomestic) {
         ExceptionUtils.areStringLengthsValid(
                 Map.of(
                         airportCode, AIRPORT_CODE_MAX_WIDTH,
