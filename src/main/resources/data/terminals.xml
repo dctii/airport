@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    LAX Terminals
+    https://www.flylax.com/lax%20new-terminal-maps
+-->
+
+<terminals
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="terminalsSchema.xsd"
+>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T1</terminalCode>
+        <terminalName>Terminal 1</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T2</terminalCode>
+        <terminalName>Terminal 2</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T3</terminalCode>
+        <terminalName>Terminal 3</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T4</terminalCode>
+        <terminalName>Terminal 4</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T5</terminalCode>
+        <terminalName>Terminal 5</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T6</terminalCode>
+        <terminalName>Terminal 6</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T7</terminalCode>
+        <terminalName>Terminal 7</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>T8</terminalCode>
+        <terminalName>Terminal 8</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+        <terminalName>Tom Bradley International Terminal</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>false</isDomestic>
+    </terminal>
+</terminals>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="terminals" type="Terminals"/>
+
+    <xs:complexType name="Terminals">
+        <xs:sequence>
+            <xs:element
+                    name="terminal"
+                    type="Terminal"
+                    minOccurs="0"
+                    maxOccurs="unbounded"
+            />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Terminal">
+        <xs:sequence>
+            <xs:element name="airportCode" type="xs:string"/>
+            <xs:element name="terminalCode" type="xs:string"/>
+            <xs:element name="terminalName" type="xs:string" minOccurs="0"/>
+            <xs:element name="isInternational" type="xs:boolean"/>
+            <xs:element name="isDomestic" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
