@@ -6,6 +6,7 @@ import com.solvd.airport.util.StringConstants;
 import com.solvd.airport.util.StringFormatters;
 
 import java.sql.Date;
+import java.util.Map;
 
 public class Passport {
     private String passportNumber;
@@ -20,18 +21,45 @@ public class Passport {
     public Passport(String passportNumber, Date issueDate, Date expiryDate, int personInfoId) {
         ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
 
-        this.passportNumber = passportNumber;
+        this.passportNumber = passportNumber.toUpperCase();
         this.issueDate = issueDate;
         this.expiryDate = expiryDate;
+        this.personInfoId = personInfoId;
+    }
+
+    public Passport(String passportNumber, String issueDate, String expiryDate, int personInfoId) {
+        ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
+        Map<String, String> datesToValidate = Map.of(
+                issueDate, StringConstants.YEAR_FIRST_DATE_PATTERN,
+                expiryDate, StringConstants.YEAR_FIRST_DATE_PATTERN
+        );
+        ExceptionUtils.areValidDates(datesToValidate);
+
+        this.passportNumber = passportNumber.toUpperCase();
+        this.issueDate = SQLUtils.toDate(issueDate);
+        this.expiryDate = SQLUtils.toDate(expiryDate);
         this.personInfoId = personInfoId;
     }
 
     public Passport(String passportNumber, Date issueDate, Date expiryDate) {
         ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
 
-        this.passportNumber = passportNumber;
+        this.passportNumber = passportNumber.toUpperCase();
         this.issueDate = issueDate;
         this.expiryDate = expiryDate;
+    }
+
+    public Passport(String passportNumber, String issueDate, String expiryDate) {
+        ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
+        Map<String, String> datesToValidate = Map.of(
+                issueDate, StringConstants.YEAR_FIRST_DATE_PATTERN,
+                expiryDate, StringConstants.YEAR_FIRST_DATE_PATTERN
+        );
+        ExceptionUtils.areValidDates(datesToValidate);
+
+        this.passportNumber = passportNumber.toUpperCase();
+        this.issueDate = SQLUtils.toDate(issueDate);
+        this.expiryDate = SQLUtils.toDate(expiryDate);
     }
 
 
@@ -42,7 +70,7 @@ public class Passport {
     public void setPassportNumber(String passportNumber) {
         ExceptionUtils.isStringLengthValid(passportNumber, PASSPORT_NUMBER_MAX_WIDTH);
 
-        this.passportNumber = passportNumber;
+        this.passportNumber = passportNumber.toUpperCase();
     }
 
     public Date getIssueDate() {
@@ -54,7 +82,7 @@ public class Passport {
     }
 
     public void setIssueDate(String issueDate) {
-        ExceptionUtils.isValidDate(
+        ExceptionUtils.isValidDateString(
                 issueDate,
                 StringConstants.YEAR_FIRST_DATE_PATTERN
         );
@@ -71,7 +99,7 @@ public class Passport {
     }
 
     public void setExpiryDate(String expiryDate) {
-        ExceptionUtils.isValidDate(
+        ExceptionUtils.isValidDateString(
                 expiryDate,
                 StringConstants.YEAR_FIRST_DATE_PATTERN
         );

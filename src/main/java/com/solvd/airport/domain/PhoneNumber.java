@@ -9,7 +9,7 @@ public class PhoneNumber {
     private int phoneNumberId;
     private String phoneNumber;
     private String extension;
-    
+
     final static private int PHONE_NUMBER_MAX_WIDTH = 50;
     final static private int EXTENSION_MAX_WIDTH = 45;
 
@@ -23,17 +23,19 @@ public class PhoneNumber {
                         extension, EXTENSION_MAX_WIDTH
                 )
         );
+        ExceptionUtils.isValidPhoneNumberExtension(extension);
 
 
         this.phoneNumberId = phoneNumberId;
-        this.phoneNumber = phoneNumber;
-        this.extension = extension;
+        this.phoneNumber = ExceptionUtils.sanitizeAndCheckPhoneNumberString(phoneNumber);
+        this.extension = extension.toUpperCase();
     }
 
     public PhoneNumber(String phoneNumber) {
         ExceptionUtils.isStringLengthValid(phoneNumber, PHONE_NUMBER_MAX_WIDTH);
 
-        this.phoneNumber = phoneNumber;
+
+        this.phoneNumber = ExceptionUtils.sanitizeAndCheckPhoneNumberString(phoneNumber);
     }
 
     public int getPhoneNumberId() {
@@ -51,7 +53,7 @@ public class PhoneNumber {
     public void setPhoneNumber(String phoneNumber) {
         ExceptionUtils.isStringLengthValid(phoneNumber, PHONE_NUMBER_MAX_WIDTH);
 
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = ExceptionUtils.sanitizeAndCheckPhoneNumberString(phoneNumber);
     }
 
     public String getExtension() {
@@ -60,8 +62,9 @@ public class PhoneNumber {
 
     public void setExtension(String extension) {
         ExceptionUtils.isStringLengthValid(extension, EXTENSION_MAX_WIDTH);
+        ExceptionUtils.isValidPhoneNumberExtension(extension);
 
-        this.extension = extension;
+        this.extension = extension.toUpperCase();
     }
 
     @Override

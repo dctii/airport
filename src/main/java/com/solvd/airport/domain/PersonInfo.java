@@ -6,6 +6,7 @@ import com.solvd.airport.util.StringConstants;
 import com.solvd.airport.util.StringFormatters;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class PersonInfo {
@@ -18,28 +19,22 @@ public class PersonInfo {
 
     final private static int NAME_MAX_WIDTH = 45;
     final private static int SEX_MAX_WIDTH = 1;
-    final private static String SEX_MUST_BE_M_OR_F_MSG =
-            "The value for the field 'sex' must be 'M' or 'F'";
 
     public PersonInfo() {
     }
 
     public PersonInfo(int personInfoId, String surname, String givenName,
                       String middleName, Date birthdate, String sex) {
-        ExceptionUtils.areStringLengthsValid(
-                Map.of(
-                        surname, NAME_MAX_WIDTH,
-                        givenName, NAME_MAX_WIDTH,
-                        middleName, NAME_MAX_WIDTH,
-                        sex, SEX_MAX_WIDTH
-                ));
-
-        if (
-                !sex.equalsIgnoreCase("M")
-                        || !sex.equalsIgnoreCase("F")
-        ) {
-            throw new IllegalArgumentException(SEX_MUST_BE_M_OR_F_MSG);
+        Map<String, Integer> lengths = new HashMap<>();
+        lengths.put(surname, NAME_MAX_WIDTH);
+        lengths.put(givenName, NAME_MAX_WIDTH);
+        lengths.put(sex, SEX_MAX_WIDTH);
+        if (middleName != null) {
+            lengths.put(middleName, NAME_MAX_WIDTH);
         }
+        ExceptionUtils.areStringLengthsValid(lengths);
+
+        ExceptionUtils.isValidSex(sex);
 
 
         this.personInfoId = personInfoId;
@@ -50,15 +45,64 @@ public class PersonInfo {
         this.sex = sex.toUpperCase();
     }
 
+    public PersonInfo(int personInfoId, String surname, String givenName,
+                      String middleName, String birthdate, String sex) {
+        Map<String, Integer> lengths = new HashMap<>();
+        lengths.put(surname, NAME_MAX_WIDTH);
+        lengths.put(givenName, NAME_MAX_WIDTH);
+        lengths.put(sex, SEX_MAX_WIDTH);
+        if (middleName != null) {
+            lengths.put(middleName, NAME_MAX_WIDTH);
+        }
+        ExceptionUtils.areStringLengthsValid(lengths);
+
+        ExceptionUtils.isValidDateString(
+                birthdate,
+                StringConstants.YEAR_FIRST_DATE_PATTERN
+        );
+        ExceptionUtils.isValidSex(sex);
+
+
+        this.personInfoId = personInfoId;
+        this.surname = surname;
+        this.givenName = givenName;
+        this.middleName = middleName;
+        this.birthdate = SQLUtils.toDate(birthdate);
+        this.sex = sex.toUpperCase();
+    }
+
+    public PersonInfo(String surname, String givenName, String middleName,
+                      String birthdate, String sex) {
+        Map<String, Integer> lengths = new HashMap<>();
+        lengths.put(surname, NAME_MAX_WIDTH);
+        lengths.put(givenName, NAME_MAX_WIDTH);
+        lengths.put(sex, SEX_MAX_WIDTH);
+        if (middleName != null) {
+            lengths.put(middleName, NAME_MAX_WIDTH);
+        }
+        ExceptionUtils.areStringLengthsValid(lengths);
+        ExceptionUtils.isValidDateString(
+                birthdate,
+                StringConstants.YEAR_FIRST_DATE_PATTERN
+        );
+
+        this.surname = surname;
+        this.givenName = givenName;
+        this.middleName = middleName;
+        this.birthdate = SQLUtils.toDate(birthdate);
+        this.sex = sex.toUpperCase();
+    }
+
     public PersonInfo(String surname, String givenName, String middleName,
                       Date birthdate, String sex) {
-        ExceptionUtils.areStringLengthsValid(
-                Map.of(
-                        surname, NAME_MAX_WIDTH,
-                        givenName, NAME_MAX_WIDTH,
-                        middleName, NAME_MAX_WIDTH,
-                        sex, SEX_MAX_WIDTH
-                ));
+        Map<String, Integer> lengths = new HashMap<>();
+        lengths.put(surname, NAME_MAX_WIDTH);
+        lengths.put(givenName, NAME_MAX_WIDTH);
+        lengths.put(sex, SEX_MAX_WIDTH);
+        if (middleName != null) {
+            lengths.put(middleName, NAME_MAX_WIDTH);
+        }
+        ExceptionUtils.areStringLengthsValid(lengths);
 
         this.surname = surname;
         this.givenName = givenName;
@@ -101,7 +145,9 @@ public class PersonInfo {
     }
 
     public void setMiddleName(String middleName) {
-        ExceptionUtils.isStringLengthValid(middleName, NAME_MAX_WIDTH);
+        if (middleName != null) {
+            ExceptionUtils.isStringLengthValid(middleName, NAME_MAX_WIDTH);
+        }
 
         this.middleName = middleName;
     }
@@ -115,7 +161,7 @@ public class PersonInfo {
     }
 
     public void setBirthdate(String birthdate) {
-        ExceptionUtils.isValidDate(
+        ExceptionUtils.isValidDateString(
                 birthdate,
                 StringConstants.YEAR_FIRST_DATE_PATTERN
         );
@@ -129,17 +175,11 @@ public class PersonInfo {
 
     public void setSex(String sex) {
         ExceptionUtils.isStringLengthValid(sex, SEX_MAX_WIDTH);
-        if (
-                !sex.equalsIgnoreCase("M")
-                        || !sex.equalsIgnoreCase("F")
-        ) {
-            final String SEX_MUST_BE_M_OR_F_MSG =
-                    "The value for the field 'sex' must be 'M' or 'F'";
-            throw new IllegalArgumentException(SEX_MUST_BE_M_OR_F_MSG);
-        }
+        ExceptionUtils.isValidSex(sex);
 
         this.sex = sex.toUpperCase();
     }
+
 
     @Override
     public String toString() {
