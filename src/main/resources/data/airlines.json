@@ -1,0 +1,247 @@
+[
+  {
+    "airlineCode": "EI",
+    "airlineName": "Aer Lingus",
+    "addressId": null
+  },
+  {
+    "airlineCode": "CA",
+    "airlineName": "Air China",
+    "addressId": null
+  },
+  {
+    "airlineCode": "AF",
+    "airlineName": "Air France",
+    "addressId": null
+  },
+  {
+    "airlineCode": "NZ",
+    "airlineName": "Air New Zealand",
+    "addressId": null
+  },
+  {
+    "airlineCode": "YP",
+    "airlineName": "Air Premia",
+    "addressId": null
+  },
+  {
+    "airlineCode": "TN",
+    "airlineName": "Air Tahiti Nui",
+    "addressId": null
+  },
+  {
+    "airlineCode": "NH",
+    "airlineName": "All Nippon Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "OZ",
+    "airlineName": "Asiana Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "OS",
+    "airlineName": "Austrian Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "AV",
+    "airlineName": "Avianca",
+    "addressId": null
+  },
+  {
+    "airlineCode": "B2",
+    "airlineName": "Belavia Belarusian Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "BA",
+    "airlineName": "British Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "CX",
+    "airlineName": "Cathay Pacific Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "CI",
+    "airlineName": "China Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "MU",
+    "airlineName": "China Eastern",
+    "addressId": null
+  },
+  {
+    "airlineCode": "CZ",
+    "airlineName": "China Southern",
+    "addressId": null
+  },
+  {
+    "airlineCode": "CM",
+    "airlineName": "Copa Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "LY",
+    "airlineName": "El Al Israel Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "EK",
+    "airlineName": "Emirates Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "EY",
+    "airlineName": "Etihad Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "BR",
+    "airlineName": "EVA Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "FJ",
+    "airlineName": "Fiji Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "AY",
+    "airlineName": "Finnair",
+    "addressId": null
+  },
+  {
+    "airlineCode": "F8",
+    "airlineName": "Flair Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "BF",
+    "airlineName": "French Bee",
+    "addressId": null
+  },
+  {
+    "airlineCode": "HU",
+    "airlineName": "Hainan Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "HA",
+    "airlineName": "Hawaiian Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "IB",
+    "airlineName": "Iberia Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "AZ",
+    "airlineName": "ITA Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "NQ",
+    "airlineName": "Air Japan",
+    "addressId": null
+  },
+  {
+    "airlineCode": "DL",
+    "airlineName": "Delta Air Lines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "JL",
+    "airlineName": "Japan Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "KL",
+    "airlineName": "KLM Royal Dutch Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "KE",
+    "airlineName": "Korean Air",
+    "addressId": null
+  },
+  {
+    "airlineCode": "LA",
+    "airlineName": "LATAM Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "LO",
+    "airlineName": "LOT Polish Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "LH",
+    "airlineName": "Lufthansa",
+    "addressId": null
+  },
+  {
+    "airlineCode": "PR",
+    "airlineName": "Philippine Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "QF",
+    "airlineName": "Qantas Airways Limited",
+    "addressId": null
+  },
+  {
+    "airlineCode": "QR",
+    "airlineName": "Qatar Airways",
+    "addressId": null
+  },
+  {
+    "airlineCode": "SV",
+    "airlineName": "Saudia",
+    "addressId": null
+  },
+  {
+    "airlineCode": "SK",
+    "airlineName": "Scandinavian Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "3U",
+    "airlineName": "Sichuan Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "SQ",
+    "airlineName": "Singapore Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "LX",
+    "airlineName": "SWISS",
+    "addressId": null
+  },
+  {
+    "airlineCode": "TK",
+    "airlineName": "Turkish Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "Y4",
+    "airlineName": "Volaris",
+    "addressId": null
+  },
+  {
+    "airlineCode": "MF",
+    "airlineName": "Xiamen Airlines",
+    "addressId": null
+  },
+  {
+    "airlineCode": "ZG",
+    "airlineName": "Zipair",
+    "addressId": null
+  }
+]

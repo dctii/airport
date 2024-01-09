@@ -13,6 +13,7 @@ public class Timezone {
 
     public Timezone(String timezone) {
         ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_MAX_WIDTH);
+        ExceptionUtils.isValidTimeZone(timezone);
 
         this.timezone = timezone;
     }
@@ -23,6 +24,7 @@ public class Timezone {
 
     public void setTimezone(String timezone) {
         ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_MAX_WIDTH);
+        ExceptionUtils.isValidTimeZone(timezone);
 
         this.timezone = timezone;
     }

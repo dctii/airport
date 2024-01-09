@@ -18,7 +18,7 @@ public interface FlightDAO {
     String COL_ARRIVAL_TIME = "arrival_time";
     String COL_DESTINATION = "destination";
     String COL_AIRLINE_CODE = AirlineDAO.COL_AIRLINE_CODE;
-    String COL_GATE_ID = GatesDAO.COL_GATE_ID;
+    String COL_GATE_ID = GateDAO.COL_GATE_ID;
     String COL_AIRCRAFT_MODEL = "aircraft_model";
     String COL_PASSENGER_CAPACITY = "passenger_capacity";
     String COL_TAIL_NUMBER = "tail_number";

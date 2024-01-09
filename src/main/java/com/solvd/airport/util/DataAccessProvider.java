@@ -21,6 +21,13 @@ public class DataAccessProvider {
         return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AddressMyBatisImpl() : new AddressDAOImpl();
     }
 
+    public static AirlineDAO getAirlineDAO() {
+        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AirlineMyBatisImpl() : new AirlineDAOImpl();
+    }
+    public static AirportDAO getAirportDAO() {
+        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AirportMyBatisImpl() : new AirportDAOImpl();
+    }
+
     public static AirlineStaffMemberDAO getAirlineStaffMemberDAO() {
         return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AirlineStaffMemberMyBatisImpl() : new AirlineStaffMemberDAOImpl();
     }
@@ -49,12 +56,24 @@ public class DataAccessProvider {
         return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new FlightMyBatisImpl() : new FlightDAOImpl();
     }
 
+    public static GateDAO getGateDAO() {
+        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new GateMyBatisImpl() : new GateDAOImpl();
+    }
+
     public static PassportDAO getPassportDAO() {
         return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PassportMyBatisImpl() : new PassportDAOImpl();
     }
 
     public static CountryDAO getCountryDAO() {
         return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new CountryMyBatisImpl() : new CountryDAOImpl();
+    }
+
+    public static TerminalDAO getTerminalDAO() {
+        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new TerminalMyBatisImpl() : new TerminalDAOImpl();
+    }
+
+    public static TimezoneDAO getTimezoneDAO() {
+        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new TimezoneMyBatisImpl() : new TimezoneDAOImpl();
     }
 
     public static PersonAddressDAO getPersonAddressDao() {

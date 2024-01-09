@@ -7,6 +7,10 @@ public class FlightCrew {
     private int flightCrewId;
     private String flightCode;
 
+    // @XmlElementWrapper(name = "flightCrewMembers")
+    // @XmlElement(name = "flightCrewMember")
+    // add List<FlightStaffMember> flightCrewMembers
+
     final static private int FLIGHT_CODE_MAX_WIDTH = 10;
 
 

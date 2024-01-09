@@ -70,7 +70,7 @@ public class RegisterPassportHolderServiceImpl implements RegisterPassportHolder
                 "Name: " + StringUtils.joinWith(
                         StringConstants.SINGLE_WHITESPACE,
                         personInfo.getGivenName(), personInfo.getMiddleName(), personInfo.getSurname()
-                        ).replace(StringConstants.DOUBLE_WHITESPACE, StringConstants.SINGLE_WHITESPACE)
+                ).replace(StringConstants.DOUBLE_WHITESPACE, StringConstants.SINGLE_WHITESPACE)
         );
         LOGGER.info("Birthdate: " + personInfo.getBirthdate());
         LOGGER.info("Sex: " + personInfo.getSex());

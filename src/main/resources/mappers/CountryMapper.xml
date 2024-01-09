@@ -33,7 +33,8 @@
     </delete>
 
     <select id="doesCountryCodeExist" parameterType="String" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM countries WHERE country_code = #{countryCode}
+        SELECT COUNT(*) > 0 FROM countries
+        WHERE country_code = #{countryCode}
     </select>
 
 </mapper>

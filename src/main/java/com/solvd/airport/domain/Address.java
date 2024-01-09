@@ -53,6 +53,16 @@ public class Address {
     }
 
     public Address(String street, String city, String postalCode, String countryCode) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        street, STREET_MAX_WIDTH,
+                        city, CITY_MAX_WIDTH,
+                        countryCode, COUNTRY_CODE_MAX_WIDTH,
+                        postalCode, POSTAL_CODE_MAX_WIDTH
+                )
+        );
+
+
         this.street = street;
         this.city = city;
         this.countryCode = countryCode;
@@ -126,7 +136,8 @@ public class Address {
     }
 
     public void setTimezone(String timezone) {
-        ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_CODE_MAX_WIDTH);
+        ExceptionUtils.isNullOrStringLengthValid(timezone, TIMEZONE_CODE_MAX_WIDTH);
+        ExceptionUtils.isNullOrValidTimeZone(timezone);
         this.timezone = timezone;
     }
 

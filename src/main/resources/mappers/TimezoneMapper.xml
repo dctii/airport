@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.TimezoneDAO">
+
+    <resultMap id="timezoneMap" type="com.solvd.airport.domain.Timezone">
+        <id column="timezone" property="timezone"/>
+    </resultMap>
+
+    <insert id="createTimezone" parameterType="com.solvd.airport.domain.Timezone">
+        INSERT INTO timezones (timezone)
+        VALUES (
+        #{timezoneObj.timezone}
+        )
+    </insert>
+
+    <select id="getTimezoneByTz" parameterType="String" resultType="com.solvd.airport.domain.Timezone"
+    resultMap="timezoneMap">
+        SELECT * FROM timezones WHERE timezone = #{timezone}
+    </select>
+
+    <update id="updateTimezoneByTz" parameterType="map">
+        UPDATE timezones
+        SET timezone = #{newTimezoneObj.timezone}
+        WHERE timezone = #{oldTimezone}
+    </update>
+
+    <delete id="deleteTimezone" parameterType="String">
+        DELETE FROM timezones
+        WHERE timezone = #{timezone}
+    </delete>
+
+    <select id="doesTimezoneExist" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM timezones
+        WHERE timezone = #{timezone}
+    </select>
+
+</mapper>

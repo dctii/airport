@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StringFormatters {
@@ -225,20 +226,13 @@ public class StringFormatters {
         );
     }
 
-    public static String createPhoneNumberString(String countryCode, String phoneNumber) {
-        if (!countryCode.startsWith("+")) {
-            throw new IllegalArgumentException("Invalid countryCode. It must start with '+'");
-        }
-
-        String sanitizedPhoneNumber =
-                phoneNumber.replaceAll(
-                        StringConstants.DASH_STRING,
-                        StringConstants.EMPTY_STRING
-                );
-        return countryCode + sanitizedPhoneNumber;
+    public static String sanitizePhoneNumber(String phoneNumber) {
+        return phoneNumber
+                .replaceAll(StringConstants.SINGLE_WHITESPACE, StringConstants.EMPTY_STRING)
+                .replaceAll(StringConstants.DASH_STRING, StringConstants.EMPTY_STRING)
+                .replaceAll(Pattern.quote(StringConstants.OPENING_PARENTHESIS), StringConstants.EMPTY_STRING)
+                .replaceAll(Pattern.quote(StringConstants.CLOSING_PARENTHESIS), StringConstants.EMPTY_STRING);
     }
-
-
 
 
     private StringFormatters() {

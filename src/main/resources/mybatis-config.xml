@@ -18,7 +18,9 @@
     </environments>
     <mappers>
         <mapper resource="mappers/AddressMapper.xml"/>
+        <mapper resource="mappers/AirlineMapper.xml"/>
         <mapper resource="mappers/AirlineStaffMemberMapper.xml"/>
+        <mapper resource="mappers/AirportMapper.xml"/>
         <mapper resource="mappers/BaggageMapper.xml"/>
         <mapper resource="mappers/BoardingPassMapper.xml"/>
         <mapper resource="mappers/BookingMapper.xml"/>
@@ -26,11 +28,14 @@
         <mapper resource="mappers/CountryMapper.xml"/>
         <mapper resource="mappers/EmailAddressMapper.xml"/>
         <mapper resource="mappers/FlightMapper.xml"/>
+        <mapper resource="mappers/GateMapper.xml"/>
         <mapper resource="mappers/PassportMapper.xml"/>
         <mapper resource="mappers/PersonAddressMapper.xml"/>
         <mapper resource="mappers/PersonEmailAddressMapper.xml"/>
         <mapper resource="mappers/PersonInfoMapper.xml"/>
         <mapper resource="mappers/PersonPhoneNumberMapper.xml"/>
         <mapper resource="mappers/PhoneNumberMapper.xml"/>
+        <mapper resource="mappers/TerminalMapper.xml"/>
+        <mapper resource="mappers/TimezoneMapper.xml"/>
     </mappers>
 </configuration>

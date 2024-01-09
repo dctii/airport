@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    LAX Terminal B (Tom Bradley International Terminal)
+    https://www.flylax.com/terminals/terminal-b
+    https://www.flylax.com/-/media/flylax/terminal-map-files/tbit.ashx
+-->
+
+<gates
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="gatesSchema.xsd"
+>
+    <gate id="1">
+        <gateCode>130</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="2">
+        <gateCode>131</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="3">
+        <gateCode>132</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="4">
+        <gateCode>133</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="5">
+        <gateCode>132</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="6">
+        <gateCode>133</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="7">
+        <gateCode>132</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="8">
+        <gateCode>133</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="9">
+        <gateCode>132</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="10">
+        <gateCode>133</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+
+    <gate id="11">
+        <gateCode>134</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="12">
+        <gateCode>135</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="13">
+        <gateCode>136</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="14">
+        <gateCode>137</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="15">
+        <gateCode>138</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="16">
+        <gateCode>139</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="17">
+        <gateCode>140</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="18">
+        <gateCode>141</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="19">
+        <gateCode>142</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="20">
+        <gateCode>143</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+
+    <gate id="21">
+        <gateCode>144</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="22">
+        <gateCode>145</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="23">
+        <gateCode>146</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="24">
+        <gateCode>147</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="25">
+        <gateCode>148</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="26">
+        <gateCode>149</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="27">
+        <gateCode>150</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="28">
+        <gateCode>151</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="29">
+        <gateCode>152</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="30">
+        <gateCode>153</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+
+    <gate id="31">
+        <gateCode>154</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="32">
+        <gateCode>155</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="33">
+        <gateCode>156</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="34">
+        <gateCode>157</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="35">
+        <gateCode>158</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="36">
+        <gateCode>159</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="38">
+        <gateCode>201A</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="38">
+        <gateCode>201B</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="39">
+        <gateCode>202</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="40">
+        <gateCode>203</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="41">
+        <gateCode>204</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+
+    <gate id="42">
+        <gateCode>205</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="43">
+        <gateCode>206</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="44">
+        <gateCode>207</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="45">
+        <gateCode>208</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="46">
+        <gateCode>209A</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="47">
+        <gateCode>209B</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="48">
+        <gateCode>210A</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="49">
+        <gateCode>210B</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="50">
+        <gateCode>221</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+    <gate id="51">
+        <gateCode>225</gateCode>
+        <airportCode>LAX</airportCode>
+        <terminalCode>TBIT</terminalCode>
+    </gate>
+
+</gates>
