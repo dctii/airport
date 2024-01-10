@@ -28,10 +28,11 @@ DROP TABLE IF EXISTS `airport`.`airlines` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`airlines` (
+  `airline_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `airline_code` VARCHAR(2) NOT NULL COMMENT 'IATA airline code',
   `airline_name` VARCHAR(45) NOT NULL COMMENT 'Full name of the airline, e.g., “American Airlines” or “Delta Airlines”',
   `address_id` INT UNSIGNED NULL,
-  PRIMARY KEY (`airline_code`),
+  PRIMARY KEY (`airline_id`),
   UNIQUE INDEX `airline_code_UNIQUE` (`airline_code` ASC) ,
   UNIQUE INDEX `airline_name_UNIQUE` (`airline_name` ASC)
   )
@@ -62,10 +63,11 @@ DROP TABLE IF EXISTS `airport`.`airports` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`airports` (
+  `airport_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `airport_code` VARCHAR(3) NOT NULL COMMENT 'International Airport code. \n\n\nhttps://en.wikipedia.org/wiki/IATA_airport_code',
   `airport_name` VARCHAR(100) NULL,
   `address_id` INT UNSIGNED NULL,
-  PRIMARY KEY (`airport_code`),
+  PRIMARY KEY (`airport_id`),
   UNIQUE INDEX `airport_code_UNIQUE` (`airport_code` ASC) ,
   UNIQUE INDEX `airport_name_UNIQUE` (`airport_name` ASC)
   )
@@ -80,11 +82,12 @@ DROP TABLE IF EXISTS `airport`.`baggage` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`baggage` (
+  `baggage_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `baggage_code` VARCHAR(45) NOT NULL COMMENT '{{airline_code}}-{{baggage_tag_issue_code}}-{{serial_number}}\n\nhttps://www.iata.org/en/services/certification/operations-safety-security/baggage-tracking/\n\nhttps://en.wikipedia.org/wiki/Bag_tag',
   `weight` DECIMAL(5,2) NULL,
   `price` DECIMAL(10,2) NULL,
   `check_in_id` INT UNSIGNED NULL,
-  PRIMARY KEY (`baggage_code`),
+  PRIMARY KEY (`baggage_id`),
   UNIQUE INDEX `baggage_code_UNIQUE` (`baggage_code` ASC)
   )
 ENGINE = InnoDB;
@@ -157,9 +160,10 @@ DROP TABLE IF EXISTS `airport`.`countries` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`countries` (
+  `country_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `country_code` VARCHAR(2) NOT NULL COMMENT 'ISO 3166-1 alpha-2 code, a unique, official code for a country that is two alpha characters long, e.g., ‘BY’ for Belarus. For air flights\n\nhttps://en.wikipedia.org/wiki/ISO_3166-1_alpha-2',
   `country_name` VARCHAR(75) NOT NULL COMMENT 'The country name, e.g. “Belarus”, that may contrast with the official state name, e.g., “Republic of Belarus (the)”.',
-  PRIMARY KEY (`country_code`),
+  PRIMARY KEY (`country_id`),
   UNIQUE INDEX `country_code_UNIQUE` (`country_code` ASC) ,
   UNIQUE INDEX `country_name_UNIQUE` (`country_name` ASC)
   )
@@ -207,6 +211,7 @@ DROP TABLE IF EXISTS `airport`.`flights` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`flights` (
+  `flight_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `flight_code` VARCHAR(10) NOT NULL COMMENT 'DL123 for ‘Delta Air Lines Flight 123’, ',
   `departure_time` DATETIME NULL COMMENT 'Time the flight leaves.',
   `arrival_time` DATETIME NULL COMMENT 'Time the flight will come.',
@@ -216,7 +221,8 @@ CREATE TABLE IF NOT EXISTS `airport`.`flights` (
   `aircraft_model` VARCHAR(45) NULL,
   `passenger_capacity` INT NULL,
   `tail_number` VARCHAR(45) NULL COMMENT 'https://en.wikipedia.org/wiki/Aircraft_registration',
-  PRIMARY KEY (`flight_code`)
+  PRIMARY KEY (`flight_id`),
+  UNIQUE INDEX `flight_code_UNIQUE` (`flight_code` ASC)
   )
 ENGINE = InnoDB;
 
@@ -250,7 +256,8 @@ CREATE TABLE IF NOT EXISTS `airport`.`gates` (
   `gate_code` VARCHAR(10) NOT NULL COMMENT 'Gate code, e.g., ‘A3’, ‘C7’',
   `airport_code` VARCHAR(3) NOT NULL,
   `terminal_code` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`gate_id`)
+  PRIMARY KEY (`gate_id`),
+  UNIQUE INDEX `airport_gate_UNIQUE` (`gate_code`, `airport_code`, `terminal_code`)
   )
 ENGINE = InnoDB;
 
@@ -263,11 +270,12 @@ DROP TABLE IF EXISTS `airport`.`passports` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`passports` (
+  `passport_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `passport_number` VARCHAR(45) NOT NULL,
   `issue_date` DATE NOT NULL COMMENT 'Date issued',
   `expiry_date` DATE NOT NULL COMMENT 'Expiration date',
   `person_info_id` INT UNSIGNED,
-  PRIMARY KEY (`passport_number`),
+  PRIMARY KEY (`passport_id`),
   UNIQUE INDEX `passport_number_UNIQUE` (`passport_number` ASC)
   )
 ENGINE = InnoDB;
@@ -281,9 +289,11 @@ DROP TABLE IF EXISTS `airport`.`person_addresses` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`person_addresses` (
+  `person_address_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `person_info_id` INT UNSIGNED NOT NULL,
   `address_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`person_info_id`, `address_id`)
+  PRIMARY KEY (`person_address_id`),
+  UNIQUE INDEX `person_address_UNIQUE` (`person_info_id`, `address_id`)
   )
 ENGINE = InnoDB;
 
@@ -296,9 +306,11 @@ DROP TABLE IF EXISTS `airport`.`person_email_addresses` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`person_email_addresses` (
+  `person_email_address_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `person_info_id` INT UNSIGNED NOT NULL,
   `email_address_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`person_info_id`, `email_address_id`)
+  PRIMARY KEY (`person_email_address_id`),
+  UNIQUE INDEX `person_email_address_UNIQUE` (`person_info_id`, `email_address_id`)
   )
 ENGINE = InnoDB;
 
@@ -330,9 +342,11 @@ DROP TABLE IF EXISTS `airport`.`person_phone_numbers` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`person_phone_numbers` (
+  `person_phone_number_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `person_info_id` INT UNSIGNED NOT NULL,
   `phone_number_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`person_info_id`, `phone_number_id`)
+  PRIMARY KEY (`person_phone_number_id`),
+  UNIQUE INDEX `person_phone_number_UNIQUE` (`person_info_id`, `phone_number_id`)
   )
 ENGINE = InnoDB;
 
@@ -358,20 +372,23 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `airport`.`terminals`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `airport`.`terminals` ;
+DROP TABLE IF EXISTS `airport`.`terminals`;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`terminals` (
+  `terminal_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `airport_code` VARCHAR(3) NOT NULL COMMENT 'International Airport code. \n\n\nhttps://en.wikipedia.org/wiki/IATA_airport_code',
   `terminal_code` VARCHAR(10) NOT NULL COMMENT 'The technical, alphanumeric code of the terminal.\n\nExamples:\n- “B” for The Los Angeles International Airport’s “Tom Bradley International Terminal”, whose full technical name would be “Terminal B”. (https://www.flylax.com/terminals/terminal-b)\n- “T3E” for “Terminal 3 Boarding Area E',
   `terminal_name` VARCHAR(100) NULL COMMENT 'The common name of the terminal.\n\n“Tom Bradley International” for The Los Angeles International Airport’s “Tom Bradley International Terminal”. (https://www.flylax.com/terminals/terminal-b)',
   `is_international` BOOLEAN NOT NULL COMMENT '`1` if international, `0` if not.',
   `is_domestic` BOOLEAN NOT NULL COMMENT '`1` if domestic, `0` if not.',
-  PRIMARY KEY (`airport_code`, `terminal_code`)
-  )
+  PRIMARY KEY (`terminal_id`),
+  UNIQUE INDEX `airport_terminal_UNIQUE` (`airport_code`, `terminal_code`)
+)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
+
 
 -- -----------------------------------------------------
 -- Table `airport`.`timezones`
@@ -380,8 +397,10 @@ DROP TABLE IF EXISTS `airport`.`timezones` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `airport`.`timezones` (
+  `timezone_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `timezone` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`timezone`)
+  PRIMARY KEY (`timezone_id`),
+  UNIQUE INDEX `timezone_UNIQUE` (`timezone` ASC)
   )
 ENGINE = InnoDB;
 
