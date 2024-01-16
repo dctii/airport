@@ -1,6 +1,8 @@
 package com.solvd.airport.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,6 +11,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class BooleanUtils {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.BOOLEAN_UTILS);
+
     // check if array is empty or null, or if an array full of null items
     public static boolean isEmptyOrNullArray(Object[] array) {
         return array == null

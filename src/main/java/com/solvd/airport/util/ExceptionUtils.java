@@ -2,7 +2,13 @@ package com.solvd.airport.util;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.solvd.airport.exception.*;
+import com.solvd.airport.exception.InvalidDateFormatException;
+import com.solvd.airport.exception.InvalidDecimalException;
+import com.solvd.airport.exception.InvalidPhoneNumberException;
+import com.solvd.airport.exception.InvalidPhoneNumberExtensionException;
+import com.solvd.airport.exception.InvalidTimeZoneException;
+import com.solvd.airport.exception.NotInternationalPhoneNumberException;
+import com.solvd.airport.exception.StringLengthException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +24,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class ExceptionUtils {
-    private static final Logger LOGGER = LogManager.getLogger(ExceptionUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.EXCEPTION_UTILS);
 
     public static void preventUtilityInstantiation() {
         final String NO_UTILITY_CLASS_INSTANTIATION_MESSAGE =
@@ -149,7 +155,7 @@ public class ExceptionUtils {
         }
     }
 
-    public static void isValidPhoneNumberExtension(String phoneNumberExtension) throws InvalidPhoneNumberExtensionException {
+    public static void isValidPhoneNumberExtension(String phoneNumberExtension) {
         if (phoneNumberExtension != null && (
                 phoneNumberExtension.isEmpty() ||
                         !phoneNumberExtension.matches(RegExpConstants.PHONE_NUMBER_EXTENSION_VALID_CHARS_AND_ORDER)
@@ -168,7 +174,7 @@ public class ExceptionUtils {
     public static void isValidSex(String sex) {
         if (
                 !sex.equalsIgnoreCase("M")
-                        || !sex.equalsIgnoreCase("F")
+                        && !sex.equalsIgnoreCase("F")
         ) {
             final String SEX_MUST_BE_M_OR_F_MSG =
                     "The value for the field 'sex' must be 'M' or 'F'";

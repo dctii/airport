@@ -1,14 +1,25 @@
 package com.solvd.airport.util;
 
 import com.solvd.airport.exception.InvalidDateFormatException;
+import com.solvd.airport.exception.UnsuccessfulAutoGenerationOfIdException;
+import com.solvd.airport.exception.UnsuccessfulStatementSetException;
+import com.solvd.airport.persistence.AirportDAO;
 import com.solvd.airport.persistence.CountryDAO;
+import com.solvd.airport.persistence.FlightDAO;
+import com.solvd.airport.persistence.GateDAO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
 
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -18,16 +29,106 @@ import java.util.stream.IntStream;
 
 
 public class SQLUtils {
-    private static final Logger LOGGER = LogManager.getLogger(SQLUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.SQL_UTILS);
 
-    public static void setGeneratedKey(PreparedStatement preparedStatement, IntConsumer setIdConsumer) throws SQLException {
+    public static void updateAndSetGeneratedId(
+            PreparedStatement ps,
+            IntConsumer setIdConsumer
+    ) {
+        try {
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.error("Creating object failed, no rows affected");
+                return;
+            }
+            SQLUtils.setGeneratedKey(ps, setIdConsumer);
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred: ", e);
+        }
+    }
+
+    public static void setGeneratedKey(PreparedStatement preparedStatement, IntConsumer setIdConsumer) {
         try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 int id = generatedKeys.getInt(1);
                 setIdConsumer.accept(id);
-            } else {
-                throw new SQLException("Failed to obtain ID.");
             }
+        } catch (SQLException e) {
+            LOGGER.error("Failed to obtain ID.", e);
+            throw new UnsuccessfulAutoGenerationOfIdException("Failed to obtain ID." + e);
+        }
+    }
+
+
+    public static void setBooleanOrFalse(PreparedStatement ps, int parameterIndex, Boolean value) {
+        try {
+            if (value != null) {
+                ps.setBoolean(parameterIndex, value);
+            } else {
+                ps.setBoolean(parameterIndex, false);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred while setting boolean value: ", e);
+            throw new UnsuccessfulStatementSetException("SQLException occurred while setting boolean value: " + e);
+        }
+    }
+
+
+    public static void setTimestampOrNull(PreparedStatement ps, int parameterIndex, Timestamp value) {
+        try {
+
+
+            if (value != null) {
+                ps.setTimestamp(parameterIndex, value);
+            } else {
+                ps.setNull(parameterIndex, Types.TIMESTAMP);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred while setting Timestamp value: ", e);
+            throw new UnsuccessfulStatementSetException("SQLException occurred while setting Timestamp value: " + e);
+        }
+
+    }
+
+    public static void setStringOrNull(PreparedStatement ps, int parameterIndex, String value) {
+        try {
+            if (value != null && !value.isEmpty()) {
+                ps.setString(parameterIndex, value);
+            } else {
+                ps.setNull(parameterIndex, Types.VARCHAR);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred while setting String value: ", e);
+            throw new UnsuccessfulStatementSetException("SQLException occurred while setting String value: " + e);
+        }
+    }
+
+    public static void setBigDecimalOrNull(PreparedStatement ps, int parameterIndex, BigDecimal value) {
+        try {
+            
+            if (value != null) {
+                ps.setBigDecimal(parameterIndex, value);
+            } else {
+                ps.setNull(parameterIndex, Types.DECIMAL);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred while setting BigDecimal value: ", e);
+            throw new UnsuccessfulStatementSetException("SQLException occurred while setting BigDecimal value: " + e);
+        }
+    }
+
+    public static void setIntOrNull(PreparedStatement ps, int parameterIndex, Integer value) {
+        try {
+
+
+            if (value != null && value >= 0) {
+                ps.setInt(parameterIndex, value);
+            } else {
+                ps.setNull(parameterIndex, Types.INTEGER);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred while setting Integer value: ", e);
+            throw new UnsuccessfulStatementSetException("SQLException occurred while setting Integer value: " + e);
         }
     }
 
@@ -117,7 +218,43 @@ public class SQLUtils {
         boolean exists = countryDAO.doesCountryCodeExist(countryCode);
 
         if (!exists) {
-            LOGGER.error("Country code doesn't exist in DB, please try another country.");
+            LOGGER.error("Country code doesn't exist in resource, please try another country.");
+        }
+
+        return exists;
+    }
+
+    public static boolean doesFlightExist(String flightCode) {
+        final FlightDAO flightDAO = DataAccessProvider.getFlightDAO();
+
+        boolean exists = flightDAO.doesFlightExist(flightCode);
+
+        if (!exists) {
+            LOGGER.error("Airport doesn't exist in resource, please try another.");
+        }
+
+        return exists;
+    }
+
+    public static boolean doesAirportExist(String airportCode) {
+        final AirportDAO airportDAO = DataAccessProvider.getAirportDAO();
+
+        boolean exists = airportDAO.doesAirportExist(airportCode);
+
+        if (!exists) {
+            LOGGER.error("Airport doesn't exist in resource, please try another.");
+        }
+
+        return exists;
+    }
+
+    public static boolean doesGateExist(String gateCode, String airportCode) {
+        final GateDAO gateDAO = DataAccessProvider.getGateDAO();
+
+        boolean exists = gateDAO.doesGateExist(gateCode, airportCode);
+
+        if (!exists) {
+            LOGGER.error("Gate doesn't exist in resource, please try another.");
         }
 
         return exists;

@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public class ScannerUtils {
-    private static final Logger LOGGER = LogManager.getLogger(ScannerUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.SCANNER_UTILS);
 
 
     public static String getInput(Scanner scanner, String prompt) {
@@ -112,6 +112,8 @@ public class ScannerUtils {
         } while (!isValid);
         return input;
     }
+
+
 
 
 

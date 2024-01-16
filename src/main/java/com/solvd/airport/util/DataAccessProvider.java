@@ -1,98 +1,144 @@
 package com.solvd.airport.util;
 
-import com.solvd.airport.persistence.*;
-import com.solvd.airport.persistence.impl.*;
-import com.solvd.airport.persistence.mybatis.*;
+import com.solvd.airport.exception.GetDaoFailureException;
+import com.solvd.airport.persistence.AddressDAO;
+import com.solvd.airport.persistence.AirlineDAO;
+import com.solvd.airport.persistence.AirlineStaffMemberDAO;
+import com.solvd.airport.persistence.AirportDAO;
+import com.solvd.airport.persistence.BaggageDAO;
+import com.solvd.airport.persistence.BoardingPassDAO;
+import com.solvd.airport.persistence.BookingDAO;
+import com.solvd.airport.persistence.CheckInDAO;
+import com.solvd.airport.persistence.CountryDAO;
+import com.solvd.airport.persistence.EmailAddressDAO;
+import com.solvd.airport.persistence.FlightDAO;
+import com.solvd.airport.persistence.GateDAO;
+import com.solvd.airport.persistence.PassportDAO;
+import com.solvd.airport.persistence.PersonInfoDAO;
+import com.solvd.airport.persistence.PhoneNumberDAO;
+import com.solvd.airport.persistence.TerminalDAO;
+import com.solvd.airport.persistence.TimezoneDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
-public class DataAccessProvider {
-    private static String databaseImpl;
+public final class DataAccessProvider {
+
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DATA_ACCESS_PROVIDER);
+    private static final String databaseImpl;
+
 
     static {
         Properties config = ConfigLoader.loadProperties(
-                DataAccessProvider.class,
+                ClassConstants.DATA_ACCESS_PROVIDER,
                 ConfigConstants.CONFIG_PROPS_FILE_NAME
         );
         databaseImpl = config.getProperty(ConfigConstants.DATABASE_IMPLEMENTATION);
     }
 
+    public static <T> T getDAO(Class<T> daoInterface) {
+        String implClassName = getImplClassName(daoInterface);
+
+        try {
+            Class<?> implClass = Class.forName(implClassName);
+            return daoInterface.cast(implClass.getDeclaredConstructor().newInstance());
+        } catch (
+                ClassNotFoundException
+                | InstantiationException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | InvocationTargetException e) {
+            throw new GetDaoFailureException("Error creating DAO implementation for " + daoInterface.getName() + e);
+        }
+    }
+
     public static AddressDAO getAddressDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AddressMyBatisImpl() : new AddressJDBCImpl();
+        return getDAO(ClassConstants.ADDRESS_DAO);
     }
 
     public static AirlineDAO getAirlineDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AirlineMyBatisImpl() : new AirlineJDBCImpl();
+        return getDAO(ClassConstants.AIRLINE_DAO);
     }
+
     public static AirportDAO getAirportDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AirportMyBatisImpl() : new AirportJDBCImpl();
+        return getDAO(ClassConstants.AIRPORT_DAO);
     }
 
     public static AirlineStaffMemberDAO getAirlineStaffMemberDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new AirlineStaffMemberMyBatisImpl() : new AirlineStaffMemberJDBCImpl();
+        return getDAO(ClassConstants.AIRLINE_STAFF_MEMBER_DAO);
     }
 
     public static BaggageDAO getBaggageDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new BaggageMyBatisImpl() : new BaggageJDBCImpl();
+        return getDAO(ClassConstants.BAGGAGE_DAO);
     }
 
     public static BoardingPassDAO getBoardingPassDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new BoardingPassMyBatisImpl() : new BoardingPassJDBCImpl();
+        return getDAO(ClassConstants.BOARDING_PASS_DAO);
     }
 
     public static BookingDAO getBookingDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new BookingMyBatisImpl() : new BookingJDBCImpl();
+        return getDAO(ClassConstants.BOOKING_DAO);
     }
 
     public static CheckInDAO getCheckInDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new CheckInMyBatisImpl() : new CheckInJDBCImpl();
+        return getDAO(ClassConstants.CHECK_IN_DAO);
     }
 
     public static EmailAddressDAO getEmailAddressDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new EmailAddressMyBatisImpl() : new EmailAddressJDBCImpl();
+        return getDAO(ClassConstants.EMAIL_ADDRESS_DAO);
     }
 
     public static FlightDAO getFlightDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new FlightMyBatisImpl() : new FlightJDBCImpl();
+        return getDAO(ClassConstants.FLIGHT_DAO);
     }
 
     public static GateDAO getGateDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new GateMyBatisImpl() : new GateJDBCImpl();
+        return getDAO(ClassConstants.GATE_DAO);
     }
 
     public static PassportDAO getPassportDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PassportMyBatisImpl() : new PassportJDBCImpl();
+        return getDAO(ClassConstants.PASSPORT_DAO);
     }
 
     public static CountryDAO getCountryDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new CountryMyBatisImpl() : new CountryJDBCImpl();
+        return getDAO(ClassConstants.COUNTRY_DAO);
     }
 
     public static TerminalDAO getTerminalDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new TerminalMyBatisImpl() : new TerminalJDBCImpl();
+        return getDAO(ClassConstants.TERMINAL_DAO);
     }
 
     public static TimezoneDAO getTimezoneDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new TimezoneMyBatisImpl() : new TimezoneJDBCImpl();
+        return getDAO(ClassConstants.TIMEZONE_DAO);
     }
 
-    public static PersonAddressDAO getPersonAddressDao() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PersonAddressMyBatisImpl() : new PersonAddressJDBCImpl();
-    }
-
-    public static PersonEmailAddressDAO getPersonEmailAddressDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PersonEmailAddressMyBatisImpl() : new PersonEmailAddressJDBCImpl();
-    }
 
     public static PersonInfoDAO getPersonInfoDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PersonInfoMyBatisImpl() : new PersonInfoJDBCImpl();
-    }
-
-    public static PersonPhoneNumberDAO getPersonPhoneNumberDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PersonPhoneNumberMyBatisImpl() : new PersonPhoneNumberJDBCImpl();
+        return getDAO(ClassConstants.PERSON_INFO_DAO);
     }
 
     public static PhoneNumberDAO getPhoneNumberDAO() {
-        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl) ? new PhoneNumberMyBatisImpl() : new PhoneNumberJDBCImpl();
+        return getDAO(ClassConstants.PHONE_NUMBER_DAO);
+    }
+
+    private static <T> String getImplClassName(Class<T> daoInterface) {
+        String daoInterfaceSimpleName = daoInterface.getSimpleName();
+        if (daoInterfaceSimpleName.contains(ConfigConstants.DAO_CLASS_SUBSTRING)) {
+            daoInterfaceSimpleName = daoInterfaceSimpleName
+                    .replace(
+                            ConfigConstants.DAO_CLASS_SUBSTRING,
+                            StringConstants.EMPTY_STRING
+                    );
+        }
+
+        return ConfigConstants.DATABASE_IMPLEMENTATION_VAL_MYBATIS.equals(databaseImpl)
+                ? ConfigConstants.DAO_MYBATIS_IMPL_PACKAGE + daoInterfaceSimpleName + ConfigConstants.MYBATIS_IMPL_SUFFIX
+                : ConfigConstants.DAO_JDBC_IMPL_PACKAGE + daoInterfaceSimpleName + ConfigConstants.JDBC_IMPL_SUFFIX;
+    }
+
+    private DataAccessProvider() {
+        ExceptionUtils.preventConstantsInstantiation();
     }
 }

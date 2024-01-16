@@ -1,6 +1,10 @@
 package com.solvd.airport.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public final class StringConstants {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.STRING_CONSTANTS);
     public static final char LOWER_CASE_M_CHAR = 'm';
     public static final String EMPTY_STRING = "";
     public static final String SINGLE_WHITESPACE = " ";

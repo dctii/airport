@@ -1,5 +1,6 @@
 package com.solvd.airport.util;
 
+import com.solvd.airport.exception.UnsuccessfulAuthConnectionRetrievalException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,36 +9,30 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class AuthConnection {
-    private static final Logger LOGGER = LogManager.getLogger(AuthConnection.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.AUTH_CONNECTION);
     private java.sql.Connection authConnection;
 
 
     public AuthConnection() {
-
-        try {
-            GetAuthConnection();
-
-        } catch (SQLException e) {
-
-            final String SQL_FAILED_DB_CONNECTION_MSG =
-                    "Failed to create the database connection.";
-            LOGGER.error(SQL_FAILED_DB_CONNECTION_MSG);
-            e.printStackTrace();
-
-        }
+        GetAuthConnection();
     }
 
-    private void GetAuthConnection() throws SQLException {
-        Properties properties = ConfigLoader.loadProperties(
-                AuthConnection.class,
-                ConfigConstants.CONFIG_PROPS_FILE_NAME
-        );
+    private void GetAuthConnection() {
+        try {
+            Properties properties = ConfigLoader.loadProperties(
+                    ClassConstants.AUTH_CONNECTION,
+                    ConfigConstants.CONFIG_PROPS_FILE_NAME
+            );
 
-        String url = properties.getProperty(ConfigConstants.JDBC_URL_KEY);
-        String user = properties.getProperty(ConfigConstants.JDBC_USERNAME_KEY);
-        String password = properties.getProperty(ConfigConstants.JDBC_PASSWORD_KEY);
+            String url = properties.getProperty(ConfigConstants.JDBC_URL_KEY);
+            String user = properties.getProperty(ConfigConstants.JDBC_USERNAME_KEY);
+            String password = properties.getProperty(ConfigConstants.JDBC_PASSWORD_KEY);
 
-        this.authConnection = DriverManager.getConnection(url, user, password);
+            this.authConnection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            LOGGER.info("SQLException occurred. Unsuccessful attempt to retrieve authorized connection", e);
+            throw new UnsuccessfulAuthConnectionRetrievalException("SQLException occurred. Unsuccessful attempt to retrieve authorized connection" + e);
+        }
     }
 
     public java.sql.Connection getConnection() {
@@ -46,7 +41,7 @@ public class AuthConnection {
 
     @Override
     public String toString() {
-        Class<?> currClass = AuthConnection.class;
+        Class<?> currClass = ClassConstants.AUTH_CONNECTION;
         String[] fieldNames = {};
 
         String fieldsString =

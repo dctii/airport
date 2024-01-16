@@ -1,11 +1,16 @@
 package com.solvd.airport.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.function.BinaryOperator;
 
 public class BigDecimalUtils {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.BIG_DECIMAL_UTILS);
     private static final MathContext MATH_CONTEXT = new MathContext(10);
 
     public static final BinaryOperator<BigDecimal> ADD_OPERATION = BigDecimalUtils::add;
@@ -39,6 +44,22 @@ public class BigDecimalUtils {
 
     public static int roundToInt(Number number) {
         return NumberUtils.roundToInt(number);
+    }
+
+    public static BigDecimal round(int scale, Double value) {
+        return BigDecimal.valueOf(value).setScale(scale, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal round(int scale, Float value) {
+        return BigDecimal.valueOf(value).setScale(scale, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal round(int scale, Integer value) {
+        return BigDecimal.valueOf(value).setScale(scale, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal round(int scale, Long value) {
+        return BigDecimal.valueOf(value).setScale(scale, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal divide(Number... values) {

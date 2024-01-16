@@ -1,5 +1,6 @@
 package com.solvd.airport.util;
 
+import com.solvd.airport.exception.SqlSessionFactoryInitFailureException;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class MyBatisUtils {
-    private static final Logger LOGGER = LogManager.getLogger(MyBatisUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.MYBATIS_UTILS);
     private static final SqlSessionFactory sqlSessionFactory;
 
     static {
@@ -19,7 +20,7 @@ public class MyBatisUtils {
             inputStream = Resources.getResourceAsStream(ConfigConstants.MYBATIS_XML_CONFIG_FILEPATH);
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         } catch (IOException e) {
-            throw new RuntimeException("Error initializing SqlSessionFactory: " + e.getMessage(), e);
+            throw new SqlSessionFactoryInitFailureException("Error initializing SqlSessionFactory: " + e.getMessage());
         }
     }
 

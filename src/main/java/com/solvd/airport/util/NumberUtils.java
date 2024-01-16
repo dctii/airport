@@ -1,9 +1,14 @@
 package com.solvd.airport.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class NumberUtils {
+
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.NUMBER_UTILS);
     public static int roundToInt(Number number) {
         if (number instanceof Float) {
             return Math.round((float) number);

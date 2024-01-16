@@ -1,18 +1,21 @@
 package com.solvd.airport.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StringFormatters {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.STRING_FORMATTERS);
 
     public static String removeEdges(String string) {
         int stringLength = string.length();
@@ -74,20 +77,34 @@ public class StringFormatters {
         return leftOperandString + StringConstants.EQUALS_OPERATOR + rightOperandString;
     }
 
-
-    public static String listToString(List<?> list) {
-        return list.stream()
+    public static String collectionToString(Collection<?> collection) {
+        return collection.stream()
                 .map(Object::toString)
                 .collect(Collectors.joining(StringConstants.COMMA_DELIMITER));
     }
 
-    public static String mapToString(Map<?, List<?>> targetMap) {
+    public static String mapToString(Map<?, ?> targetMap) {
         return targetMap.entrySet().stream()
-                .map(entry -> entry.getKey()
-                        + StringConstants.COLON_DELIMITER
-                        + listToString(entry.getValue()))
+                .map(StringFormatters::stringifyMapEntry)
                 .collect(Collectors.joining(StringConstants.COMMA_DELIMITER));
     }
+
+    private static String stringifyMapEntry(Map.Entry<?, ?> entry) {
+        Object key = entry.getKey();
+        Object value = entry.getValue();
+        String valueString;
+
+        if (value instanceof Collection) {
+            valueString = collectionToString((Collection<?>) value);
+        } else if (value != null) {
+            valueString = value.toString();
+        } else {
+            valueString = StringConstants.NULL_STRING;
+        }
+
+        return StringUtils.joinWith(StringConstants.COLON_DELIMITER, key, valueString);
+    }
+
 
     public static String buildFieldsString(Object object, String[] fieldNames) {
         return Arrays.stream(fieldNames)
@@ -108,7 +125,12 @@ public class StringFormatters {
                         } else if (fieldValue instanceof Map) {
                             return stateEquivalence(
                                     fieldName,
-                                    mapToString((Map<?, List<?>>) fieldValue)
+                                    mapToString((Map<?, ?>) fieldValue)
+                            );
+                        } else if (fieldValue instanceof Collection) {
+                            return stateEquivalence(
+                                    fieldName,
+                                    collectionToString((Collection<?>) fieldValue)
                             );
                         } else {
                             return stateEquivalence(
@@ -119,7 +141,6 @@ public class StringFormatters {
                     }
                 })
                 .collect(Collectors.joining(StringConstants.COMMA_DELIMITER));
-
     }
 
     public static String buildToString(Class<?> currClass, String[] fieldNames,
@@ -233,6 +254,7 @@ public class StringFormatters {
                 .replaceAll(Pattern.quote(StringConstants.OPENING_PARENTHESIS), StringConstants.EMPTY_STRING)
                 .replaceAll(Pattern.quote(StringConstants.CLOSING_PARENTHESIS), StringConstants.EMPTY_STRING);
     }
+
 
 
     private StringFormatters() {

@@ -3,12 +3,13 @@ package com.solvd.airport.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.stream.IntStream;
 
 public class DBConnectionPool {
-    private static final Logger LOGGER = LogManager.getLogger(DBConnectionPool.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DB_CONNECTION_POOL);
     private static DBConnectionPool dbConnectionPool = null;
     private static final int MAX_CONNECTIONS = 30;
 
@@ -53,7 +54,7 @@ public class DBConnectionPool {
         dbConnections.forEach(dbConnection -> {
             try {
                 dbConnection.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 LOGGER.error("Error closing connection", e);
             }
         });
@@ -63,7 +64,7 @@ public class DBConnectionPool {
 
 
     public String toString() {
-        Class<?> currClass = DBConnectionPool.class;
+        Class<?> currClass = ClassConstants.DB_CONNECTION_POOL;
         String[] fieldNames = {
                 "dbConnections"
         };

@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 public class ReflectionUtils {
-    private static final Logger LOGGER = LogManager.getLogger(ReflectionUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.REFLECTION_UTILS);
 
     public static <T> T createObject(Class<T> clazz) {
         try {

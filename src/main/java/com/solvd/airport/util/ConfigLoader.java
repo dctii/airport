@@ -1,9 +1,16 @@
 package com.solvd.airport.util;
 
+import com.solvd.airport.exception.UnableToLoadConfigPropertiesException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigLoader {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.CONFIG_LOADER);
+
     public static Properties loadProperties(Class<?> clazz, String pathToResourceFile) {
         Properties properties = new Properties();
         try (InputStream input =
@@ -18,12 +25,11 @@ public class ConfigLoader {
             }
             properties.load(input);
 
-        } catch (Exception e) {
-
+        } catch (IOException e) {
             final String UNABLE_TO_LOAD_PROPERTIES_FILE_MSG =
                     "Failed to load properties file "
                             + StringFormatters.nestInSingleQuotations(pathToResourceFile);
-            throw new RuntimeException(UNABLE_TO_LOAD_PROPERTIES_FILE_MSG, e);
+            throw new UnableToLoadConfigPropertiesException(UNABLE_TO_LOAD_PROPERTIES_FILE_MSG + e);
         }
         return properties;
     }
