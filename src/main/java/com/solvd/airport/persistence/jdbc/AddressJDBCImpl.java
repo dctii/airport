@@ -303,13 +303,7 @@ public class AddressJDBCImpl implements AddressDAO {
             ps.setInt(1, addressId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    PersonInfo personInfo = new PersonInfo();
-                    personInfo.setPersonInfoId(rs.getInt(PersonInfoDAO.COL_PERSON_INFO_ID));
-                    personInfo.setSurname(rs.getString(PersonInfoDAO.COL_SURNAME));
-                    personInfo.setGivenName(rs.getString(PersonInfoDAO.COL_GIVEN_NAME));
-                    personInfo.setMiddleName(rs.getString(PersonInfoDAO.COL_MIDDLE_NAME));
-                    personInfo.setBirthdate(rs.getDate(PersonInfoDAO.COL_BIRTHDATE));
-                    personInfo.setSex(rs.getString(PersonInfoDAO.COL_SEX));
+                    PersonInfo personInfo = extractPersonInfoFromResultSet(rs);
 
                     people.add(personInfo);
                 }
@@ -342,6 +336,22 @@ public class AddressJDBCImpl implements AddressDAO {
         } catch (SQLException e) {
             LOGGER.info("SQLException occurred. Unsuccessful creation of Address", e);
             throw new UnsuccessfulResultSetExtractionException("SQLException occurred. Unsuccessful creation of Address" + e);
+        }
+    }
+
+    private static PersonInfo extractPersonInfoFromResultSet(ResultSet rs) throws SQLException {
+        try {
+            PersonInfo personInfo = new PersonInfo();
+            personInfo.setPersonInfoId(rs.getInt(PersonInfoDAO.COL_PERSON_INFO_ID));
+            personInfo.setSurname(rs.getString(PersonInfoDAO.COL_SURNAME));
+            personInfo.setGivenName(rs.getString(PersonInfoDAO.COL_GIVEN_NAME));
+            personInfo.setMiddleName(rs.getString(PersonInfoDAO.COL_MIDDLE_NAME));
+            personInfo.setBirthdate(rs.getDate(PersonInfoDAO.COL_BIRTHDATE));
+            personInfo.setSex(rs.getString(PersonInfoDAO.COL_SEX));
+            return personInfo;
+        } catch (SQLException e) {
+            LOGGER.info("SQLException occurred. Unsuccessful creation of PersonInfo", e);
+            throw new UnsuccessfulResultSetExtractionException("SQLException occurred. Unsuccessful creation of PersonInfo" + e);
         }
     }
 }
