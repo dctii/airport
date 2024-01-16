@@ -1,9 +1,11 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class Timezone {
+    private int timezoneId;
     private String timezone;
 
     final static private int TIMEZONE_MAX_WIDTH = 45;
@@ -16,6 +18,22 @@ public class Timezone {
         ExceptionUtils.isValidTimeZone(timezone);
 
         this.timezone = timezone;
+    }
+
+    public Timezone(int timezoneId, String timezone) {
+        ExceptionUtils.isStringLengthValid(timezone, TIMEZONE_MAX_WIDTH);
+        ExceptionUtils.isValidTimeZone(timezone);
+
+        this.timezoneId = timezoneId;
+        this.timezone = timezone;
+    }
+
+    public int getTimezoneId() {
+        return timezoneId;
+    }
+
+    public void setTimezoneId(int timezoneId) {
+        this.timezoneId = timezoneId;
     }
 
     public String getTimezone() {
@@ -31,8 +49,9 @@ public class Timezone {
 
     @Override
     public String toString() {
-        Class<?> currClass = Timezone.class;
+        Class<?> currClass = ClassConstants.TIMEZONE;
         String[] fieldNames = {
+                "timezoneId",
                 "timezone"
         };
 

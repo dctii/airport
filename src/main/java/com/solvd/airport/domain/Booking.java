@@ -1,5 +1,6 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.SQLUtils;
 import com.solvd.airport.util.StringConstants;
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 public class Booking {
+
     private int bookingId;
     private String bookingNumber;
     private Timestamp purchaseDatetime;
@@ -61,6 +63,32 @@ public class Booking {
         this.flightCode = flightCode;
     }
 
+    public Booking(int bookingId, String bookingNumber,
+                   String purchaseDatetime, String seatClass, String status,
+                   BigDecimal price, String agency, String passportNumber, String flightCode
+    ) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        bookingNumber, BOOKING_NUMBER_MAX_WIDTH,
+                        seatClass, SEAT_CLASS_MAX_WIDTH,
+                        status, STATUS_MAX_WIDTH,
+                        agency, AGENCY_MAX_WIDTH,
+                        passportNumber, PASSPORT_NUMBER_MAX_WIDTH,
+                        flightCode, FLIGHT_CODE_MAX_WIDTH
+                ));
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
+
+        this.bookingId = bookingId;
+        this.bookingNumber = bookingNumber;
+        this.purchaseDatetime = SQLUtils.toTimestamp(purchaseDatetime);
+        this.seatClass = seatClass;
+        this.status = status;
+        this.price = price;
+        this.agency = agency;
+        this.passportNumber = passportNumber;
+        this.flightCode = flightCode;
+    }
+
     public Booking(int bookingId, String bookingNumber, Timestamp purchaseDatetime, String seatClass,
                    String seatNumber, String status, BigDecimal price, String agency, String passportNumber, String flightCode
     ) {
@@ -79,6 +107,33 @@ public class Booking {
         this.bookingId = bookingId;
         this.bookingNumber = bookingNumber;
         this.purchaseDatetime = purchaseDatetime;
+        this.seatClass = seatClass;
+        this.seatNumber = seatNumber;
+        this.status = status;
+        this.price = price;
+        this.agency = agency;
+        this.passportNumber = passportNumber;
+        this.flightCode = flightCode;
+    }
+
+    public Booking(int bookingId, String bookingNumber, String purchaseDatetime, String seatClass,
+                   String seatNumber, String status, BigDecimal price, String agency, String passportNumber, String flightCode
+    ) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        bookingNumber, BOOKING_NUMBER_MAX_WIDTH,
+                        seatClass, SEAT_CLASS_MAX_WIDTH,
+                        seatNumber, SEAT_NUMBER_MAX_WIDTH,
+                        status, STATUS_MAX_WIDTH,
+                        agency, AGENCY_MAX_WIDTH,
+                        passportNumber, PASSPORT_NUMBER_MAX_WIDTH,
+                        flightCode, FLIGHT_CODE_MAX_WIDTH
+                ));
+        ExceptionUtils.isDecimalValid(price, PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE);
+
+        this.bookingId = bookingId;
+        this.bookingNumber = bookingNumber;
+        this.purchaseDatetime = SQLUtils.toTimestamp(purchaseDatetime);
         this.seatClass = seatClass;
         this.seatNumber = seatNumber;
         this.status = status;
@@ -122,7 +177,6 @@ public class Booking {
 
         this.purchaseDatetime = SQLUtils.toTimestamp(purchaseDatetime);
     }
-
 
 
     public String getSeatClass() {
@@ -190,7 +244,7 @@ public class Booking {
 
     @Override
     public String toString() {
-        Class<?> currClass = Booking.class;
+        Class<?> currClass = ClassConstants.BOOKING;
         String[] fieldNames = {
                 "bookingId",
                 "bookingNumber",

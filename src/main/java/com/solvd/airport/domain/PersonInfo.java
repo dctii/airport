@@ -1,5 +1,6 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.SQLUtils;
 import com.solvd.airport.util.StringConstants;
@@ -7,7 +8,9 @@ import com.solvd.airport.util.StringFormatters;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class PersonInfo {
     private int personInfoId;
@@ -17,10 +20,17 @@ public class PersonInfo {
     private Date birthdate;
     private String sex;
 
+    private Set<Address> addresses;
+    private Set<PhoneNumber> phoneNumbers;
+    private Set<EmailAddress> emailAddresses;
+
     final private static int NAME_MAX_WIDTH = 45;
     final private static int SEX_MAX_WIDTH = 1;
 
     public PersonInfo() {
+        this.addresses = new HashSet<>();
+        this.phoneNumbers = new HashSet<>();
+        this.emailAddresses = new HashSet<>();
     }
 
     public PersonInfo(int personInfoId, String surname, String givenName,
@@ -43,6 +53,10 @@ public class PersonInfo {
         this.middleName = middleName;
         this.birthdate = birthdate;
         this.sex = sex.toUpperCase();
+
+        this.addresses = new HashSet<>();
+        this.phoneNumbers = new HashSet<>();
+        this.emailAddresses = new HashSet<>();
     }
 
     public PersonInfo(int personInfoId, String surname, String givenName,
@@ -69,6 +83,10 @@ public class PersonInfo {
         this.middleName = middleName;
         this.birthdate = SQLUtils.toDate(birthdate);
         this.sex = sex.toUpperCase();
+
+        this.addresses = new HashSet<>();
+        this.phoneNumbers = new HashSet<>();
+        this.emailAddresses = new HashSet<>();
     }
 
     public PersonInfo(String surname, String givenName, String middleName,
@@ -91,6 +109,10 @@ public class PersonInfo {
         this.middleName = middleName;
         this.birthdate = SQLUtils.toDate(birthdate);
         this.sex = sex.toUpperCase();
+
+        this.addresses = new HashSet<>();
+        this.phoneNumbers = new HashSet<>();
+        this.emailAddresses = new HashSet<>();
     }
 
     public PersonInfo(String surname, String givenName, String middleName,
@@ -109,6 +131,18 @@ public class PersonInfo {
         this.middleName = middleName;
         this.birthdate = birthdate;
         this.sex = sex.toUpperCase();
+
+        this.addresses = new HashSet<>();
+        this.phoneNumbers = new HashSet<>();
+        this.emailAddresses = new HashSet<>();
+    }
+
+    public PersonInfo(int personInfoId) {
+        this.personInfoId = personInfoId;
+
+        this.addresses = new HashSet<>();
+        this.phoneNumbers = new HashSet<>();
+        this.emailAddresses = new HashSet<>();
     }
 
 
@@ -180,17 +214,92 @@ public class PersonInfo {
         this.sex = sex.toUpperCase();
     }
 
+    public Set<Address> getAddresses() {
+        if (addresses == null) {
+            addresses = new HashSet<>();
+        }
+        return addresses;
+    }
+
+    public Set<PhoneNumber> getPhoneNumbers() {
+        if (phoneNumbers == null) {
+            phoneNumbers = new HashSet<>();
+        }
+        return phoneNumbers;
+    }
+
+    public Set<EmailAddress> getEmailAddresses() {
+        if (emailAddresses == null) {
+            emailAddresses = new HashSet<>();
+        }
+        return emailAddresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
+    }
+
+    public void setEmailAddresses(Set<EmailAddress> emailAddresses) {
+        this.emailAddresses = emailAddresses;
+    }
+
+    public void addAddress(Address address) {
+        if (this.addresses == null) {
+            this.addresses = new HashSet<>();
+        }
+        this.addresses.add(address);
+    }
+
+    public void addPhoneNumber(PhoneNumber phoneNumber) {
+        if (this.phoneNumbers == null) {
+            this.phoneNumbers = new HashSet<>();
+        }
+        this.phoneNumbers.add(phoneNumber);
+    }
+
+    public void addEmailAddress(EmailAddress emailAddress) {
+        if (this.emailAddresses == null) {
+            this.emailAddresses = new HashSet<>();
+        }
+        this.emailAddresses.add(emailAddress);
+    }
+
+    public boolean removeAddress(Address address) {
+        return this.addresses != null && this.addresses.remove(address);
+    }
+
+    public boolean removePhoneNumber(PhoneNumber phoneNumber) {
+        return this.phoneNumbers != null && this.phoneNumbers.remove(phoneNumber);
+    }
+
+    public boolean removeEmailAddress(EmailAddress emailAddress) {
+        return this.emailAddresses != null && this.emailAddresses.remove(emailAddress);
+    }
+
+    public EmailAddress getEmailAddressByEmailAddress(String email) {
+        return getEmailAddresses().stream()
+                .filter(emailAddress -> emailAddress.getEmailAddress().equals(email))
+                .findFirst()
+                .orElse(null);
+    }
 
     @Override
     public String toString() {
-        Class<?> currClass = PersonInfo.class;
+        Class<?> currClass = ClassConstants.PERSON_INFO;
         String[] fieldNames = {
                 "personInfoId",
                 "surname",
                 "givenName",
                 "middleName",
                 "birthdate",
-                "sex"
+                "sex",
+                "addresses",
+                "phoneNumbers",
+                "emailAddresses"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);

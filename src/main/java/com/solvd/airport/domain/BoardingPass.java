@@ -1,5 +1,6 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
@@ -10,7 +11,7 @@ public class BoardingPass {
     private boolean isBoarded;
     private Timestamp boardingTime;
     private String boardingGroup;
-    private int checkInId;
+    private Integer checkInId;
 
     final static private int BOARDING_GROUP_MAX_WIDTH = 25;
 
@@ -74,7 +75,7 @@ public class BoardingPass {
         this.boardingGroup = boardingGroup;
     }
 
-    public int getCheckInId() {
+    public Integer getCheckInId() {
         return checkInId;
     }
 
@@ -84,7 +85,7 @@ public class BoardingPass {
 
     @Override
     public String toString() {
-        Class<?> currClass = BoardingPass.class;
+        Class<?> currClass = ClassConstants.BOARDING_PASS;
         String[] fieldNames = {
                 "boardingPassId",
                 "isBoarded",

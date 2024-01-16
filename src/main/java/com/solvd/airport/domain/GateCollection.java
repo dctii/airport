@@ -1,7 +1,11 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.StringFormatters;
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.util.List;
 
@@ -30,7 +34,7 @@ public class GateCollection {
 
     @Override
     public String toString() {
-        Class<?> currClass = GateCollection.class;
+        Class<?> currClass = ClassConstants.GATE_COLLECTION;
         String[] fieldNames = {
                 "gates"
         };

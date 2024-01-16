@@ -1,14 +1,16 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 public class CheckIn {
+
     private int checkInId;
     private String checkInMethod;
     private boolean passIssued;
-    private int airlineStaffId;
-    private int bookingId;
+    private Integer airlineStaffId;
+    private Integer bookingId;
 
     final static private int CHECK_IN_METHOD_MAX_WIDTH = 10;
 
@@ -68,7 +70,7 @@ public class CheckIn {
         this.passIssued = passIssued;
     }
 
-    public int getAirlineStaffId() {
+    public Integer getAirlineStaffId() {
         return airlineStaffId;
     }
 
@@ -76,7 +78,7 @@ public class CheckIn {
         this.airlineStaffId = airlineStaffId;
     }
 
-    public int getBookingId() {
+    public Integer getBookingId() {
         return bookingId;
     }
 
@@ -86,7 +88,7 @@ public class CheckIn {
 
     @Override
     public String toString() {
-        Class<?> currClass = CheckIn.class;
+        Class<?> currClass = ClassConstants.CHECK_IN;
         String[] fieldNames = {
                 "checkInId",
                 "checkInMethod",

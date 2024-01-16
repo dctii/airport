@@ -1,6 +1,7 @@
 package com.solvd.airport.domain;
 
 import com.solvd.airport.util.ArrayUtils;
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
@@ -8,10 +9,11 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class Baggage {
+    private int baggageId;
     private String baggageCode;
     private BigDecimal weight;
     private BigDecimal price;
-    private int checkInId;
+    private Integer checkInId;
 
     final static private int BAGGAGE_CODE_MAX_WIDTH = 45;
     final static private int WEIGHT_DECIMAL_PRECISION = 5;
@@ -24,6 +26,11 @@ public class Baggage {
     }
 
     public Baggage(String baggageCode) {
+        this.baggageCode = baggageCode;
+    }
+
+    public Baggage(int baggageId,  String baggageCode) {
+        this.baggageId = baggageId;
         this.baggageCode = baggageCode;
     }
 
@@ -43,6 +50,32 @@ public class Baggage {
         this.weight = weight;
         this.price = price;
         this.checkInId = checkInId;
+    }
+
+    public Baggage(int baggageId, String baggageCode, BigDecimal weight,
+                   BigDecimal price, int checkInId) {
+        ExceptionUtils.isStringLengthValid(baggageCode, BAGGAGE_CODE_MAX_WIDTH);
+
+        ExceptionUtils.areDecimalsValid(
+                Map.of(
+                        weight, ArrayUtils.intArrayOf(WEIGHT_DECIMAL_PRECISION, WEIGHT_DECIMAL_SCALE),
+                        price, ArrayUtils.intArrayOf(PRICE_DECIMAL_PRECISION, PRICE_DECIMAL_SCALE)
+                )
+        );
+
+        this.baggageId = baggageId;
+        this.baggageCode = baggageCode;
+        this.weight = weight;
+        this.price = price;
+        this.checkInId = checkInId;
+    }
+
+    public int getBaggageId() {
+        return baggageId;
+    }
+
+    public void setBaggageId(int baggageId) {
+        this.baggageId = baggageId;
     }
 
     public String getBaggageCode() {
@@ -75,7 +108,7 @@ public class Baggage {
         this.price = price;
     }
 
-    public int getCheckInId() {
+    public Integer getCheckInId() {
         return checkInId;
     }
 
@@ -85,8 +118,9 @@ public class Baggage {
 
     @Override
     public String toString() {
-        Class<?> currClass = Baggage.class;
+        Class<?> currClass = ClassConstants.BAGGAGE;
         String[] fieldNames = {
+                "baggageId",
                 "baggageCode",
                 "weight",
                 "price",

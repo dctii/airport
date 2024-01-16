@@ -1,15 +1,20 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.StringFormatters;
 
 public class FlightStaffMember {
     private int flightStaffId;
-    private int flightCrewId;
-    private int airlineStaffId;
+    private Integer flightCrewId;
+    private Integer airlineStaffId;
 
     public FlightStaffMember() {
     }
 
+    public FlightStaffMember(int flightStaffId, int airlineStaffId) {
+        this.flightStaffId = flightStaffId;
+        this.airlineStaffId = airlineStaffId;
+    }
     public FlightStaffMember(int flightStaffId, int flightCrewId, int airlineStaffId) {
         this.flightStaffId = flightStaffId;
         this.flightCrewId = flightCrewId;
@@ -24,7 +29,7 @@ public class FlightStaffMember {
         this.flightStaffId = flightStaffId;
     }
 
-    public int getFlightCrewId() {
+    public Integer getFlightCrewId() {
         return flightCrewId;
     }
 
@@ -32,7 +37,7 @@ public class FlightStaffMember {
         this.flightCrewId = flightCrewId;
     }
 
-    public int getAirlineStaffId() {
+    public Integer getAirlineStaffId() {
         return airlineStaffId;
     }
 
@@ -42,7 +47,7 @@ public class FlightStaffMember {
 
     @Override
     public String toString() {
-        Class<?> currClass = FlightStaffMember.class;
+        Class<?> currClass = ClassConstants.FLIGHT_STAFF_MEMBER;
         String[] fieldNames = {
                 "flightStaffId",
                 "flightCrewId",

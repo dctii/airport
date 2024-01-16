@@ -1,16 +1,18 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 import java.util.Map;
 
-// TODO: Use Jackson here
+// Jackson
 
 public class Airline {
+    private int airlineId;
     private String airlineCode;
     private String airlineName;
-    private int addressId;
+    private Address address;
 
     final static private int AIRLINE_CODE_MAX_WIDTH = 2;
     final static private int AIRLINE_NAME_MAX_WIDTH = 45;
@@ -21,6 +23,13 @@ public class Airline {
     public Airline(String airlineCode) {
         ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
 
+        this.airlineCode = airlineCode;
+    }
+
+    public Airline(int airlineId, String airlineCode) {
+        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
+
+        this.airlineId = airlineId;
         this.airlineCode = airlineCode;
     }
 
@@ -35,14 +44,34 @@ public class Airline {
         this.airlineName = airlineName;
     }
 
-    public Airline(String airlineCode, int addressId) {
+    public Airline(int airlineId, String airlineCode, String airlineName) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        airlineCode, AIRLINE_CODE_MAX_WIDTH,
+                        airlineName, AIRLINE_NAME_MAX_WIDTH
+                ));
+
+        this.airlineId = airlineId;
+        this.airlineCode = airlineCode;
+        this.airlineName = airlineName;
+    }
+
+    public Airline(String airlineCode, Address address) {
         ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
 
         this.airlineCode = airlineCode;
-        this.addressId = addressId;
+        this.address = address;
     }
 
-    public Airline(String airlineCode, String airlineName, int addressId) {
+    public Airline(int airlineId, String airlineCode, Address address) {
+        ExceptionUtils.isStringLengthValid(airlineCode, AIRLINE_CODE_MAX_WIDTH);
+
+        this.airlineId = airlineId;
+        this.airlineCode = airlineCode;
+        this.address = address;
+    }
+
+    public Airline(String airlineCode, String airlineName, Address address) {
         ExceptionUtils.areStringLengthsValid(
                 Map.of(
                         airlineCode, AIRLINE_CODE_MAX_WIDTH,
@@ -51,7 +80,28 @@ public class Airline {
 
         this.airlineCode = airlineCode;
         this.airlineName = airlineName;
-        this.addressId = addressId;
+        this.address = address;
+    }
+
+    public Airline(int airlineId, String airlineCode, String airlineName, Address address) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        airlineCode, AIRLINE_CODE_MAX_WIDTH,
+                        airlineName, AIRLINE_NAME_MAX_WIDTH
+                ));
+
+        this.airlineId = airlineId;
+        this.airlineCode = airlineCode;
+        this.airlineName = airlineName;
+        this.address = address;
+    }
+
+    public int getAirlineId() {
+        return airlineId;
+    }
+
+    public void setAirlineId(int airlineId) {
+        this.airlineId = airlineId;
     }
 
     public String getAirlineCode() {
@@ -73,21 +123,39 @@ public class Airline {
         this.airlineName = airlineName;
     }
 
-    public int getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getAddressId() {
+        if (this.address != null) {
+            return this.address.getAddressId();
+        } else {
+            return null;
+        }
+    }
+
+
     public void setAddressId(int addressId) {
-        this.addressId = addressId;
+        if (this.address == null) {
+            this.address = new Address();
+        }
+        this.address.setAddressId(addressId);
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = Airline.class;
+        Class<?> currClass = ClassConstants.AIRLINE;
         String[] fieldNames = {
+                "airlineId",
                 "airlineCode",
                 "airlineName",
-                "addressId"
+                "address"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);

@@ -1,5 +1,6 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -7,9 +8,11 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-// TODO: JAXB
+// JAXB
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Gate {
@@ -22,6 +25,8 @@ public class Gate {
 
     @XmlElement(name = "terminalCode")
     private String terminalCode;
+
+    private Set<Flight> flights;
 
     final static private int GATE_CODE_MAX_WIDTH = 10;
     final static private int AIRPORT_CODE_MAX_WIDTH = 3;
@@ -44,6 +49,30 @@ public class Gate {
         this.gateCode = gateCode;
         this.airportCode = airportCode;
         this.terminalCode = terminalCode;
+    }
+
+    public Gate(String gateCode, String airportCode, String terminalCode) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        gateCode, GATE_CODE_MAX_WIDTH,
+                        airportCode, AIRPORT_CODE_MAX_WIDTH,
+                        terminalCode, TERMINAL_CODE_MAX_WIDTH
+                ));
+
+        this.gateCode = gateCode;
+        this.airportCode = airportCode;
+        this.terminalCode = terminalCode;
+    }
+
+    public Gate(String gateCode, String airportCode) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        gateCode, GATE_CODE_MAX_WIDTH,
+                        airportCode, AIRPORT_CODE_MAX_WIDTH
+                        ));
+
+        this.gateCode = gateCode;
+        this.airportCode = airportCode;
     }
 
     public int getGateId() {
@@ -84,14 +113,37 @@ public class Gate {
         this.terminalCode = terminalCode;
     }
 
+    public Set<Flight> getFights() {
+        if (flights == null) {
+            flights = new HashSet<>();
+        }
+        return flights;
+    }
+
+    public void setFlights(Set<Flight> flights) {
+        this.flights = flights;
+    }
+
+    public void addFlight(Flight flight) {
+        if (this.flights == null) {
+            this.flights = new HashSet<>();
+        }
+        this.flights.add(flight);
+    }
+
+    public boolean removeFlight(Flight flight) {
+        return this.flights != null && this.flights.remove(flight);
+    }
+
     @Override
     public String toString() {
-        Class<?> currClass = Gate.class;
+        Class<?> currClass = ClassConstants.GATE;
         String[] fieldNames = {
                 "gateId",
                 "gateCode",
                 "terminalCode",
-                "airportCode"
+                "airportCode",
+                "flights"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);

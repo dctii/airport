@@ -1,9 +1,13 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
+import com.solvd.airport.util.CollectionUtils;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Address {
     private int addressId;
@@ -15,6 +19,8 @@ public class Address {
     private String postalCode;
     private String timezone;
 
+    private Set<PersonInfo> peopleWithAddress;
+
     final static private int STREET_MAX_WIDTH = 45;
     final static private int CITY_SUBDIVISION_MAX_WIDTH = 45;
     final static private int CITY_MAX_WIDTH = 45;
@@ -25,6 +31,7 @@ public class Address {
 
 
     public Address() {
+        this.peopleWithAddress = new HashSet<>();
     }
 
     public Address(int addressId, String street, String citySubdivision, String city,
@@ -50,6 +57,7 @@ public class Address {
         this.countryCode = countryCode;
         this.postalCode = postalCode;
         this.timezone = timezone;
+        this.peopleWithAddress = new HashSet<>();
     }
 
     public Address(String street, String city, String postalCode, String countryCode) {
@@ -67,6 +75,7 @@ public class Address {
         this.city = city;
         this.countryCode = countryCode;
         this.postalCode = postalCode;
+        this.peopleWithAddress = new HashSet<>();
     }
 
     public int getAddressId() {
@@ -141,9 +150,32 @@ public class Address {
         this.timezone = timezone;
     }
 
+    public Set<PersonInfo> getPeopleWithAddress() {
+        if (peopleWithAddress == null) {
+            peopleWithAddress = new HashSet<>();
+        }
+        return peopleWithAddress;
+    }
+
+    public void setPeopleWithAddress(Set<PersonInfo> peopleWithAddress) {
+        this.peopleWithAddress = CollectionUtils.setToNullIfEmpty(peopleWithAddress);
+    }
+
+    public void addPersonWithAddress(PersonInfo personWithAddress) {
+        if (this.peopleWithAddress == null) {
+            this.peopleWithAddress = new HashSet<>();
+        }
+        this.peopleWithAddress.add(personWithAddress);
+    }
+
+    public boolean removePersonWithAddress(PersonInfo personWithAddress) {
+        return this.peopleWithAddress != null
+                && this.peopleWithAddress.remove(personWithAddress);
+    }
+
     @Override
     public String toString() {
-        Class<?> currClass = Address.class;
+        Class<?> currClass = ClassConstants.ADDRESS;
         String[] fieldNames = {
                 "addressId",
                 "street",
@@ -152,7 +184,8 @@ public class Address {
                 "citySuperdivision",
                 "countryCode",
                 "postalCode",
-                "timezone"
+                "timezone",
+                "peopleWithAddress"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);

@@ -1,11 +1,14 @@
 package com.solvd.airport.domain;
 
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.ExceptionUtils;
 import com.solvd.airport.util.StringFormatters;
 
 import java.util.Map;
 
 public class Country {
+
+    private int countryId;
     private String countryCode;
     private String countryName;
 
@@ -27,6 +30,28 @@ public class Country {
 
         this.countryCode = countryCode;
         this.countryName = countryName;
+    }
+
+    public Country(int countryId, String countryCode, String countryName) {
+        ExceptionUtils.areStringLengthsValid(
+                Map.of(
+                        countryCode, COUNTRY_CODE_MAX_WIDTH,
+                        countryName, COUNTRY_NAME_MAX_WIDTH
+                )
+        );
+        ExceptionUtils.isValidCountryCode(countryCode);
+
+        this.countryId = countryId;
+        this.countryCode = countryCode;
+        this.countryName = countryName;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public String getCountryCode() {
@@ -52,8 +77,9 @@ public class Country {
 
     @Override
     public String toString() {
-        Class<?> currClass = Country.class;
+        Class<?> currClass = ClassConstants.COUNTRY;
         String[] fieldNames = {
+                "countryId",
                 "countryCode",
                 "countryName"
         };
