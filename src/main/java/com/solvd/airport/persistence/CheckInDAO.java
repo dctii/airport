@@ -4,16 +4,16 @@ import com.solvd.airport.domain.CheckIn;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface CheckInDAO {
-    void createCheckIn(@Param("checkInObj") CheckIn checkInObj);
+public interface CheckInDAO extends AbstractDAO<CheckIn> {
+    int create(@Param("checkInObj") CheckIn checkInObj);
 
-    CheckIn getCheckInById(@Param("checkInId") int checkInId);
+    CheckIn getById(@Param("checkInId") int checkInId);
 
     CheckIn getCheckInByBookingNumber(@Param("bookingNumber") String bookingNumber);
 
-    void updateCheckIn(@Param("checkInObj") CheckIn checkInObj);
+    void update(@Param("checkInObj") CheckIn checkInObj);
 
-    void deleteCheckIn(@Param("checkInId") int checkInId);
+    void delete(@Param("checkInId") int checkInId);
 
     boolean hasCheckInForBookingId(@Param("bookingId") int bookingId);
 
@@ -30,4 +30,7 @@ public interface CheckInDAO {
     String EXPLICIT_COL_PASS_ISSUED = SQLUtils.qualifyColumnName(TABLE_NAME, COL_PASS_ISSUED);
     String EXPLICIT_COL_AIRLINE_STAFF_ID = SQLUtils.qualifyColumnName(TABLE_NAME, COL_AIRLINE_STAFF_ID);
     String EXPLICIT_COL_BOOKING_ID = SQLUtils.qualifyColumnName(TABLE_NAME, COL_BOOKING_ID);
+
+    String CHECK_IN_METHOD_STAFF = "staff";
+    String CHECK_IN_METHOD_SELF = "self";
 }

@@ -4,18 +4,18 @@ import com.solvd.airport.domain.AirlineStaffMember;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface AirlineStaffMemberDAO {
-    void createAirlineStaffMember(@Param("staffMemberObj") AirlineStaffMember staffMemberObj);
+public interface AirlineStaffMemberDAO extends AbstractDAO<AirlineStaffMember> {
+    int create(@Param("airlineStaffMemberObj") AirlineStaffMember airlineStaffMemberObj);
 
-    AirlineStaffMember getAirlineStaffMemberById(@Param("airlineStaffId") int airlineStaffId);
+    AirlineStaffMember getById(@Param("airlineStaffId") int airlineStaffId);
 
-    AirlineStaffMember findByPersonInfoId(@Param("personInfoId") int personInfoId);
+    AirlineStaffMember getByPersonInfoId(@Param("personInfoId") int personInfoId);
 
-    AirlineStaffMember findByEmailAddress(@Param("emailAddress") String emailAddress);
+    AirlineStaffMember getByEmailAddress(@Param("emailAddress") String emailAddress);
 
-    void updateAirlineStaffMember(@Param("staffMemberObj") AirlineStaffMember staffMemberObj);
+    void update(@Param("airlineStaffMemberObj") AirlineStaffMember airlineStaffMemberObj);
 
-    void deleteAirlineStaffMember(@Param("airlineStaffId") int airlineStaffId);
+    void delete(@Param("airlineStaffId") int airlineStaffId);
 
 
     String TABLE_NAME = "airline_staff";

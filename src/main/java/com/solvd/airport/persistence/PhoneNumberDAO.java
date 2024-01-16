@@ -1,15 +1,24 @@
 package com.solvd.airport.persistence;
 
+import com.solvd.airport.domain.PersonInfo;
 import com.solvd.airport.domain.PhoneNumber;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface PhoneNumberDAO {
-    void createPhoneNumber(@Param("phoneNumberObj") PhoneNumber phoneNumberObj);
-    PhoneNumber getPhoneNumberById(@Param("phoneNumberId") int phoneNumberId);
+import java.util.Set;
+
+public interface PhoneNumberDAO extends ContactDAO<PhoneNumber> {
+    int create(@Param("phoneNumberObj") PhoneNumber phoneNumberObj);
+
+    PhoneNumber getById(@Param("phoneNumberId") int phoneNumberId);
+
     PhoneNumber getPhoneNumberByNumber(@Param("phoneNumber") String phoneNumber);
-    void updatePhoneNumber(@Param("phoneNumberObj") PhoneNumber phoneNumberObj);
-    void deletePhoneNumber(@Param("phoneNumberId") int phoneNumberId);
+
+    void update(@Param("phoneNumberObj") PhoneNumber phoneNumberObj);
+
+    void delete(@Param("phoneNumberId") int phoneNumberId);
+
+    Set<PersonInfo> getPeopleByPhoneNumberId(@Param("phoneNumberId") int phoneNumberId);
 
 
     String TABLE_NAME = "phone_numbers";
@@ -21,5 +30,5 @@ public interface PhoneNumberDAO {
     String EXPLICIT_COL_PHONE_NUMBER = SQLUtils.qualifyColumnName(TABLE_NAME, COL_PHONE_NUMBER);
     String EXPLICIT_COL_EXTENSION = SQLUtils.qualifyColumnName(TABLE_NAME, COL_EXTENSION);
 
-
+    String PERSON_PHONE_NUMBER_TABLE_NAME = PersonInfoDAO.PERSON_PHONE_NUMBER_TABLE_NAME;
 }

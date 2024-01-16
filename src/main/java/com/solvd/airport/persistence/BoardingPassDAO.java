@@ -4,16 +4,16 @@ import com.solvd.airport.domain.BoardingPass;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface BoardingPassDAO {
-    void createBoardingPass(@Param("boardingPassObj") BoardingPass boardingPassObj);
+public interface BoardingPassDAO extends AbstractDAO<BoardingPass> {
+    int create(@Param("boardingPassObj") BoardingPass boardingPassObj);
 
-    BoardingPass getBoardingPassById(@Param("boardingPassId") int boardingPassId);
+    BoardingPass getById(@Param("boardingPassId") int boardingPassId);
 
     BoardingPass getBoardingPassByCheckInId(@Param("checkInId") int checkInId);
 
-    void updateBoardingPass(@Param("boardingPassObj") BoardingPass boardingPassObj);
+    void update(@Param("boardingPassObj") BoardingPass boardingPassObj);
 
-    void deleteBoardingPass(@Param("boardingPassId") int boardingPassId);
+    void delete(@Param("boardingPassId") int boardingPassId);
 
 
     String TABLE_NAME = "boarding_passes";
@@ -29,5 +29,8 @@ public interface BoardingPassDAO {
     String EXPLICIT_COL_BOARDING_TIME = SQLUtils.qualifyColumnName(TABLE_NAME, COL_BOARDING_TIME);
     String EXPLICIT_COL_BOARDING_GROUP = SQLUtils.qualifyColumnName(TABLE_NAME, COL_BOARDING_GROUP);
     String EXPLICIT_COL_CHECK_IN_ID = SQLUtils.qualifyColumnName(TABLE_NAME, COL_CHECK_IN_ID);
+
+    String CHECK_IN_METHOD_STAFF = "staff";
+    String CHECK_IN_METHOD_SELF = "self";
 
 }

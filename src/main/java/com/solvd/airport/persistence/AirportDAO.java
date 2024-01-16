@@ -1,25 +1,32 @@
 package com.solvd.airport.persistence;
 
 import com.solvd.airport.domain.Airport;
+import com.solvd.airport.domain.Terminal;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface AirportDAO {
-    void createAirport(@Param("airportObj") Airport airportObj);
+import java.util.Set;
 
-    void createAirportWithoutAddress(@Param("airportObj") Airport airportObj);
+public interface AirportDAO extends AbstractDAO<Airport> {
+    int create(@Param("airportObj") Airport airportObj);
+
+    Airport getById(@Param("airportId") int airportId);
 
     Airport getAirportByCode(@Param("airportCode") String airportCode);
 
-    void updateAirport(@Param("airportObj") Airport airportObj);
+    void update(@Param("airportObj") Airport airportObj);
 
+    void delete(@Param("airportId") int airportId);
 
-    void deleteAirport(@Param("airportCode") String airportCode);
+    void deleteAirportByCode(@Param("airportCode") String airportCode);
 
     boolean doesAirportExist(@Param("airportCode") String airportCode);
 
+    Set<Terminal> getTerminalsByAirportCode(@Param("airportCode") String airportCode);
+
     String TABLE_NAME = "airports";
     String ALL_COLUMNS = SQLUtils.qualifyTableWithWildcard(TABLE_NAME);
+    String COL_AIRPORT_ID = "airport_id";
     String COL_AIRPORT_CODE = "airport_code";
     String COL_AIRPORT_NAME = "airport_name";
     String COL_ADDRESS_ID = AddressDAO.COL_ADDRESS_ID;

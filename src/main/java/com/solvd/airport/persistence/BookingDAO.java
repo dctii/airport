@@ -4,18 +4,21 @@ import com.solvd.airport.domain.Booking;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface BookingDAO {
-    void createBooking(@Param("bookingObj") Booking bookingObj);
+public interface BookingDAO extends AbstractDAO<Booking> {
+    int create(@Param("bookingObj") Booking bookingObj);
 
-    Booking getBookingById(@Param("bookingId") int bookingId);
+    Booking getById(@Param("bookingId") int bookingId);
 
-    Booking findByBookingNumber(@Param("bookingNumber") String bookingNumber);
+    Booking getBookingByBookingNumber(@Param("bookingNumber") String bookingNumber);
 
-    void updateBooking(@Param("bookingObj") Booking bookingObj);
+    void update(@Param("bookingObj") Booking bookingObj);
 
-    void deleteBooking(@Param("bookingId") int bookingId);
+    void updateBookingByBookingNumber(@Param("bookingObj") Booking bookingObj);
 
-//   TODO:  boolean doesBookingNumberExist(@Param("bookingNumber") String bookingNumber);
+    void delete(@Param("bookingId") int bookingId);
+    void deleteBookingByBookingNumber(@Param("bookingNumber") String bookingNumber);
+
+   boolean doesBookingExist(@Param("bookingNumber") String bookingNumber);
 
 
     String TABLE_NAME = "bookings";
@@ -41,5 +44,9 @@ public interface BookingDAO {
     String EXPLICIT_COL_AGENCY = SQLUtils.qualifyColumnName(TABLE_NAME, COL_AGENCY);
     String EXPLICIT_COL_PASSPORT_NUMBER = SQLUtils.qualifyColumnName(TABLE_NAME, COL_PASSPORT_NUMBER);
     String EXPLICIT_COL_FLIGHT_CODE = SQLUtils.qualifyColumnName(TABLE_NAME, COL_FLIGHT_CODE);
+
+    String STATUS_CONFIRMED = "Confirmed";
+    String STATUS_CHECKED_IN = "Checked-in";
+    String STATUS_BOARDED = "Boarded";
 
 }

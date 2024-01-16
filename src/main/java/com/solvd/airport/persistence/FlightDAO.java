@@ -1,18 +1,34 @@
 package com.solvd.airport.persistence;
 
 import com.solvd.airport.domain.Flight;
+import com.solvd.airport.domain.FlightStaffMember;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface FlightDAO {
-    void createFlight(@Param("flightObj") Flight flightObj);
+import java.util.Set;
+
+public interface FlightDAO extends AbstractDAO<Flight> {
+    int create(@Param("flightObj") Flight flightObj);
+
+    Flight getById(@Param("flightId") int flightId);
+
     Flight getFlightByCode(@Param("flightCode") String flightCode);
-    void updateFlight(@Param("flightObj") Flight flightObj);
-    void deleteFlight(@Param("flightCode") String flightCode);
+
+    void update(@Param("flightObj") Flight flightObj);
+
+    void updateFlightByCode(@Param("flightObj") Flight flightObj);
+
+    void delete(@Param("flightId") int flightId);
+
+    void deleteFlightByCode(@Param("flightCode") String flightCode);
+
+    boolean doesFlightExist(@Param("flightCode") String flightCode);
+
+    Set<FlightStaffMember> getFlightCrewByFlightCode(@Param("flightCode") String flightCode);
 
     String TABLE_NAME = "flights";
     String ALL_COLUMNS = SQLUtils.qualifyTableWithWildcard(TABLE_NAME);
-
+    String COL_FLIGHT_ID = "flight_id";
     String COL_FLIGHT_CODE = "flight_code";
     String COL_DEPARTURE_TIME = "departure_time";
     String COL_ARRIVAL_TIME = "arrival_time";

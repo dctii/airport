@@ -1,13 +1,16 @@
 package com.solvd.airport.persistence;
 
 import com.solvd.airport.domain.Address;
+import com.solvd.airport.domain.PersonInfo;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface AddressDAO {
-    void createAddress(@Param("addressObj") Address addressObj);
+import java.util.Set;
 
-    Address getAddressById(@Param("addressId") int addressId);
+public interface AddressDAO extends ContactDAO<Address> {
+    int create(@Param("addressObj") Address addressObj);
+
+    Address getById(@Param("addressId") int addressId);
 
     Address getAddressByUniqueFields(@Param("street") String street,
                                      @Param("city") String city,
@@ -15,9 +18,12 @@ public interface AddressDAO {
                                      @Param("countryCode") String countryCode
     );
 
-    void updateAddress(@Param("addressObj") Address addressObj);
+    void update(@Param("addressObj") Address addressObj);
 
-    void deleteAddress(@Param("addressId") int addressId);
+    void delete(@Param("addressId") int addressId);
+
+    Set<PersonInfo> getPeopleByAddressId(@Param("addressId") int addressId);
+
 
     String TABLE_NAME = "addresses";
     String ALL_COLUMNS = SQLUtils.qualifyTableWithWildcard(TABLE_NAME);
@@ -38,4 +44,6 @@ public interface AddressDAO {
     String EXPLICIT_COL_COUNTRY_CODE = SQLUtils.qualifyColumnName(TABLE_NAME, COL_COUNTRY_CODE);
     String EXPLICIT_COL_POSTAL_CODE = SQLUtils.qualifyColumnName(TABLE_NAME, COL_POSTAL_CODE);
     String EXPLICIT_COL_TIMEZONE = SQLUtils.qualifyColumnName(TABLE_NAME, COL_TIMEZONE);
+
+    String PERSON_ADDRESSES_TABLE_NAME = PersonInfoDAO.PERSON_ADDRESSES_TABLE_NAME;
 }

@@ -4,18 +4,23 @@ import com.solvd.airport.domain.Timezone;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface TimezoneDAO {
-    void createTimezone(@Param("timezoneObj") Timezone timezoneObj);
+public interface TimezoneDAO extends AbstractDAO<Timezone> {
+    int create(@Param("timezoneObj") Timezone timezoneObj);
+
+    Timezone getById(@Param("timezoneId") int timezoneId);
 
     Timezone getTimezoneByTz(@Param("timezone") String timezone);
 
-    void updateTimezoneByTz(@Param("oldTimezone") String oldTimezoneString, @Param("newTimezoneObj") Timezone newTimezoneObj);
+    void update(@Param("timezoneObj") Timezone timezoneObj);
 
-    void deleteTimezone(@Param("timezone") String timezone);
+    void delete(@Param("timezoneId") int timezoneId);
+
+    void deleteTimezoneByTz(@Param("timezone") String timezone);
 
     boolean doesTimezoneExist(@Param("timezone") String timezone);
 
     String TABLE_NAME = "timezones";
+    String COL_TIMEZONE_ID = "timezone_id";
     String COL_TIMEZONE = "timezone";
     String EXPLICIT_COL_TIMEZONE = SQLUtils.qualifyColumnName(TABLE_NAME, COL_TIMEZONE);
 

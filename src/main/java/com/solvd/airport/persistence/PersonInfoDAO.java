@@ -1,23 +1,31 @@
 package com.solvd.airport.persistence;
 
+import com.solvd.airport.domain.Address;
+import com.solvd.airport.domain.EmailAddress;
 import com.solvd.airport.domain.PersonInfo;
+import com.solvd.airport.domain.PhoneNumber;
 import com.solvd.airport.util.SQLUtils;
 import org.apache.ibatis.annotations.Param;
 
-public interface PersonInfoDAO {
+import java.util.Set;
 
-    PersonInfo findByName(
-            @Param("surname") String surname,
-            @Param("givenName") String givenName
-    );
+public interface PersonInfoDAO extends AbstractDAO<PersonInfo> {
 
-    void createPersonInfo(@Param("personInfoObj") PersonInfo personInfoObj);
+    int create(@Param("personInfoObj") PersonInfo personInfoObj);
 
-    PersonInfo getPersonInfoById(@Param("personInfoId") int personInfoId);
+    PersonInfo getById(@Param("personInfoId") int personInfoId);
 
-    void updatePersonInfo(@Param("personInfoObj") PersonInfo personInfoObj);
+    PersonInfo getByPassportNumber(@Param("passportNumber") String passportNumber);
 
-    void deletePersonInfo(@Param("personInfoId") int personInfoId);
+    void update(@Param("personInfoObj") PersonInfo personInfoObj);
+
+    void delete(@Param("personInfoId") int personInfoId);
+
+    Set<Address> getAddressesByPersonId(@Param("personInfoId") int personInfoId);
+
+    Set<PhoneNumber> getPhoneNumbersByPersonId(@Param("personInfoId") int personInfoId);
+
+    Set<EmailAddress> getEmailAddressesByPersonId(@Param("personInfoId") int personInfoId);
 
     String TABLE_NAME = "person_info";
     String ALL_COLUMNS = SQLUtils.qualifyTableWithWildcard(TABLE_NAME);
@@ -34,4 +42,15 @@ public interface PersonInfoDAO {
     String EXPLICIT_COL_MIDDLE_NAME = SQLUtils.qualifyColumnName(TABLE_NAME, COL_MIDDLE_NAME);
     String EXPLICIT_COL_BIRTHDATE = SQLUtils.qualifyColumnName(TABLE_NAME, COL_BIRTHDATE);
     String EXPLICIT_COL_SEX = SQLUtils.qualifyColumnName(TABLE_NAME, COL_SEX);
+
+    String PERSON_ADDRESSES_TABLE_NAME = "person_addresses";
+    String PA_EXPLICIT_COL_PERSON_INFO_ID = SQLUtils.qualifyColumnName(PERSON_ADDRESSES_TABLE_NAME, COL_PERSON_INFO_ID);
+    String PA_EXPLICIT_COL_ADDRESS_ID = SQLUtils.qualifyColumnName(PERSON_ADDRESSES_TABLE_NAME, AddressDAO.COL_ADDRESS_ID);
+    String PERSON_PHONE_NUMBER_TABLE_NAME = "person_phone_numbers";
+    String PPN_EXPLICIT_COL_PERSON_INFO_ID = SQLUtils.qualifyColumnName(PERSON_PHONE_NUMBER_TABLE_NAME, COL_PERSON_INFO_ID);
+    String PPN_EXPLICIT_COL_PHONE_NUMBER_ID = SQLUtils.qualifyColumnName(PERSON_PHONE_NUMBER_TABLE_NAME, PhoneNumberDAO.COL_PHONE_NUMBER_ID);
+    String PERSON_EMAIL_ADDRESSES_TABLE_NAME = "person_email_addresses";
+    String PEA_EXPLICIT_COL_PERSON_INFO_ID = SQLUtils.qualifyColumnName(PERSON_EMAIL_ADDRESSES_TABLE_NAME, COL_PERSON_INFO_ID);
+    String PEA_EXPLICIT_COL_EMAIL_ADDRESS_ID = SQLUtils.qualifyColumnName(PERSON_EMAIL_ADDRESSES_TABLE_NAME, EmailAddressDAO.COL_EMAIL_ADDRESS_ID);
+
 }
