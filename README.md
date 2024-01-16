@@ -6,7 +6,7 @@ Uses:
 
 - MySQL 8.0.34
 - MySQL Workbench 8.0.34
-- IntelliJ IDEA 2023.2.3 (Community Edition)
+- IntelliJ IDEA 2023.3.2 (Community Edition)
 - openjdk 11.0.21 2023-10-17
 - mac os x aarch64
 - mac os x x86_64
@@ -14,10 +14,19 @@ Uses:
 
 Dependencies:
 
-- org.apache.logging.log4j:log4j-api v2.21.1
-- org.apache.logging.log4j:log4j-core v2.21.1
-- org.apache.commons:commons-lang3 v3.12.0
-- commons-io:commons-io v2.15.0
+- org.apache.logging.log4j/log4j-api v2.21.1
+- org.apache.logging.log4j/log4j-core v2.21.1
+- org.apache.commons/commons-lang3 v3.12.0
+- org.apache.commons/commons-csv v1.10.0
+- commons-io/commons-io v2.15.0
+- org.glassfish.jaxb/jackson-core v4.04
+- org.glassfish.jaxb/jackson-runtime v4.04
+- com.fasterxml.jackson.core/jackson-core v.2.16.1
+- com.fasterxml.jackson.core/jackson-databind v.2.16.1
+- com.googlecode.libphonenumber/libphonenumber v8.13.27
+- org.mybatis/mybatis v3.5.15
+- com.mysql/mysql-connector-j v8.2.0
+- org.jooq/jooq v3.15.12
 
 Plugins:
 
