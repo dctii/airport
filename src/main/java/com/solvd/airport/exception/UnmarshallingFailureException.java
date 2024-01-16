@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class UnmarshallingFailureException {
-    public static void main(String[] args) {
-        
+
+public class UnmarshallingFailureException extends RuntimeException {
+    public UnmarshallingFailureException(String message) {
+        super(message);
     }
 }

@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class UnableToLoadConfigPropertiesException {
-    public static void main(String[] args) {
-        
+
+public class UnableToLoadConfigPropertiesException extends RuntimeException {
+    public UnableToLoadConfigPropertiesException(String message) {
+        super(message);
     }
 }

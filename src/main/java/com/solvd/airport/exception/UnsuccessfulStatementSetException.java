@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class UnsuccessfulStatementSetException {
-    public static void main(String[] args) {
-        
+
+public class UnsuccessfulStatementSetException extends RuntimeException {
+    public UnsuccessfulStatementSetException(String message) {
+        super(message);
     }
 }

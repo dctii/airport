@@ -1,7 +1,7 @@
 package com.solvd.airport.exception;
 
-public class UnsuccessfulAuthConnectionRetrieval extends RuntimeException {
-    public UnsuccessfulAuthConnectionRetrieval(String message) {
+public class UnsuccessfulAuthConnectionRetrievalException extends RuntimeException {
+    public UnsuccessfulAuthConnectionRetrievalException(String message) {
         super(message);
     }
 }

@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class UnsuccessfulResultSetExtraction {
-    public static void main(String[] args) {
-        
+
+public class UnsuccessfulResultSetExtractionException extends RuntimeException {
+    public UnsuccessfulResultSetExtractionException(String message) {
+        super(message);
     }
 }

@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class GetResourcesPathFailureException {
-    public static void main(String[] args) {
-        
+
+public class GetResourcesPathFailureException extends RuntimeException {
+    public GetResourcesPathFailureException(String message) {
+        super(message);
     }
 }

@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class ReadJsonFailureExceptiom {
-    public static void main(String[] args) {
-        
+
+public class ReadJsonFailureException extends RuntimeException {
+    public ReadJsonFailureException(String message) {
+        super(message);
     }
 }

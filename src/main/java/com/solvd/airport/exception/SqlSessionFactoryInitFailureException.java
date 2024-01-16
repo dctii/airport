@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class SqlSessionFactoryInitFailureException {
-    public static void main(String[] args) {
-        
+
+public class SqlSessionFactoryInitFailureException extends RuntimeException {
+    public SqlSessionFactoryInitFailureException(String message) {
+        super(message);
     }
 }

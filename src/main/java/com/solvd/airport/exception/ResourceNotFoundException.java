@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class ResourceNotFoundException {
-    public static void main(String[] args) {
-        
+
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
     }
 }

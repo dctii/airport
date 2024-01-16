@@ -1,6 +1,7 @@
 package com.solvd.airport.exception;
-public class UnsuccessfulUpdateException {
-    public static void main(String[] args) {
-        
+
+public class UnsuccessfulUpdateException extends RuntimeException {
+    public UnsuccessfulUpdateException(String message) {
+        super(message);
     }
 }
