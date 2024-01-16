@@ -7,7 +7,6 @@ import com.solvd.airport.util.StringFormatters;
 public class AirlineStaffMember {
     private int airlineStaffId;
     private String memberRole;
-    //    private Integer personInfoId;
     private PersonInfo personInfo;
 
     final static private int MEMBER_ROLE_MAX_WIDTH = 45;
