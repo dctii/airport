@@ -35,7 +35,27 @@ Plugins:
 
 ## How to Run
 
+### Rename and Update `src/main/resources/example.config.properties`
+
+- Rename `example.config.properties` to `config.properties` or create your own `config.properties` file in the `src/main/resources` directory.
+- Look below. Replace `jdbc.url`, `jdbc.user`, and `jdbc.password` with those respective to your
+  environment for connecting to your MySQL server.
+- The `persistence.mybatis` package will be used if `database.implementation=mybatis`.
+  If `database.implementation` has any other value besides `mybatis`, then it will use
+  the `persistence.jdbc.*JDBCImpl` package.
+
+```text
+jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://{{domain}}:{{port}}/{{database_name}}
+jdbc.user={{username}}
+jdbc.password={{password}}
+database.implementation=mybatis
+
+```
+
 ### Set up Database
+
+Note: the database must be named `airport`.
 
 ```shell
 # 1. Drop `airport` database in case it exists. Will be dropped if it exists.
@@ -257,7 +277,6 @@ Exiting...
 
 ```
 
-
 ## Assignments
 
 <hr />
@@ -274,12 +293,16 @@ Exiting...
 
 ##### Requirements for Assignment 5
 
-1. Use 2 `xml` files to represent 2 tables _which have not been used_ from your database and are not used their  2 java representation.
-2. Create DOM or SAX or STAX parser for the 1st `xml` file and include this into your project logic to get and record data from the 1st `xml`.
+1. Use 2 `xml` files to represent 2 tables _which have not been used_ from your database and are not
+   used their 2 java representation.
+2. Create DOM or SAX or STAX parser for the 1st `xml` file and include this into your project logic
+   to get and record data from the 1st `xml`.
 3. Create a `JAXB` utility for the 2nd `xml` file to get and record data from xml file
 4. For `JAXB` also use `xml` schema validation
-5. Represent 1 other table which was not used in the project and corresponding Java `class` with a `json` file
-6. Create a utility with _Jackson_ to read and record data from and to the `json` file by java `class`.
+5. Represent 1 other table which was not used in the project and corresponding Java `class` with
+   a `json` file
+6. Create a utility with _Jackson_ to read and record data from and to the `json` file by
+   java `class`.
 
 <hr />
 
