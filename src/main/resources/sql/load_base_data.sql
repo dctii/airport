@@ -29,6 +29,7 @@ INSERT INTO email_addresses (email_address)
 VALUES
     ('john_doe@gmail.com'),
     ('zhanna_do@yandex.com'),
+    ('mika_h@yahoo.com'),
     ('jane_doe@delta.com'),
     ('paul_blart@delta.com'),
     ('alice_johnson@delta.com'),
@@ -44,6 +45,7 @@ INSERT INTO phone_numbers (phone_number)
 VALUES
     ('+13105550123'),
     ('+375292001122'),
+    ('+12135556666'),
     ('+13105550124'),
     ('+13105550125'),
     ('+13105550126'),
@@ -61,6 +63,8 @@ VALUES
     ('1234 Sunset Boulevard', NULL, 'Los Angeles', 'California', 'US', '90026', 'America/Los_Angeles'),
     -- Zhanna Doroshevich, passenger
     ('Ulitsa Lenina 12', NULL, 'Minsk', NULL, 'BY', '220030', 'Europe/Minsk'),
+    -- Mika Hirata, passenger
+    ('1237 Wilshire Boulevard', NULL, 'Los Angeles', 'California', 'US', '90026', 'America/Los_Angeles'),
     -- Paul Blart & Jane Doe
     ('1235 Sunset Boulevard', NULL, 'Los Angeles', 'California', 'US', '90026', 'America/Los_Angeles'),
     -- Alice Johnson
@@ -98,6 +102,7 @@ VALUES
     -- passengers
     ('Doe', 'John', NULL, '1975-12-25', 'M'),
     ('Doroshevich', 'Zhanna', NULL, '1985-11-10', 'F'),
+    ('Hirata', 'Mika', NULL, '1988-11-10', 'F'),
 
      -- flight crew members
     ('Doe', 'Jane', NULL, '1985-11-25', 'F'),
@@ -124,6 +129,10 @@ VALUES
     (
         (SELECT person_info_id FROM person_info WHERE surname = 'Doroshevich' AND given_name = 'Zhanna'),
         (SELECT phone_number_id FROM phone_numbers WHERE phone_number = '+375292001122')
+    ),
+        (
+        (SELECT person_info_id FROM person_info WHERE surname = 'Hirata' AND given_name = 'Mika'),
+        (SELECT phone_number_id FROM phone_numbers WHERE phone_number = '+12135556666')
     ),
     (
         (SELECT person_info_id FROM person_info WHERE surname = 'Doe' AND given_name = 'Jane'),
@@ -172,6 +181,10 @@ VALUES
         (SELECT person_info_id FROM person_info WHERE surname = 'Doroshevich' AND given_name = 'Zhanna'),
         (SELECT email_address_id FROM email_addresses WHERE email_address = 'zhanna_do@yandex.com')
     ),
+        (
+        (SELECT person_info_id FROM person_info WHERE surname = 'Hirata' AND given_name = 'Mika'),
+        (SELECT email_address_id FROM email_addresses WHERE email_address = 'mika_h@yahoo.com')
+    ),
     (
         (SELECT person_info_id FROM person_info WHERE surname = 'Doe' AND given_name = 'Jane'),
         (SELECT email_address_id FROM email_addresses WHERE email_address = 'jane_doe@delta.com')
@@ -217,6 +230,10 @@ VALUES
     (
         (SELECT person_info_id FROM person_info WHERE surname = 'Doroshevich' AND given_name = 'Zhanna'),
         (SELECT address_id FROM addresses WHERE street = 'Ulitsa Lenina 12' AND city = 'Minsk')
+    ),
+    (
+        (SELECT person_info_id FROM person_info WHERE surname = 'Hirata' AND given_name = 'Mika'),
+        (SELECT address_id FROM addresses WHERE street = '1237 Wilshire Boulevard' AND city = 'Los Angeles')
     ),
     (
         (SELECT person_info_id FROM person_info WHERE surname = 'Doe' AND given_name = 'Jane'),
@@ -281,9 +298,14 @@ SHOW WARNINGS;
 INSERT INTO terminals (airport_code, terminal_code, terminal_name, is_international, is_domestic)
 VALUES
     ('LAX', 'TBIT', 'Tom Bradley International Terminal', 1, 0),
-    ('LAX', 'T1', 'Southwest Airlines Terminal', 0, 1),
-    ('LAX', 'T2', 'International Terminal', 1, 1),
-    ('LAX', 'T3', 'Delta Airlines Terminal', 0, 1),
+    ('LAX', 'T1', 'Terminal 1', 0, 1),
+    ('LAX', 'T2', 'Terminal 2', 0, 1),
+    ('LAX', 'T3', 'Terminal 3', 0, 1),
+    ('LAX', 'T4', 'Terminal 4', 1, 1),
+    ('LAX', 'T5', 'Terminal 5', 0, 1),
+    ('LAX', 'T6', 'Terminal 6', 0, 1),
+    ('LAX', 'T7', 'Terminal 7', 0, 1),
+    ('LAX', 'T8', 'Terminal 8', 0, 1),
     ('HND', 'T1', 'Terminal 1', 0, 1),
     ('HND', 'T2', 'Terminal 2', 1, 1),
     ('HND', 'T3', 'Terminal 3', 0, 1),
@@ -298,19 +320,8 @@ SHOW WARNINGS;
 
 INSERT INTO gates(gate_code, airport_code, terminal_code)
 VALUES
-        ('148', 'LAX', 'TBIT'),
-        ('149', 'LAX', 'TBIT'),
-
-        ('105', 'HND', 'T3'),
-        ('106', 'HND', 'T3'),
-
-        ('30', 'LHR', 'T3'),
-        ('31', 'LHR', 'T3'),
-        ('32', 'LHR', 'T3'),
-
-        ('1', 'MSQ', 'T1'),
-        ('2', 'MSQ', 'T1'),
-        ('3', 'MSQ', 'T1')
+        ('130', 'LAX', 'TBIT'),
+        ('131', 'LAX', 'TBIT')
     ;
 
 SHOW WARNINGS;
@@ -347,12 +358,12 @@ INSERT INTO flights (
 VALUES
     (
         'DL123', '2025-01-25 10:00:00', '2024-01-24 08:00:00',
-        (SELECT gate_id FROM gates WHERE gate_code = '148' AND airport_code = 'LAX'),
+        (SELECT gate_id FROM gates WHERE gate_code = '130' AND airport_code = 'LAX'),
         'MSQ', 'DL', 'Boeing 777', 'N123DL', 300
     ),
     (
         'NQ456', '2024-12-24 11:00:00', '2024-12-25 07:00:00',
-        (SELECT gate_id FROM gates WHERE gate_code = '149' AND airport_code = 'LAX'),
+        (SELECT gate_id FROM gates WHERE gate_code = '131' AND airport_code = 'LAX'),
         'HND', 'NQ', 'Boeing 787', 'N123NQ', 250
     );
 
@@ -375,11 +386,11 @@ INSERT INTO flight_staff (flight_crew_id, airline_staff_id)
 VALUES
     -- DL123
     (
-    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'LA123'),
+    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'DL123'),
      (SELECT airline_staff_id FROM airline_staff WHERE person_info_id =
       (SELECT person_info_id FROM person_info WHERE surname = 'Johnson' AND given_name = 'Alice'))), -- Pilot
     (
-    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'LA123'),
+    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'DL123'),
      (SELECT airline_staff_id FROM airline_staff WHERE person_info_id =
       (SELECT person_info_id FROM person_info WHERE surname = 'Ericson' AND given_name = 'Alexa')
       )
@@ -387,13 +398,13 @@ VALUES
 
     -- NQ456
     (
-    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'LA456'),
+    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'NQ456'),
      (SELECT airline_staff_id FROM airline_staff WHERE person_info_id =
       (SELECT person_info_id FROM person_info WHERE surname = 'Tanaka' AND given_name = 'Hiro')
       )
       ), -- Pilot
     (
-    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'LA456'),
+    (SELECT flight_crew_id FROM flight_crew WHERE flight_code = 'NQ456'),
      (SELECT airline_staff_id FROM airline_staff WHERE person_info_id =
       (SELECT person_info_id FROM person_info WHERE surname = 'Kurosawa' AND given_name = 'Joy')
       )
@@ -406,11 +417,14 @@ INSERT INTO passports (
     person_info_id
 )
 VALUES
-    ('USA1234567', '2018-01-01', '2028-01-01',
+    ('USA123', '2018-01-01', '2028-01-01',
         (SELECT person_info_id FROM person_info WHERE surname = 'Doe' AND given_name = 'John')
         ),
-    ('BYR2345678', '2018-01-02', '2028-01-02',
+    ('BYR123', '2018-01-02', '2028-01-02',
         (SELECT person_info_id FROM person_info WHERE surname = 'Doroshevich' AND given_name = 'Zhanna')
+        ),
+    ('JPN123', '2018-01-02', '2028-01-02',
+        (SELECT person_info_id FROM person_info WHERE surname = 'Hirata' AND given_name = 'Mika')
         ),
     ('USA3456789', '2018-01-03', '2028-01-03',
         (SELECT person_info_id FROM person_info WHERE surname = 'Blart' AND given_name = 'Paul')
@@ -433,6 +447,7 @@ VALUES
 
 SHOW WARNINGS;
 
+/*
 INSERT INTO bookings (
     booking_number, purchase_datetime, seat_class, seat_number,
     status, price, agency, passport_number, flight_code
@@ -441,13 +456,13 @@ VALUES
     (
         'KAYAK123456', CURRENT_DATE, 'Economy', '12A',
         'Confirmed', 1600.00, 'Kayak',
-        'BYR2345678',
+        'BYR123',
         'DL123'
     ),
     (
         'KAYAK654321', CURRENT_DATE, 'Business', '2B',
         'Confirmed', 4000.00, 'Kayak',
-        'USA1234567',
+        'USA123',
         'NQ456'
     )
     ;
@@ -503,3 +518,4 @@ UPDATE bookings
     WHERE booking_number = 'KAYAK123456';
 
 SHOW WARNINGS;
+*/
