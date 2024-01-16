@@ -1,108 +1,144 @@
 package com.solvd.airport.service.impl;
 
-import com.solvd.airport.domain.*;
-import com.solvd.airport.persistence.*;
+import com.solvd.airport.domain.AirlineStaffMember;
+import com.solvd.airport.domain.Baggage;
+import com.solvd.airport.domain.BoardingPass;
+import com.solvd.airport.domain.Booking;
+import com.solvd.airport.domain.CheckIn;
+import com.solvd.airport.domain.Flight;
+import com.solvd.airport.persistence.AirlineStaffMemberDAO;
+import com.solvd.airport.persistence.BaggageDAO;
+import com.solvd.airport.persistence.BoardingPassDAO;
+import com.solvd.airport.persistence.BookingDAO;
+import com.solvd.airport.persistence.CheckInDAO;
+import com.solvd.airport.persistence.FlightDAO;
 import com.solvd.airport.service.CheckInService;
+import com.solvd.airport.util.BigDecimalUtils;
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.DataAccessProvider;
+import com.solvd.airport.util.JacksonUtils;
 import com.solvd.airport.util.SQLUtils;
+import com.solvd.airport.util.StaxUtils;
 import com.solvd.airport.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class CheckInServiceImpl implements CheckInService {
-    private static final Logger LOGGER = LogManager.getLogger(CheckInServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.CHECK_IN_SERVICE_IMPL);
     private final CheckInDAO checkInDAO = DataAccessProvider.getCheckInDAO();
     private final BaggageDAO baggageDAO = DataAccessProvider.getBaggageDAO();
     private final BoardingPassDAO boardingPassDAO = DataAccessProvider.getBoardingPassDAO();
     private final BookingDAO bookingDAO = DataAccessProvider.getBookingDAO();
-    private final PersonEmailAddressDAO personEmailAddressDAO = DataAccessProvider.getPersonEmailAddressDAO();
     private final AirlineStaffMemberDAO airlineStaffMemberDAO = DataAccessProvider.getAirlineStaffMemberDAO();
     private final FlightDAO flightDAO = DataAccessProvider.getFlightDAO();
 
     @Override
     public void performCheckIn(String staffEmailString, String bookingNumber, boolean hasBaggage, double baggageWeight) {
         // Step 1: Find Booking
-        Booking booking = bookingDAO.findByBookingNumber(bookingNumber);
-        String flightCode = booking.getFlightCode();
-        Flight flight = flightDAO.getFlightByCode(flightCode);
+        Booking booking = JacksonUtils.getBookingByBookingNumber(bookingNumber);
+        Flight flight = flightDAO.getFlightByCode(booking.getFlightCode());
 
-        // Step 2: Find Staff by Email and Assign for Check-In
-        PersonEmailAddress staffEmailAddress = personEmailAddressDAO.getPersonEmailAddressByEmail(staffEmailString);
-        int staffPersonInfoId = staffEmailAddress.getPersonInfoId();
-        AirlineStaffMember staffMember = airlineStaffMemberDAO.findByPersonInfoId(staffPersonInfoId);
+        AirlineStaffMember checkInStaffMember = StaxUtils.getAirlineStaffMemberByEmail(staffEmailString); // to use StAX
+        // airlineStaffMemberDAO.getByEmailAddress(staffEmailString); // to use MyBatisImpl or JDBCImpl
+        if (checkInStaffMember == null) {
+            LOGGER.error("Try again. Staff member not found for email: {}", staffEmailString);
+            return;
+        }
 
         // Step 3: Perform Check-In
-        boolean checkInExists = checkInDAO.hasCheckInForBookingId(booking.getBookingId());
-        if (checkInExists) {
-            /* TODO: set a handling method for this that will reroute the interface user to type in a new booking number
-                or to exit or you get this error:
-                    java.lang.IllegalStateException: Check-in already exists for booking number: KAYAK654321
-                    at com.solvd.airport.service.impl.CheckInServiceImpl.performCheckIn(CheckInServiceImpl.java:43) ~[classes/:?]
-                    at com.solvd.airport.util.MenuUtils.performCheckIn(MenuUtils.java:125) [classes/:?]
-                    at com.solvd.airport.Main.main(Main.java:59) [classes/:?]
-                    at org.codehaus.mojo.exec.ExecJavaMojo$1.run(ExecJavaMojo.java:279) [exec-maven-plugin-3.1.0.jar:?]
-                    at java.base/java.lang.Thread.run(Thread.java:829) [?:?]
-            */
-            throw new IllegalStateException("Check-in already exists for booking number: " + bookingNumber);
+        if (doesCheckInExist(bookingNumber, booking)) {
+            return;
         }
 
         CheckIn checkIn = new CheckIn(
-                "staff",
+                CheckInDAO.CHECK_IN_METHOD_STAFF,
                 true,
-                staffMember.getAirlineStaffId(),
+                checkInStaffMember.getAirlineStaffId(),
                 booking.getBookingId()
         );
-        checkInDAO.createCheckIn(checkIn);
+        checkInDAO.create(checkIn);
 
         // Step 4: Handle Baggage if applicable
         if (hasBaggage) {
-            String destinationAirportCode = flight.getDestination();
             String baggageCode = StringFormatters.createBaggageCode(
-                    flightCode,
-                    destinationAirportCode,
+                    booking.getFlightCode(),
+                    flight.getDestination(),
                     bookingNumber
             );
 
-            BigDecimal baggagePrice = BigDecimal.valueOf(0.00);
-            if (baggageWeight > 20.00) {
-                baggagePrice = BigDecimal.valueOf(baggageWeight * 1.05).setScale(2, RoundingMode.HALF_UP);
-            }
             Baggage baggage = new Baggage(
                     baggageCode,
                     BigDecimal.valueOf(baggageWeight),
-                    BigDecimal.valueOf(baggageWeight).setScale(2, RoundingMode.HALF_UP),
+                    calculateBaggagePrice(baggageWeight),
                     checkIn.getCheckInId()
             );
-            baggageDAO.createBaggage(baggage);
+
+            baggageDAO.create(baggage);
         }
 
         // Step 5: Create Boarding Pass
-        LocalDateTime departureTime = flight.getDepartureTime().toLocalDateTime();
-        String boardingGroup = SQLUtils.determineBoardingGroup(booking.getSeatClass());
-        Timestamp boardingTime = Timestamp.valueOf(departureTime.minusMinutes(30));
 
         BoardingPass boardingPass = new BoardingPass(
                 false,
-                boardingTime,
-                boardingGroup,
+                calculateBoardingTime(flight),
+                SQLUtils.determineBoardingGroup(booking.getSeatClass()),
                 checkIn.getCheckInId()
         );
-        boardingPassDAO.createBoardingPass(boardingPass);
+        boardingPassDAO.create(boardingPass);
 
         // Step 6: Update Booking Status
-        booking.setStatus("Checked-in");
-        bookingDAO.updateBooking(booking);
+        updateBookingStatus(booking, BookingDAO.STATUS_CHECKED_IN);
 
         // Step 7: Finalize Check-In
-        checkIn.setPassIssued(true);
-        checkInDAO.updateCheckIn(checkIn);
+        updateCheckInBoardingPassIssueStatus(checkIn, true);
 
         // Display boarding pass info (if needed)
         SQLUtils.displayBoardingPassInfo(bookingNumber, hasBaggage);
+    }
+
+    private static Timestamp calculateBoardingTime(Flight flight) {
+        LocalDateTime departureTime = flight.getDepartureTime().toLocalDateTime();
+        Timestamp boardingTime = Timestamp.valueOf(departureTime.minusMinutes(30));
+        return boardingTime;
+    }
+
+    private void updateCheckInBoardingPassIssueStatus(CheckIn checkIn, boolean isBoardingPassIssued) {
+        checkIn.setPassIssued(isBoardingPassIssued);
+        checkInDAO.update(checkIn);
+    }
+
+    private void updateBookingStatus(Booking booking, String newStatus) {
+        booking.setStatus(newStatus);
+        bookingDAO.update(booking);
+        JacksonUtils.updateBookingByBookingNumber(booking);
+    }
+
+    private boolean doesCheckInExist(String bookingNumber, Booking booking) {
+        boolean checkInExists = checkInDAO.hasCheckInForBookingId(booking.getBookingId());
+        if (checkInExists) {
+            LOGGER.error("Try again. Check-in already exists for booking number: " + bookingNumber);
+            return true;
+        }
+        return false;
+    }
+
+    private static BigDecimal calculateBaggagePrice(double baggageWeight) {
+        BigDecimal baggagePrice;
+        if (baggageWeight > BaggageDAO.BAGGAGE_WEIGHT_THRESHOLD_BEFORE_COST_FACTORED) {
+            baggagePrice = BigDecimalUtils.round(
+                    2,
+                    baggageWeight * BaggageDAO.BAGGAGE_WEIGHT_POST_THRESHOLD_COST_FACTOR
+            );
+        } else {
+            baggagePrice = BigDecimalUtils.round(
+                    2,
+                    baggageWeight
+            );
+        }
+        return baggagePrice;
     }
 }
