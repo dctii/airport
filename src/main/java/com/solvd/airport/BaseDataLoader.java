@@ -1,13 +1,18 @@
 package com.solvd.airport;
 
-import com.solvd.airport.util.*;
+
+import com.solvd.airport.util.AnsiCodes;
+import com.solvd.airport.util.ClassConstants;
+import com.solvd.airport.util.FilepathConstants;
+import com.solvd.airport.util.MenuUtils;
+import com.solvd.airport.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
 public class BaseDataLoader {
-    private static final Logger LOGGER = LogManager.getLogger(BaseDataLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.BASE_DATA_LOADER);
 
     public static void main(String[] args) {
 
@@ -25,6 +30,7 @@ public class BaseDataLoader {
             LOGGER.info("[5] Load Airlines Data");
             LOGGER.info("[6] Load Terminals Data");
             LOGGER.info("[7] Load Gates Data");
+            LOGGER.info("[8] Load Bookings Data");
 
             LOGGER.info(StringConstants.NEWLINE + "Enter your choice: ");
 
@@ -46,6 +52,8 @@ public class BaseDataLoader {
                     MenuUtils.loadTerminals(FilepathConstants.TERMINALS_XML);
                     LOGGER.info(StringConstants.NEWLINE);
                     MenuUtils.loadGates(FilepathConstants.GATES_XML);
+                    LOGGER.info(StringConstants.NEWLINE);
+                    MenuUtils.loadBookings(FilepathConstants.BOOKINGS_JSON);
                     break;
                 case 2:
                     MenuUtils.loadCountryData();
@@ -65,6 +73,9 @@ public class BaseDataLoader {
                     break;
                 case 7:
                     MenuUtils.loadGates(FilepathConstants.GATES_XML);
+                    break;
+                case 8:
+                    MenuUtils.loadBookings(FilepathConstants.BOOKINGS_JSON);
                     break;
                 case 0:
                     LOGGER.info("Exiting...");

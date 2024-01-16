@@ -1,6 +1,7 @@
 package com.solvd.airport;
 
 import com.solvd.airport.util.AnsiCodes;
+import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.MenuUtils;
 import com.solvd.airport.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +26,7 @@ NOTES:
 */
 
 public class Main {
-    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.MAIN);
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -38,6 +39,7 @@ public class Main {
             LOGGER.info("[1] Register Passport Holder");
             LOGGER.info("[2] Perform Check-In");
             LOGGER.info("[3] Board Passengers");
+            LOGGER.info("[4] Change Departure Gate for Flight");
 
             LOGGER.info(StringConstants.NEWLINE + "Enter your choice: ");
 
@@ -52,13 +54,16 @@ public class Main {
                     MenuUtils.registerPassportHolder(scanner);
                     break;
                 case 2:
-                    // Test with "emi_sato@air-japan.co.jp";
-                    // Test with KAYAK654321;
+                    // Test with "emi_sato@air-japan.co.jp"; "paul_blart@delta.com";
+                    // Test with EXPEDIA001; KAYAK001; KAYAK002;
                     MenuUtils.performCheckIn(scanner);
                     break;
                 case 3:
                     // Test with KAYAK654321 after checking in with it;
                     MenuUtils.boardPassenger(scanner);
+                    break;
+                case 4:
+                    MenuUtils.updateFlightGate(scanner);
                     break;
                 case 0:
                     LOGGER.info("Exiting...");
