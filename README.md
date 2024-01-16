@@ -80,11 +80,13 @@ mvn exec:java
 # Clean install dependencies
 mvn clean install
 
-# Run the `base-data-loader` profile to load all of the data
+# Run the `base-data-loader` profile and load all of the data
 mvn exec:java -P base-data-loader
 ```
 
 #### Preview of `BaseDataLoader` options:
+
+Select [1]
 
 ```shell
 === Airport Base Data Loading Tools: ===
@@ -105,7 +107,7 @@ Enter your choice:
 ### Run `Main.class`
 
 ```shell
-# Run `clean install` if you didn't load the additional data through BaseDataLoader
+# Run `clean install`
 mvn clean install
 
 # Run the the primary profile to run the services
