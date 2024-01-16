@@ -2,16 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.TerminalDAO">
-
-    <resultMap id="terminalMap" type="com.solvd.airport.domain.Terminal">
-        <id column="airport_code" property="airportCode"/>
-        <id column="terminal_code" property="terminalCode"/>
+    <resultMap id="terminalMap" type="Terminal">
+        <id column="terminalId" property="terminalId"/>
+        <result column="airport_code" property="airportCode"/>
+        <result column="terminal_code" property="terminalCode"/>
         <result column="terminal_name" property="terminalName"/>
         <result column="is_international" property="isInternational"/>
         <result column="is_domestic" property="isDomestic"/>
+
+        <collection
+                property="gates"
+                column="{airportCode=airport_code, terminalCode=terminal_code}"
+                javaType="Set"
+                select="getGatesByCodes"
+        />
     </resultMap>
 
-    <insert id="createTerminal" parameterType="com.solvd.airport.domain.Terminal">
+    <insert id="create" parameterType="Terminal"
+            useGeneratedKeys="true" keyProperty="terminalId">
         INSERT INTO terminals (airport_code, terminal_code, terminal_name, is_international,
         is_domestic)
         VALUES (
@@ -23,9 +31,53 @@
         )
     </insert>
 
-    <select id="doesTerminalExist" parameterType="String" resultType="boolean">
+    <select id="getById" parameterType="int" resultMap="terminalMap">
+        SELECT * FROM terminals
+        WHERE terminal_id = #{terminalId}
+    </select>
+
+    <select id="getTerminalByCodes" parameterType="map" resultMap="terminalMap">
+        SELECT * FROM terminals
+        WHERE
+        airport_code = #{airportCode}
+        AND terminal_code = #{terminalCode}
+    </select>
+
+    <update id="update" parameterType="Terminal">
+        UPDATE terminals
+        SET
+        airport_code = #{airportCode},
+        terminal_code = #{terminalCode},
+        terminal_name = #{terminalName},
+        is_international = #{isInternational},
+        is_domestic = #{isDomestic}
+        WHERE terminal_id = #{terminalId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM terminals
+        WHERE terminal_id = #{terminalId}
+    </delete>
+
+    <delete id="deleteTerminalByCodes" parameterType="map">
+        DELETE FROM terminals
+        WHERE
+        airport_code = #{airportCode}
+        AND terminal_code = #{terminalCode}
+    </delete>
+
+    <select id="doesTerminalExist" parameterType="map" resultType="boolean">
         SELECT COUNT(*) > 0 FROM terminals
         WHERE airport_code = #{airportCode} AND terminal_code = #{terminalCode}
     </select>
+
+    <select id="getGatesByCodes" parameterType="map"
+            resultMap="com.solvd.airport.persistence.GateDAO.gateMap">
+        SELECT g.*
+        FROM gates g
+        WHERE g.airport_code = #{airportCode}
+        AND g.terminal_code = #{terminalCode}
+    </select>
+
 
 </mapper>

@@ -3,15 +3,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.PersonInfoDAO">
 
-    <resultMap id="personInfoMap" type="com.solvd.airport.domain.PersonAddress">
-        <id column="person_info_id" property="personAddressId"/>
+    <resultMap id="personInfoMap" type="PersonInfo">
+        <id column="person_info_id" property="personInfoId"/>
         <result column="given_name" property="givenName"/>
         <result column="middle_name" property="middleName"/>
         <result column="birthdate" property="birthdate"/>
         <result column="sex" property="sex"/>
+
+        <collection
+                property="addresses"
+                column="person_info_id"
+                notNullColumn="person_info_id"
+                javaType="Set"
+                select="getAddressesByPersonId"
+        />
+        <collection
+                property="phoneNumbers"
+                javaType="Set"
+                column="person_info_id"
+                select="getPhoneNumbersByPersonId"
+        />
+        <collection
+                property="emailAddresses"
+                javaType="Set"
+                column="person_info_id"
+                select="getEmailAddressesByPersonId"
+        />
     </resultMap>
 
-    <insert id="createPersonInfo" parameterType="com.solvd.airport.domain.PersonInfo"
+    <insert id="create" parameterType="PersonInfo"
             useGeneratedKeys="true" keyProperty="personInfoId">
         INSERT INTO person_info (surname, given_name, middle_name, birthdate, sex)
         VALUES (
@@ -23,20 +43,20 @@
         )
     </insert>
 
-    <select id="getPersonInfoById" resultType="com.solvd.airport.domain.PersonInfo"
-            resultMap="personInfoMap">
-        SELECT * FROM person_info WHERE person_info_id = #{personInfoId}
-    </select>
-
-    <select id="findByName" resultType="com.solvd.airport.domain.PersonInfo"
-            resultMap="personInfoMap">
+    <select id="getById" resultMap="personInfoMap" parameterType="int">
         SELECT * FROM person_info
-        WHERE
-        surname = #{surname}
-        AND given_name = #{givenName}
+        WHERE person_info_id = #{personInfoId}
     </select>
 
-    <update id="updatePersonInfo" parameterType="com.solvd.airport.domain.PersonInfo">
+    <select id="getByPassportNumber" parameterType="String" resultMap="personInfoMap">
+        SELECT pi.person_info_id, pi.given_name, pi.middle_name, pi.birthdate, pi.sex
+        FROM person_info pi
+        JOIN passports p
+        ON pi.person_info_id = p.person_info_id
+        WHERE p.passport_number = #{passportNumber}
+    </select>
+
+    <update id="update" parameterType="PersonInfo">
         UPDATE person_info
         SET
         surname = #{personInfoObj.surname},
@@ -47,8 +67,33 @@
         WHERE person_info_id = #{personInfoObj.personInfoId}
     </update>
 
-    <delete id="deletePersonInfo">
-        DELETE FROM person_info WHERE person_info_id = #{personInfoId}
+    <delete id="delete" parameterType="int">
+        DELETE FROM person_info
+        WHERE person_info_id = #{personInfoId}
     </delete>
+
+    <select id="getAddressesByPersonId" parameterType="int"
+            resultMap="com.solvd.airport.persistence.AddressDAO.addressMap">
+        SELECT a.* FROM addresses a
+        JOIN person_addresses pa
+        ON pa.address_id = a.address_id
+        WHERE pa.person_info_id = #{personInfoId}
+    </select>
+
+    <select id="getPhoneNumbersByPersonId" parameterType="int"
+            resultMap="com.solvd.airport.persistence.PhoneNumberDAO.phoneNumberMap">
+        SELECT pn.* FROM phone_numbers pn
+        JOIN person_phone_numbers ppn
+        ON ppn.phone_number_id = pn.phone_number_id
+        WHERE ppn.person_info_id = #{personInfoId}
+    </select>
+
+    <select id="getEmailAddressesByPersonId" parameterType="int"
+            resultMap="com.solvd.airport.persistence.EmailAddressDAO.emailAddressMap">
+        SELECT ea.* FROM email_addresses ea
+        JOIN person_email_addresses pea
+        ON pea.email_address_id = ea.email_address_id
+        WHERE pea.person_info_id = #{personInfoId}
+    </select>
 
 </mapper>

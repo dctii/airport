@@ -3,53 +3,68 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.AirlineStaffMemberDAO">
 
-    <resultMap id="airlineStaffMemberMap" type="com.solvd.airport.domain.AirlineStaffMember">
+    <resultMap id="airlineStaffMemberMap" type="AirlineStaffMember">
         <id column="airline_staff_id" property="airlineStaffId"/>
         <result column="member_role" property="memberRole"/>
-        <result column="person_info_id" property="personInfoId"/>
+        <!--        <result column="person_info_id" property="personInfoId"/>-->
+        <association
+                property="personInfo"
+                column="person_info_id"
+                notNullColumn="person_info_id"
+                javaType="PersonInfo"
+                resultMap="com.solvd.airport.persistence.PersonInfoDAO.personInfoMap"
+        />
     </resultMap>
 
-    <insert id="createAirlineStaffMember"
-            parameterType="com.solvd.airport.domain.AirlineStaffMember" useGeneratedKeys="true"
+    <insert id="create"
+            parameterType="AirlineStaffMember" useGeneratedKeys="true"
             keyProperty="airlineStaffId">
         INSERT INTO airline_staff (member_role, person_info_id)
         VALUES (
-        #{staffMemberObj.memberRole},
-        #{staffMemberObj.personInfoId}
+        #{airlineStaffMemberObj.memberRole},
+        #{airlineStaffMemberObj.personInfo.personInfoId}
         )
     </insert>
 
-    <select id="getAirlineStaffMemberById" resultType="com.solvd.airport.domain.AirlineStaffMember"
-            resultMap="airlineStaffMemberMap">
-        SELECT * FROM airline_staff WHERE airline_staff_id = #{airlineStaffId}
+    <select id="getById" resultMap="airlineStaffMemberMap" parameterType="int">
+        SELECT a.*, pi.* FROM airline_staff a
+        LEFT JOIN person_info pi
+        ON a.person_info_id = pi.person_info_id
+        WHERE a.airline_staff_id = #{airlineStaffId}
     </select>
 
-    <select id="findByPersonInfoId" resultType="com.solvd.airport.domain.AirlineStaffMember"
-            resultMap="airlineStaffMemberMap">
-        SELECT * FROM airline_staff WHERE person_info_id = 9
-    </select>
-
-    <select id="findByEmailAddress" resultType="com.solvd.airport.domain.AirlineStaffMember"
-            resultMap="airlineStaffMemberMap">
-        SELECT staff.* FROM airline_staff AS staff
-        JOIN person_info AS person ON staff.person_info_id = person.person_info_id
-        JOIN person_email_addresses AS pea ON person.person_info_id = pea.person_info_id
-        JOIN email_addresses AS email ON pea.email_address_id = email.email_address_id
-        WHERE email.email_address = #{emailAddress}
+    <select id="getByPersonInfoId" resultMap="airlineStaffMemberMap" parameterType="int">
+        SELECT a.*, pi.* FROM airline_staff a
+        LEFT JOIN person_info pi
+        ON a.person_info_id = pi.person_info_id
+        WHERE a.person_info_id = #{personInfoId}
     </select>
 
 
-    <update id="updateAirlineStaffMember"
-            parameterType="com.solvd.airport.domain.AirlineStaffMember">
+    <select id="getByEmailAddress" resultMap="airlineStaffMemberMap" parameterType="String">
+        SELECT s.*, pi.* FROM airline_staff s
+        JOIN person_info pi
+        ON s.person_info_id = pi.person_info_id
+        JOIN person_email_addresses pea
+        ON pi.person_info_id = pea.person_info_id
+        JOIN email_addresses e
+        ON pea.email_address_id = e.email_address_id
+        WHERE e.email_address = #{emailAddress}
+    </select>
+
+
+    <update id="update"
+            parameterType="AirlineStaffMember">
         UPDATE airline_staff
         SET
-        member_role = #{staffMemberObj.memberRole},
-        person_info_id = #{staffMemberObj.personInfoId}
-        WHERE airline_staff_id = #{staffMemberObj.airlineStaffId}
+        member_role = #{airlineStaffMemberObj.memberRole},
+        person_info_id = #{airlineStaffMemberObj.personInfo.personInfoId}
+        WHERE airline_staff_id = #{airlineStaffMemberObj.airlineStaffId}
     </update>
 
-    <delete id="deleteAirlineStaffMember">
-        DELETE FROM airline_staff WHERE airline_staff_id = #{airlineStaffId}
+    <delete id="delete" parameterType="int">
+        DELETE FROM airline_staff
+        WHERE airline_staff_id = #{airlineStaffId}
     </delete>
 
 </mapper>

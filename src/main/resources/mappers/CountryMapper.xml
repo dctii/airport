@@ -3,12 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.CountryDAO">
 
-    <resultMap id="countryMap" type="com.solvd.airport.domain.Country">
-        <id column="country_code" property="countryCode"/>
+    <resultMap id="countryMap" type="Country">
+        <id column="country_id" property="countryId"/>
+        <result column="country_code" property="countryCode"/>
         <result column="country_name" property="countryName"/>
     </resultMap>
 
-    <insert id="createCountry" parameterType="com.solvd.airport.domain.Country">
+    <insert id="create" parameterType="Country"
+            useGeneratedKeys="true" keyProperty="countryId">
         INSERT INTO countries (country_code, country_name)
         VALUES (
         #{countryObj.countryCode},
@@ -16,23 +18,42 @@
         )
     </insert>
 
-    <select id="getCountryByCode" resultType="com.solvd.airport.domain.Country"
-            resultMap="countryMap">
-        SELECT * FROM countries WHERE country_code = #{countryCode}
+    <select id="getById" parameterType="int" resultMap="countryMap">
+        SELECT * FROM countries
+        WHERE country_id = #{countryId}
     </select>
 
-    <update id="updateCountry" parameterType="com.solvd.airport.domain.Country">
+    <select id="getCountryByCode" resultMap="countryMap" parameterType="String">
+        SELECT * FROM countries
+        WHERE country_code = #{countryCode}
+    </select>
+
+    <update id="update" parameterType="Country">
+        UPDATE countries
+        SET
+        country_code = #{countryObj.countryCode},
+        country_name = #{countryObj.countryName}
+        WHERE country_id = #{countryObj.countryId}
+    </update>
+
+    <update id="updateCountryByCode" parameterType="Country">
         UPDATE countries
         SET
         country_name = #{countryObj.countryName}
         WHERE country_code = #{countryObj.countryCode}
     </update>
 
-    <delete id="deleteCountry">
-        DELETE FROM countries WHERE country_code = #{countryCode}
+    <delete id="delete" parameterType="int">
+        DELETE FROM countries
+        WHERE country_id = #{countryId}
     </delete>
 
-    <select id="doesCountryCodeExist" parameterType="String" resultType="boolean">
+    <delete id="deleteCountryByCode" parameterType="String">
+        DELETE FROM countries
+        WHERE country_code = #{countryCode}
+    </delete>
+
+    <select id="doesCountryCodeExist" resultType="boolean" parameterType="String">
         SELECT COUNT(*) > 0 FROM countries
         WHERE country_code = #{countryCode}
     </select>

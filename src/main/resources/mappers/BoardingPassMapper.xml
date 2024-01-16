@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.BoardingPassDAO">
-    <resultMap id="boardingPassMap" type="com.solvd.airport.domain.BoardingPass">
+    <resultMap id="boardingPassMap" type="BoardingPass">
         <id column="boarding_pass_id" property="boardingPassId"/>
         <result column="is_boarded" property="isBoarded"/>
         <result column="boarding_time" property="boardingTime"/>
@@ -10,39 +10,39 @@
         <result column="check_in_id" property="checkInId"/>
     </resultMap>
 
-    <insert id="createBoardingPass" parameterType="com.solvd.airport.domain.BoardingPass"
+    <insert id="create" parameterType="BoardingPass"
             useGeneratedKeys="true" keyProperty="boardingPassId">
         INSERT INTO boarding_passes (is_boarded, boarding_time, boarding_group, check_in_id)
         VALUES (
-            #{boardingPassObj.isBoarded},
-            #{boardingPassObj.boardingTime},
-            #{boardingPassObj.boardingGroup},
-            #{boardingPassObj.checkInId}
+        #{boardingPassObj.isBoarded},
+        #{boardingPassObj.boardingTime},
+        #{boardingPassObj.boardingGroup},
+        #{boardingPassObj.checkInId}
         )
     </insert>
 
-    <select id="getBoardingPassById" parameterType="int"
-            resultType="com.solvd.airport.domain.BoardingPass" resultMap="boardingPassMap">
+    <select id="getById" parameterType="int" resultMap="boardingPassMap">
         SELECT * FROM boarding_passes WHERE boarding_pass_id = #{boardingPassId}
     </select>
 
-    <select id="getBoardingPassByCheckInId" parameterType="int"
-            resultType="com.solvd.airport.domain.BoardingPass" resultMap="boardingPassMap">
-        SELECT * FROM boarding_passes WHERE check_in_id = #{checkInId}
+    <select id="getBoardingPassByCheckInId" parameterType="int" resultMap="boardingPassMap">
+        SELECT * FROM boarding_passes
+        WHERE check_in_id = #{checkInId}
     </select>
 
-    <update id="updateBoardingPass" parameterType="com.solvd.airport.domain.BoardingPass">
+    <update id="update" parameterType="BoardingPass">
         UPDATE boarding_passes
         SET
-            is_boarded = #{boardingPassObj.isBoarded},
-            boarding_time = #{boardingPassObj.boardingTime},
-            boarding_group = #{boardingPassObj.boardingGroup},
-            check_in_id = #{boardingPassObj.checkInId}
+        is_boarded = #{boardingPassObj.isBoarded},
+        boarding_time = #{boardingPassObj.boardingTime},
+        boarding_group = #{boardingPassObj.boardingGroup},
+        check_in_id = #{boardingPassObj.checkInId}
         WHERE boarding_pass_id = #{boardingPassObj.boardingPassId}
     </update>
 
-    <delete id="deleteBoardingPass" parameterType="int">
-        DELETE FROM boarding_passes WHERE boarding_pass_id = #{boardingPassId}
+    <delete id="delete" parameterType="int">
+        DELETE FROM boarding_passes
+        WHERE boarding_pass_id = #{boardingPassId}
     </delete>
 
 </mapper>

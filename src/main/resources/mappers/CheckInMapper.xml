@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.CheckInDAO">
 
-    <resultMap id="checkInMap" type="com.solvd.airport.domain.CheckIn">
+    <resultMap id="checkInMap" type="CheckIn">
         <id column="check_in_id" property="checkInId"/>
         <result column="check_in_method" property="checkInMethod"/>
         <result column="pass_issued" property="passIssued"/>
@@ -11,38 +11,36 @@
         <result column="booking_id" property="bookingId"/>
     </resultMap>
 
-    <insert id="createCheckIn" parameterType="com.solvd.airport.domain.CheckIn"
+    <insert id="create" parameterType="CheckIn"
             useGeneratedKeys="true" keyProperty="checkInId">
         INSERT INTO check_ins (check_in_method, pass_issued, airline_staff_id, booking_id)
         VALUES (
-            #{checkInObj.checkInMethod},
-            #{checkInObj.passIssued},
-            #{checkInObj.airlineStaffId},
-            #{checkInObj.bookingId}
+        #{checkInObj.checkInMethod},
+        #{checkInObj.passIssued},
+        #{checkInObj.airlineStaffId},
+        #{checkInObj.bookingId}
         )
     </insert>
 
-    <select id="getCheckInById" parameterType="int" resultType="com.solvd.airport.domain.CheckIn"
-            resultMap="checkInMap">
+    <select id="getById" parameterType="int" resultMap="checkInMap">
         SELECT * FROM check_ins WHERE check_in_id = #{checkInId}
     </select>
 
-    <select id="getCheckInByBookingNumber" parameterType="String"
-            resultType="com.solvd.airport.domain.CheckIn" resultMap="checkInMap">
+    <select id="getCheckInByBookingNumber" parameterType="String" resultMap="checkInMap">
         SELECT check_ins.* FROM check_ins
         JOIN
         bookings ON check_ins.booking_id = bookings.booking_id
         WHERE bookings.booking_number = #{bookingNumber}
     </select>
 
-    <update id="updateCheckIn" parameterType="com.solvd.airport.domain.CheckIn">
+    <update id="update" parameterType="CheckIn">
         UPDATE check_ins
         SET
         pass_issued = #{checkInObj.passIssued}
         WHERE check_in_id = #{checkInObj.checkInId}
     </update>
 
-    <delete id="deleteCheckIn" parameterType="int">
+    <delete id="delete" parameterType="int">
         DELETE FROM check_ins WHERE check_in_id = #{checkInId}
     </delete>
 

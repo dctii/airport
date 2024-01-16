@@ -3,14 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.PassportDAO">
 
-    <resultMap id="passportMap" type="com.solvd.airport.domain.Passport">
-        <id column="passport_number" property="passportNumber"/>
+    <resultMap id="passportMap" type="Passport">
+        <id column="passport_id" property="passportId"/>
+        <result column="passport_number" property="passportNumber"/>
         <result column="issue_date" property="issueDate"/>
         <result column="expiry_date" property="expiryDate"/>
         <result column="person_info_id" property="personInfoId"/>
+
+        <collection
+                property="bookings"
+                column="passport_number"
+                notNullColumn="passport_number"
+                javaType="Set"
+                select="getBookingsByPassportNumber"
+        />
     </resultMap>
 
-    <insert id="createPassport" parameterType="com.solvd.airport.domain.Passport">
+    <insert id="create" parameterType="Passport"
+            useGeneratedKeys="true" keyProperty="passportId">
         INSERT INTO passports (passport_number, issue_date, expiry_date, person_info_id)
         VALUES
         (
@@ -21,12 +31,27 @@
         )
     </insert>
 
-    <select id="getPassportById" parameterType="String"
-            resultType="com.solvd.airport.domain.Passport" resultMap="passportMap">
-        SELECT * FROM passports WHERE passport_number = #{passportNumber}
+    <select id="getById" parameterType="int" resultMap="passportMap">
+        SELECT * FROM passports
+        WHERE passport_id = #{passportId}
     </select>
 
-    <update id="updatePassport" parameterType="com.solvd.airport.domain.Passport">
+    <select id="getPassportByPassportNumber" parameterType="String" resultMap="passportMap">
+        SELECT * FROM passports
+        WHERE passport_number = #{passportNumber}
+    </select>
+
+    <update id="update" parameterType="Passport">
+        UPDATE passports
+        SET
+        issue_date = #{passportObj.passportNumber},
+        issue_date = #{passportObj.issueDate},
+        expiry_date = #{passportObj.expiryDate},
+        person_info_id = #{passportObj.personInfoId}
+        WHERE passport_number = #{passportObj.passportId}
+    </update>
+
+    <update id="updatePassportByPassportNumber" parameterType="Passport">
         UPDATE passports
         SET
         issue_date = #{passportObj.issueDate},
@@ -35,8 +60,26 @@
         WHERE passport_number = #{passportObj.passportNumber}
     </update>
 
-    <delete id="deletePassport" parameterType="String">
-        DELETE FROM passports WHERE passport_number = #{passportNumber}
+    <delete id="delete" parameterType="int">
+        DELETE FROM passports
+        WHERE passportId = #{passportId}
     </delete>
+
+    <delete id="deletePassportByPassportNumber" parameterType="String">
+        DELETE FROM passports
+        WHERE passport_number = #{passportNumber}
+    </delete>
+
+    <select id="doesPassportExist" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM passports
+        WHERE passport_number = #{passportNumber}
+    </select>
+
+    <select id="getBookingsByPassportNumber" parameterType="String"
+            resultMap="com.solvd.airport.persistence.BookingDAO.bookingMap">
+        SELECT b.*
+        FROM bookings b
+        WHERE b.passport_number = #{passportNumber}
+    </select>
 
 </mapper>

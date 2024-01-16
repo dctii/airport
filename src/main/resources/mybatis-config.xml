@@ -5,6 +5,32 @@
         >
 <configuration>
     <properties resource="config.properties"/>
+
+    <typeAliases>
+        <!--    java.util    -->
+        <typeAlias alias="Set" type="java.util.Set"/>
+
+        <!--    com.solvd.airport    -->
+        <typeAlias alias="Address" type="com.solvd.airport.domain.Address"/>
+        <typeAlias alias="Airline" type="com.solvd.airport.domain.Airline"/>
+        <typeAlias alias="AirlineStaffMember" type="com.solvd.airport.domain.AirlineStaffMember"/>
+        <typeAlias alias="Airport" type="com.solvd.airport.domain.Airport"/>
+        <typeAlias alias="Baggage" type="com.solvd.airport.domain.Baggage"/>
+        <typeAlias alias="BoardingPass" type="com.solvd.airport.domain.BoardingPass"/>
+        <typeAlias alias="Booking" type="com.solvd.airport.domain.Booking"/>
+        <typeAlias alias="CheckIn" type="com.solvd.airport.domain.CheckIn"/>
+        <typeAlias alias="Country" type="com.solvd.airport.domain.Country"/>
+        <typeAlias alias="EmailAddress" type="com.solvd.airport.domain.EmailAddress"/>
+        <typeAlias alias="Flight" type="com.solvd.airport.domain.Flight"/>
+        <typeAlias alias="FlightStaffMember" type="com.solvd.airport.domain.FlightStaffMember"/>
+        <typeAlias alias="Gate" type="com.solvd.airport.domain.Gate"/>
+        <typeAlias alias="Passport" type="com.solvd.airport.domain.Passport"/>
+        <typeAlias alias="PersonInfo" type="com.solvd.airport.domain.PersonInfo"/>
+        <typeAlias alias="PhoneNumber" type="com.solvd.airport.domain.PhoneNumber"/>
+        <typeAlias alias="Terminal" type="com.solvd.airport.domain.Terminal"/>
+        <typeAlias alias="Timezone" type="com.solvd.airport.domain.Timezone"/>
+    </typeAliases>
+
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -30,10 +56,7 @@
         <mapper resource="mappers/FlightMapper.xml"/>
         <mapper resource="mappers/GateMapper.xml"/>
         <mapper resource="mappers/PassportMapper.xml"/>
-        <mapper resource="mappers/PersonAddressMapper.xml"/>
-        <mapper resource="mappers/PersonEmailAddressMapper.xml"/>
         <mapper resource="mappers/PersonInfoMapper.xml"/>
-        <mapper resource="mappers/PersonPhoneNumberMapper.xml"/>
         <mapper resource="mappers/PhoneNumberMapper.xml"/>
         <mapper resource="mappers/TerminalMapper.xml"/>
         <mapper resource="mappers/TimezoneMapper.xml"/>

@@ -3,29 +3,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.TimezoneDAO">
 
-    <resultMap id="timezoneMap" type="com.solvd.airport.domain.Timezone">
-        <id column="timezone" property="timezone"/>
+    <resultMap id="timezoneMap" type="Timezone">
+        <id column="timezone_id" property="timezoneId"/>
+        <result column="timezone" property="timezone"/>
     </resultMap>
 
-    <insert id="createTimezone" parameterType="com.solvd.airport.domain.Timezone">
+    <insert id="create" parameterType="Timezone"
+            useGeneratedKeys="true" keyProperty="timezoneId">
         INSERT INTO timezones (timezone)
         VALUES (
         #{timezoneObj.timezone}
         )
     </insert>
 
-    <select id="getTimezoneByTz" parameterType="String" resultType="com.solvd.airport.domain.Timezone"
-    resultMap="timezoneMap">
-        SELECT * FROM timezones WHERE timezone = #{timezone}
+    <select id="getById" parameterType="int" resultMap="timezoneMap">
+        SELECT * FROM timezones
+        WHERE timezone_id = #{timezoneId}
     </select>
 
-    <update id="updateTimezoneByTz" parameterType="map">
+    <select id="getTimezoneByTz" parameterType="String" resultMap="timezoneMap">
+        SELECT * FROM timezones
+        WHERE timezone = #{timezone}
+    </select>
+
+    <update id="update" parameterType="Timezone">
         UPDATE timezones
-        SET timezone = #{newTimezoneObj.timezone}
-        WHERE timezone = #{oldTimezone}
+        SET timezone = #{timezone}
+        WHERE timezone_id = #{timezoneId}
     </update>
 
-    <delete id="deleteTimezone" parameterType="String">
+    <delete id="delete" parameterType="int">
+        DELETE FROM timezones
+        WHERE timezone_id = #{timezoneId}
+    </delete>
+
+    <delete id="deleteTimezoneByTz" parameterType="String">
         DELETE FROM timezones
         WHERE timezone = #{timezone}
     </delete>

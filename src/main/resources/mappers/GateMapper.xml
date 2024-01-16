@@ -3,14 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.GateDAO">
 
-    <resultMap id="gateMap" type="com.solvd.airport.domain.Gate">
+    <resultMap id="gateMap" type="Gate">
         <id column="gate_id" property="gateId"/>
         <result column="gate_code" property="gateCode"/>
         <result column="airport_code" property="airportCode"/>
         <result column="terminal_code" property="terminalCode"/>
+
+        <collection
+                property="flights"
+                column="gate_id"
+                notNullColumn="gate_id"
+                javaType="Set"
+                select="getFlightsByGateId"
+        />
     </resultMap>
 
-    <insert id="createGate" parameterType="com.solvd.airport.domain.Gate">
+    <insert id="create" parameterType="Gate"
+            useGeneratedKeys="true" keyProperty="gateId">
         INSERT INTO gates (gate_code, airport_code, terminal_code)
         VALUES (
         #{gateObj.gateCode},
@@ -19,9 +28,48 @@
         )
     </insert>
 
-    <select id="doesGateExist" parameterType="String" resultType="boolean">
+    <select id="getById" parameterType="int" resultMap="gateMap">
+        SELECT * FROM gates WHERE gate_id = #{gateId}
+    </select>
+
+    <select id="getGateByCodes" parameterType="map" resultMap="gateMap">
+        SELECT * FROM gates
+        WHERE gate_code = #{gateCode}
+        AND airport_code = #{airportCode}
+        AND terminal_code = #{terminalCode}
+    </select>
+
+    <update id="update" parameterType="Gate">
+        UPDATE gates
+        SET
+        gate_code = #{gateObj.gateCode},
+        airport_code = #{gateObj.airportCode},
+        terminal_code = #{gateObj.terminalCode}
+        WHERE gate_id = #{gateObj.gateId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM gates WHERE gate_id = #{gateId}
+    </delete>
+
+    <delete id="deleteByCodes" parameterType="map">
+        DELETE FROM gates
+        WHERE gate_code = #{gateCode}
+        AND airport_code = #{airportCode}
+        AND terminal_code = #{terminalCode}
+    </delete>
+
+    <select id="doesGateExist" parameterType="map" resultType="boolean">
         SELECT COUNT(*) > 0 FROM gates
-        WHERE airport_code = #{airportCode} AND terminal_code = #{terminalCode} AND gate_code = #{gateCode}
+        WHERE gate_code = #{gateCode}
+        AND airport_code = #{airportCode}
+    </select>
+
+    <select id="getFlightsByGateId" parameterType="int"
+            resultMap="com.solvd.airport.persistence.FlightDAO.flightMap">
+        SELECT f.*
+        FROM flights f
+        WHERE f.gate_id = #{gateId}
     </select>
 
 </mapper>

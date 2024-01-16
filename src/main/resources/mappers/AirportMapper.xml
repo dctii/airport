@@ -3,13 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.AirportDAO">
 
-    <resultMap id="airportMap" type="com.solvd.airport.domain.Airport">
-        <id column="airport_code" property="airportCode"/>
+    <resultMap id="airportMap" type="Airport">
+        <id column="airport_id" property="airportId"/>
+        <result column="airport_code" property="airportCode"/>
         <result column="airport_name" property="airportName"/>
         <result column="address_id" property="addressId"/>
+
+        <collection
+                property="terminals"
+                column="airport_code"
+                javaType="Set"
+                select="getTerminalsByAirportCode"
+        />
     </resultMap>
 
-    <insert id="createAirport" parameterType="com.solvd.airport.domain.Airport">
+    <insert id="create" parameterType="Airport"
+            useGeneratedKeys="true" keyProperty="airportId">
         INSERT INTO airports (airport_code, airport_name, address_id)
         VALUES (
         #{airportObj.airportCode},
@@ -18,34 +27,46 @@
         )
     </insert>
 
-    <insert id="createAirportWithoutAddress" parameterType="com.solvd.airport.domain.Airport">
-        INSERT INTO airports (airport_code, airport_name)
-        VALUES (
-        #{airportObj.airportCode},
-        #{airportObj.airportName}
-        )
-    </insert>
+    <select id="getById" parameterType="int" resultMap="airportMap">
+        SELECT * FROM airports
+        WHERE airport_id = #{airportId}
+    </select>
 
-    <select id="getAirportByCode" resultType="com.solvd.airport.domain.Airport"
-            resultMap="airportMap">
+
+    <select id="getAirportByCode" resultMap="airportMap" parameterType="String">
         SELECT * FROM airports
         WHERE airport_code = #{airportCode}
     </select>
 
-    <update id="updateAirport" parameterType="com.solvd.airport.domain.Airport">
+    <update id="update" parameterType="Airport">
         UPDATE airports
         SET
+        airport_code = #{airportObj.airportCode},
         airport_name = #{airportObj.airportName}
-        WHERE airport_code = #{airportObj.airportCode}
+        WHERE airport_id = #{airportObj.airportId}
     </update>
 
-    <delete id="deleteAirport">
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM airports
+        WHERE airport_id = #{airportId}
+    </delete>
+
+
+    <delete id="deleteAirportByCode" parameterType="String">
         DELETE FROM airports
         WHERE airport_code = #{airportCode}
     </delete>
 
     <select id="doesAirportExist" parameterType="String" resultType="boolean">
         SELECT COUNT(*) > 0 FROM airports
+        WHERE airport_code = #{airportCode}
+    </select>
+
+    <select id="getTerminalsByAirportCode" parameterType="String"
+            resultMap="com.solvd.airport.persistence.TerminalDAO.terminalMap">
+        SELECT *
+        FROM terminals
         WHERE airport_code = #{airportCode}
     </select>
 

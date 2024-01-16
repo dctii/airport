@@ -3,14 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.BaggageDAO">
 
-    <resultMap id="baggageMap" type="com.solvd.airport.domain.Baggage">
-        <id column="baggage_code" property="baggageCode"/>
+    <resultMap id="baggageMap" type="Baggage">
+        <id column="baggage_id" property="baggageId"/>
+        <result column="baggage_code" property="baggageCode"/>
         <result column="weight" property="weight"/>
         <result column="price" property="price"/>
         <result column="check_in_id" property="checkInId"/>
     </resultMap>
 
-    <insert id="createBaggage" parameterType="com.solvd.airport.domain.Baggage">
+    <insert id="create" parameterType="Baggage"
+            useGeneratedKeys="true" keyProperty="baggageId">
         INSERT INTO baggage (baggage_code, weight, price, check_in_id)
         VALUES (
         #{baggageObj.baggageCode},
@@ -20,28 +22,46 @@
         )
     </insert>
 
-    <select id="getBaggageByCode" resultType="com.solvd.airport.domain.Baggage"
-            resultMap="baggageMap">
+    <select id="getById" parameterType="int" resultMap="baggageMap">
+        SELECT * FROM baggage
+        WHERE baggage_id = #{baggageId}
+    </select>
+
+
+    <select id="getBaggageByCode" resultMap="baggageMap" parameterType="String">
         SELECT * FROM baggage WHERE baggage_code = #{baggageCode}
     </select>
 
-    <update id="updateBaggage" parameterType="com.solvd.airport.domain.Baggage">
+    <update id="update" parameterType="Baggage">
         UPDATE baggage
         SET
-        weight = #{baggageObj.weight}, price = #{baggageObj.price},
+        baggage_code = #{baggageObj.baggageCode},
+        weight = #{baggageObj.weight},
+        price = #{baggageObj.price},
+        check_in_id = #{baggageObj.checkInId}
+        WHERE baggage_id = #{baggageObj.baggageId}
+    </update>
+
+
+    <update id="updateBaggageByCode" parameterType="Baggage">
+        UPDATE baggage
+        SET
+        weight = #{baggageObj.weight},
+        price = #{baggageObj.price},
         check_in_id = #{baggageObj.checkInId}
         WHERE baggage_code = #{baggageObj.baggageCode}
     </update>
 
-    <delete id="deleteBaggage">
-        DELETE FROM baggage WHERE baggage_code = #{baggageCode}
+    <delete id="delete" parameterType="int">
+        DELETE FROM baggage
+        WHERE baggage_id = #{baggageId}
     </delete>
 
-    <update id="updateBaggageWithBoardingPassId">
-        UPDATE baggage
-        SET
-        boarding_pass_id = #{boardingPassId}
+
+    <delete id="deleteBaggageByCode" parameterType="String">
+        DELETE FROM baggage
         WHERE baggage_code = #{baggageCode}
-    </update>
+    </delete>
+
 
 </mapper>

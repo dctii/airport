@@ -3,28 +3,68 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.AirlineDAO">
 
-    <resultMap id="airlineMap" type="com.solvd.airport.domain.Airline">
-        <id column="airline_code" property="airlineCode"/>
+    <resultMap id="airlineMap" type="Airline">
+        <id column="airline_id" property="airlineId"/>
+        <result column="airline_code" property="airlineCode"/>
         <result column="airline_name" property="airlineName"/>
-        <result column="address_id" property="addressId"/>
+        <!--        <result column="address_id" property="addressId"/>-->
+        <association
+                property="address"
+                column="address_id"
+                notNullColumn="address_id"
+                javaType="Address"
+                resultMap="com.solvd.airport.persistence.AddressDAO.addressMap"
+        />
     </resultMap>
 
-    <insert id="createAirline" parameterType="com.solvd.airport.domain.Airline">
+    <insert id="create" parameterType="Airline"
+            useGeneratedKeys="true" keyProperty="airlineId">
         INSERT INTO airlines (airline_code, airline_name, address_id)
         VALUES (
         #{airlineObj.airlineCode},
         #{airlineObj.airlineName},
-        #{airlineObj.addressId}
+        #{airlineObj.address.addressId}
         )
     </insert>
 
-    <insert id="createAirlineWithoutAddress" parameterType="com.solvd.airport.domain.Airline">
-        INSERT INTO airlines (airline_code, airline_name)
-        VALUES (
-        #{airlineObj.airlineCode},
-        #{airlineObj.airlineName}
-        )
-    </insert>
+    <select id="getById" parameterType="int" resultMap="airlineMap">
+        SELECT a.*, addr.* FROM airlines a
+        LEFT JOIN addresses addr
+        ON a.address_id = addr.address_id
+        WHERE a.airline_id = #{airlineId}
+    </select>
+
+    <select id="getAirlineByCode" parameterType="String" resultMap="airlineMap">
+        SELECT a.*, addr.* FROM airlines a
+        LEFT JOIN addresses addr
+        ON a.address_id = addr.address_id
+        WHERE airline_code = #{airlineCode}
+    </select>
+
+    <update id="update" parameterType="Airline">
+        UPDATE airlines SET
+        airline_code = #{airlineObj.airlineCode},
+        airline_name = #{airlineObj.airlineName},
+        address_id = #{airlineObj.address.addressId}
+        WHERE airline_id = #{airlineObj.airlineId}
+    </update>
+
+    <update id="updateAirlineByCode" parameterType="Airline">
+        UPDATE airlines SET
+        airline_name = #{airlineObj.airlineName},
+        address_id = #{airlineObj.address.addressId}
+        WHERE airline_code = #{airlineObj.airlineCode}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM airlines
+        WHERE airline_id = #{airlineId}
+    </delete>
+
+    <delete id="deleteAirlineByCode" parameterType="String">
+        DELETE FROM airlines
+        WHERE airline_code = #{airlineCode}
+    </delete>
 
     <select id="doesAirlineExist" parameterType="String" resultType="boolean">
         SELECT COUNT(*) > 0 FROM airlines

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.BookingDAO">
-    <resultMap id="bookingMap" type="com.solvd.airport.domain.Booking">
+    <resultMap id="bookingMap" type="Booking">
         <id column="booking_id" property="bookingId"/>
         <result column="booking_number" property="bookingNumber"/>
         <result column="purchase_datetime" property="purchaseDatetime"/>
@@ -15,7 +15,7 @@
         <result column="flight_code" property="flightCode"/>
     </resultMap>
 
-    <insert id="createBooking" parameterType="com.solvd.airport.domain.Booking"
+    <insert id="create" parameterType="Booking"
             useGeneratedKeys="true" keyProperty="bookingId">
         INSERT INTO bookings (booking_number, purchase_datetime, seat_class, seat_number, status,
         price, agency, passport_number, flight_code)
@@ -32,17 +32,17 @@
         )
     </insert>
 
-    <select id="getBookingById" parameterType="int" resultType="com.solvd.airport.domain.Booking"
-            resultMap="bookingMap">
-        SELECT * FROM bookings WHERE booking_id = #{bookingId}
+    <select id="getById" parameterType="int" resultMap="bookingMap">
+        SELECT * FROM bookings
+        WHERE booking_id = #{bookingId}
     </select>
 
-    <select id="findByBookingNumber" parameterType="String"
-            resultType="com.solvd.airport.domain.Booking" resultMap="bookingMap">
-        SELECT * FROM bookings WHERE booking_number = #{bookingNumber}
+    <select id="getBookingByBookingNumber" parameterType="String" resultMap="bookingMap">
+        SELECT * FROM bookings
+        WHERE booking_number = #{bookingNumber}
     </select>
 
-    <update id="updateBooking" parameterType="com.solvd.airport.domain.Booking">
+    <update id="update" parameterType="Booking">
         UPDATE bookings
         SET
         seat_class = #{bookingObj.seatClass},
@@ -55,8 +55,34 @@
         WHERE booking_id = #{bookingObj.bookingId}
     </update>
 
-    <delete id="deleteBooking" parameterType="int">
+    <update id="updateBookingByBookingNumber" parameterType="Booking">
+        UPDATE bookings
+        SET
+        purchase_datetime = #{bookingObj.purchaseDatetime},
+        seat_class = #{bookingObj.seatClass},
+        seat_number = #{bookingObj.seatNumber},
+        status = #{bookingObj.status},
+        price = #{bookingObj.price},
+        agency = #{bookingObj.agency},
+        passport_number = #{bookingObj.passportNumber},
+        flight_code = #{bookingObj.flightCode}
+        WHERE booking_number = #{bookingObj.bookingNumber}
+    </update>
+
+
+    <delete id="delete" parameterType="int">
         DELETE FROM bookings WHERE booking_id = #{bookingId}
     </delete>
+
+    <delete id="deleteBookingByBookingNumber" parameterType="String">
+        DELETE FROM bookings
+        WHERE booking_number = #{bookingNumber}
+    </delete>
+
+    <select id="doesBookingExist" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM bookings
+        WHERE booking_number = #{bookingNumber}
+    </select>
+
 
 </mapper>

@@ -3,38 +3,66 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.airport.persistence.EmailAddressDAO">
 
-    <resultMap id="emailAddressMap" type="com.solvd.airport.domain.EmailAddress">
+    <resultMap id="emailAddressMap" type="EmailAddress">
         <id column="email_address_id" property="emailAddressId"/>
         <result column="email_address" property="emailAddress"/>
+
+        <collection
+                property="peopleWithEmailAddress"
+                column="email_address_id"
+                notNullColumn="email_address_id"
+                javaType="Set"
+                select="getPeopleByEmailAddressId"
+        />
     </resultMap>
 
-    <insert id="createEmailAddress" parameterType="com.solvd.airport.domain.EmailAddress"
+    <insert id="create" parameterType="EmailAddress"
             useGeneratedKeys="true" keyProperty="emailAddressId">
         INSERT INTO email_addresses (email_address)
         VALUES (
-            #{emailAddressObj.emailAddress}
+        #{emailAddressObj.emailAddress}
         )
     </insert>
 
-    <select id="getEmailAddressById" resultType="com.solvd.airport.domain.EmailAddress"
-            resultMap="emailAddressMap">
-        SELECT * FROM email_addresses WHERE email_address_id = #{emailAddressId}
+    <insert id="createPersonAssociation" parameterType="map"
+            useGeneratedKeys="true">
+        INSERT INTO person_email_addresses (person_info_id, email_address_id)
+        VALUES (
+        #{personInfoId},
+        #{contactId}
+        )
+    </insert>
+
+    <select id="getById" resultMap="emailAddressMap" parameterType="int">
+        SELECT * FROM email_addresses
+        WHERE email_address_id = #{emailAddressId}
     </select>
 
-    <select id="getEmailAddressByEmail" resultType="com.solvd.airport.domain.EmailAddress"
-            resultMap="emailAddressMap">
-        SELECT * FROM email_addresses WHERE email_address = #{email}
+    <select id="getEmailAddressByEmail" resultMap="emailAddressMap" parameterType="String">
+        SELECT * FROM email_addresses
+        WHERE email_address = #{email}
     </select>
 
-    <update id="updateEmailAddress" parameterType="com.solvd.airport.domain.EmailAddress">
+    <update id="update" parameterType="EmailAddress">
         UPDATE email_addresses
         SET
-            email_address = #{emailAddressObj.emailAddress}
+        email_address = #{emailAddressObj.emailAddress}
         WHERE email_address_id = #{emailAddressObj.emailAddressId}
     </update>
 
-    <delete id="deleteEmailAddress">
-        DELETE FROM email_addresses WHERE email_address_id = #{emailAddressId}
+    <delete id="delete" parameterType="int">
+        DELETE FROM email_addresses
+        WHERE email_address_id = #{emailAddressId}
     </delete>
+
+    <select id="getPeopleByEmailAddressId" parameterType="int"
+            resultMap="com.solvd.airport.persistence.PersonInfoDAO.personInfoMap">
+        SELECT pi.*
+        FROM person_info pi
+        JOIN person_email_addresses pea
+        ON pi.person_info_id = pea.person_info_id
+        WHERE pea.email_address_id = #{emailAddressId}
+    </select>
+
 
 </mapper>
