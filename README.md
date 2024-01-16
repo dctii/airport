@@ -67,6 +67,7 @@ mvn exec:java -P base-data-loader
 [5] Load Airlines Data
 [6] Load Terminals Data
 [7] Load Gates Data
+[8] Load Bookings Data
 
 Enter your choice:
 ...
@@ -91,6 +92,7 @@ mvn exec:java
 [1] Register Passport Holder
 [2] Perform Check-In
 [3] Board Passengers
+[4] Change Departure Gate for Flight
 
 Enter your choice:
 1
@@ -208,6 +210,27 @@ Flight Code: NQ456
 Status: Boarded
 Boarded: Yes
 Boarding completed successfully.
+
+
+=== Airport Check-in System: ===
+[0] Exit
+[1] Register Passport Holder
+[2] Perform Check-In
+[3] Board Passengers
+[4] Change Departure Gate for Flight
+
+Enter your choice:
+4
+
+
+=== Update Departure Gate for Flight ===
+Enter Flight Code:
+DL123
+Enter Airport Code (i.e. LAX):
+LAX
+Enter Gate Code (i.e. 130-159, 201A, 201B, 202-204):
+210A
+Flight DL123 gate updated successfully to: 210A
 
 
 
