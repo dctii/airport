@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="airlineStaff" type="AirlineStaff"/>
+
+    <xs:complexType name="AirlineStaff">
+        <xs:sequence>
+            <xs:element
+                    name="airlineStaffMember"
+                    type="AirlineStaffMember"
+                    minOccurs="0"
+                    maxOccurs="unbounded"
+            />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AirlineStaffMember">
+        <xs:sequence>
+            <xs:element name="memberRole" type="xs:string"/>
+            <xs:element name="personInfo" type="PersonInfo"/>
+        </xs:sequence>
+
+        <xs:attribute name="id" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="PersonInfo">
+        <xs:sequence>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="givenName" type="xs:string"/>
+            <xs:element name="middleName" type="xs:string" minOccurs="0"/>
+            <xs:element name="birthdate" type="xs:date"/>
+            <xs:element name="sex" type="xs:string"/>
+            <xs:element name="emailAddresses" type="EmailAddresses"/>
+        </xs:sequence>
+
+        <xs:attribute name="id" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="EmailAddresses">
+        <xs:sequence>
+            <xs:element
+                    name="emailAddress"
+                    type="EmailAddress"
+                    minOccurs="0"
+                    maxOccurs="unbounded"
+            />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EmailAddress">
+        <xs:sequence>
+            <xs:element name="emailAddress" type="xs:string"/>
+        </xs:sequence>
+
+        <xs:attribute name="id" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

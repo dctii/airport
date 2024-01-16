@@ -9,67 +9,130 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="terminalsSchema.xsd"
 >
-    <terminal>
+    <!--  LAX   -->
+    <terminal id="1">
         <airportCode>LAX</airportCode>
         <terminalCode>T1</terminalCode>
         <terminalName>Terminal 1</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="2">
         <airportCode>LAX</airportCode>
         <terminalCode>T2</terminalCode>
         <terminalName>Terminal 2</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="3">
         <airportCode>LAX</airportCode>
         <terminalCode>T3</terminalCode>
         <terminalName>Terminal 3</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="4">
         <airportCode>LAX</airportCode>
         <terminalCode>T4</terminalCode>
         <terminalName>Terminal 4</terminalName>
         <isInternational>true</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="5">
         <airportCode>LAX</airportCode>
         <terminalCode>T5</terminalCode>
         <terminalName>Terminal 5</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="6">
         <airportCode>LAX</airportCode>
         <terminalCode>T6</terminalCode>
         <terminalName>Terminal 6</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="7">
         <airportCode>LAX</airportCode>
         <terminalCode>T7</terminalCode>
         <terminalName>Terminal 7</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="8">
         <airportCode>LAX</airportCode>
         <terminalCode>T8</terminalCode>
         <terminalName>Terminal 8</terminalName>
         <isInternational>false</isInternational>
         <isDomestic>true</isDomestic>
     </terminal>
-    <terminal>
+    <terminal id="9">
         <airportCode>LAX</airportCode>
         <terminalCode>TBIT</terminalCode>
         <terminalName>Tom Bradley International Terminal</terminalName>
         <isInternational>true</isInternational>
         <isDomestic>false</isDomestic>
+    </terminal>
+
+    <!--  HND   -->
+    <terminal id="10">
+        <airportCode>HND</airportCode>
+        <terminalCode>T1</terminalCode>
+        <terminalName>Terminal 1</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal id="11">
+        <airportCode>HND</airportCode>
+        <terminalCode>T2</terminalCode>
+        <terminalName>Terminal 2</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal id="12">
+        <airportCode>HND</airportCode>
+        <terminalCode>T3</terminalCode>
+        <terminalName>Terminal 3</terminalName>
+        <isInternational>false</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+
+    <!--  LHR   -->
+    <terminal id="13">
+        <airportCode>LHR</airportCode>
+        <terminalCode>T2</terminalCode>
+        <terminalName>Terminal 2</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal id="14">
+        <airportCode>LHR</airportCode>
+        <terminalCode>T3</terminalCode>
+        <terminalName>Terminal 3</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal id="15">
+        <airportCode>LHR</airportCode>
+        <terminalCode>T4</terminalCode>
+        <terminalName>Terminal 4</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+    <terminal id="16">
+        <airportCode>LHR</airportCode>
+        <terminalCode>T5</terminalCode>
+        <terminalName>Terminal 5</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
+    </terminal>
+
+    <!--  MSQ   -->
+    <terminal id="17">
+        <airportCode>MSQ</airportCode>
+        <terminalCode>T1</terminalCode>
+        <terminalName>Terminal 1</terminalName>
+        <isInternational>true</isInternational>
+        <isDomestic>true</isDomestic>
     </terminal>
 </terminals>

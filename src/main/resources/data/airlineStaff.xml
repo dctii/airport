@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    LAX Terminals
+    https://www.flylax.com/lax%20new-terminal-maps
+-->
+
+<airlineStaff
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="airlineStaffSchema.xsd"
+>
+    <airlineStaffMember id="1">
+        <memberRole>Pilot</memberRole>
+        <personInfo id="6">
+            <surname>Johnson</surname>
+            <givenName>Alice</givenName>
+            <middleName>Katelyn</middleName>
+            <birthdate>1985-11-25</birthdate>
+            <sex>F</sex>
+            <emailAddresses>
+                <emailAddress id="6">
+                    <emailAddress>alice_johnson@delta.com</emailAddress>
+                </emailAddress>
+            </emailAddresses>
+        </personInfo>
+    </airlineStaffMember>
+    <airlineStaffMember id="2">
+        <memberRole>Flight Attendant</memberRole>
+        <personInfo id="7">
+            <surname>Ericson</surname>
+            <givenName>Alexa</givenName>
+            <middleName>Corinna</middleName>
+            <birthdate>1985-11-25</birthdate>
+            <sex>F</sex>
+            <emailAddresses>
+                <emailAddress id="7">
+                    <emailAddress>alexa_ericson@delta.com</emailAddress>
+                </emailAddress>
+            </emailAddresses>
+        </personInfo>
+    </airlineStaffMember>
+    <airlineStaffMember id="3">
+        <memberRole>Check-in Staff</memberRole>
+        <personInfo id="7">
+            <surname>Blart</surname>
+            <givenName>Paul</givenName>
+            <birthdate>1985-11-25</birthdate>
+            <sex>M</sex>
+            <emailAddresses>
+                <emailAddress id="5">
+                    <emailAddress>paul_blart@delta.com</emailAddress>
+                </emailAddress>
+            </emailAddresses>
+        </personInfo>
+    </airlineStaffMember>
+    <airlineStaffMember id="4">
+        <memberRole>Pilot</memberRole>
+        <personInfo id="9">
+            <surname>Tanaka</surname>
+            <givenName>Hiro</givenName>
+            <birthdate>1990-06-15</birthdate>
+            <sex>M</sex>
+            <emailAddresses>
+                <emailAddress id="9">
+                    <emailAddress>hiro_tanaka@air-japan.co.jp</emailAddress>
+                </emailAddress>
+            </emailAddresses>
+        </personInfo>
+    </airlineStaffMember>
+    <airlineStaffMember id="5">
+        <memberRole>Flight Attendant</memberRole>
+        <personInfo id="8">
+            <surname>Kurosawa</surname>
+            <givenName>Joy</givenName>
+            <birthdate>1985-11-25</birthdate>
+            <sex>F</sex>
+            <emailAddresses>
+                <emailAddress id="8">
+                    <emailAddress>joy_kurosawa@air-japan.co.jp</emailAddress>
+                </emailAddress>
+            </emailAddresses>
+        </personInfo>
+    </airlineStaffMember>
+    <airlineStaffMember id="6">
+        <memberRole>Check-in Staff</memberRole>
+        <personInfo id="10">
+            <surname>Sato</surname>
+            <givenName>Emi</givenName>
+            <birthdate>1992-09-30</birthdate>
+            <sex>F</sex>
+            <emailAddresses>
+                <emailAddress id="10">
+                    <emailAddress>emi_sato@air-japan.co.jp</emailAddress>
+                </emailAddress>
+            </emailAddresses>
+        </personInfo>
+    </airlineStaffMember>
+</airlineStaff>

@@ -1,0 +1,34 @@
+[ {
+  "bookingId" : 1,
+  "bookingNumber" : "EXPEDIA001",
+  "purchaseDatetime" : "2024-01-13 00:00:00",
+  "seatClass" : "Economy",
+  "seatNumber" : "12A",
+  "status" : "Confirmed",
+  "price" : 1600.00,
+  "agency" : "Expedia",
+  "passportNumber" : "BYR123",
+  "flightCode" : "DL123"
+}, {
+  "bookingId" : 2,
+  "bookingNumber" : "KAYAK001",
+  "purchaseDatetime" : "2024-01-13 00:00:00",
+  "seatClass" : "Business",
+  "seatNumber" : "2B",
+  "status" : "Confirmed",
+  "price" : 3000.00,
+  "agency" : "Kayak",
+  "passportNumber" : "USA123",
+  "flightCode" : "NQ456"
+}, {
+  "bookingId" : 3,
+  "bookingNumber" : "KAYAK002",
+  "purchaseDatetime" : "2024-01-13 00:00:00",
+  "seatClass" : "First Class",
+  "seatNumber" : "1A",
+  "status" : "Confirmed",
+  "price" : 5000.00,
+  "agency" : "Kayak",
+  "passportNumber" : "JPN123",
+  "flightCode" : "NQ456"
+} ]

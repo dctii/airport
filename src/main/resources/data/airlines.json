@@ -2,246 +2,282 @@
   {
     "airlineCode": "EI",
     "airlineName": "Aer Lingus",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "CA",
     "airlineName": "Air China",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "AF",
     "airlineName": "Air France",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "NZ",
     "airlineName": "Air New Zealand",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "YP",
     "airlineName": "Air Premia",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "TN",
     "airlineName": "Air Tahiti Nui",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "NH",
     "airlineName": "All Nippon Airways",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "OZ",
     "airlineName": "Asiana Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "OS",
     "airlineName": "Austrian Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "AV",
     "airlineName": "Avianca",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "B2",
     "airlineName": "Belavia Belarusian Airlines",
-    "addressId": null
+    "address": {
+      "addressId": null,
+      "street": "14A Nemiga Street",
+      "citySubdivision": "Minsk",
+      "city": "Minsk",
+      "citySuperdivision": "Minsk Region",
+      "countryCode": "BY",
+      "postalCode": "220004",
+      "timezone": "Europe/Minsk"
+    }
   },
   {
     "airlineCode": "BA",
     "airlineName": "British Airways",
-    "addressId": null
+    "address": {
+      "addressId": null,
+      "street": "Waterside, PO Box 365",
+      "citySubdivision": "Harmondsworth",
+      "city": "London",
+      "citySuperdivision": "Greater London",
+      "countryCode": "GB",
+      "postalCode": "UB7 0GB",
+      "timezone": "Europe/London"
+    }
   },
   {
     "airlineCode": "CX",
     "airlineName": "Cathay Pacific Airways",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "CI",
     "airlineName": "China Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "MU",
     "airlineName": "China Eastern",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "CZ",
     "airlineName": "China Southern",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "CM",
     "airlineName": "Copa Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "LY",
     "airlineName": "El Al Israel Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "EK",
     "airlineName": "Emirates Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "EY",
     "airlineName": "Etihad Airways",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "BR",
     "airlineName": "EVA Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "FJ",
     "airlineName": "Fiji Airways",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "AY",
     "airlineName": "Finnair",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "F8",
     "airlineName": "Flair Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "BF",
     "airlineName": "French Bee",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "HU",
     "airlineName": "Hainan Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "HA",
     "airlineName": "Hawaiian Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "IB",
     "airlineName": "Iberia Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "AZ",
     "airlineName": "ITA Airways",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "NQ",
     "airlineName": "Air Japan",
-    "addressId": null
+    "address": {
+      "addressId": null,
+      "street": "ANA House",
+      "citySubdivision": "Minato",
+      "city": "Tokyo",
+      "citySuperdivision": "Tokyo",
+      "countryCode": "JP",
+      "postalCode": "105-7133",
+      "timezone": "Asia/Tokyo"
+    }
   },
   {
     "airlineCode": "DL",
     "airlineName": "Delta Air Lines",
-    "addressId": null
+    "address": {
+      "addressId": null,
+      "street": "1030 Delta Boulevard",
+      "citySubdivision": "Atlanta",
+      "city": "Atlanta",
+      "citySuperdivision": "Georgia",
+      "countryCode": "US",
+      "postalCode": "30354",
+      "timezone": "America/New_York"
+    }
   },
   {
     "airlineCode": "JL",
     "airlineName": "Japan Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "KL",
     "airlineName": "KLM Royal Dutch Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "KE",
     "airlineName": "Korean Air",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "LA",
     "airlineName": "LATAM Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "LO",
     "airlineName": "LOT Polish Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "LH",
     "airlineName": "Lufthansa",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "PR",
     "airlineName": "Philippine Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "QF",
     "airlineName": "Qantas Airways Limited",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "QR",
     "airlineName": "Qatar Airways",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "SV",
     "airlineName": "Saudia",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "SK",
     "airlineName": "Scandinavian Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "3U",
     "airlineName": "Sichuan Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "SQ",
     "airlineName": "Singapore Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "LX",
     "airlineName": "SWISS",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "TK",
     "airlineName": "Turkish Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "Y4",
     "airlineName": "Volaris",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "MF",
     "airlineName": "Xiamen Airlines",
-    "addressId": null
+    "address": null
   },
   {
     "airlineCode": "ZG",
     "airlineName": "Zipair",
-    "addressId": null
+    "address": null
   }
 ]

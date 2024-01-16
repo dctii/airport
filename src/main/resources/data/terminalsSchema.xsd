@@ -22,6 +22,8 @@
             <xs:element name="isInternational" type="xs:boolean"/>
             <xs:element name="isDomestic" type="xs:boolean"/>
         </xs:sequence>
+
+        <xs:attribute name="id" type="xs:unsignedInt" use="required"/>
     </xs:complexType>
 
 </xs:schema>
