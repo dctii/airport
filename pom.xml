@@ -182,13 +182,6 @@
             <version>${apache-commons-lang3.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-        <dependency>
-            <groupId>${apache-commons.groupId}</groupId>
-            <artifactId>${apache-commons.affix}-text</artifactId>
-            <version>${apache-commons-text.version}</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
         <dependency>
             <groupId>${apache-commons.groupId}</groupId>
@@ -251,17 +244,15 @@
         <dependency>
             <groupId>${jackson-core.groupId}</groupId>
             <artifactId>${jackson.affix}-core</artifactId>
-            <version>2.16.1</version>
+            <version>${jacksoncore.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>${jackson-core.groupId}</groupId>
             <artifactId>${jackson.affix}-databind</artifactId>
-            <version>2.16.1</version>
+            <version>${jackson-databind.version}</version>
         </dependency>
-
-
 
 
     </dependencies>
