@@ -69,9 +69,6 @@ mysql -u {{username}} -p{{password}} -D airport < src/resources/sql/airport_sche
 
 # 4. Load preset `airport` data.
 mysql -u {{username}} -p{{password}} -D airport < src/resources/sql/load_base_data.sql
-
-mvn clean install
-mvn exec:java
 ```
 
 ### Run `BaseDataLoader.class`
