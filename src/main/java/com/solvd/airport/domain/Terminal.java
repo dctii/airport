@@ -6,6 +6,7 @@ import com.solvd.airport.util.StringFormatters;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 // StAX
@@ -136,6 +137,26 @@ public class Terminal {
 
     public boolean removeGate(Gate gate) {
         return this.gates != null && this.gates.remove(gate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Terminal terminal = (Terminal) o;
+        return terminalId ==
+                terminal.terminalId
+                && isInternational == terminal.isInternational
+                && isDomestic == terminal.isDomestic
+                && Objects.equals(airportCode, terminal.airportCode)
+                && Objects.equals(terminalCode, terminal.terminalCode)
+                && Objects.equals(terminalName, terminal.terminalName)
+                && Objects.equals(gates, terminal.gates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(terminalId, airportCode, terminalCode, terminalName, isInternational, isDomestic, gates);
     }
 
     @Override
