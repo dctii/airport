@@ -62,6 +62,8 @@ public class AddressJDBCImpl implements AddressDAO {
     @Override
     public int create(Address addressObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newAddressId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_ADDRESS_SQL,
@@ -78,13 +80,13 @@ public class AddressJDBCImpl implements AddressDAO {
 
             SQLUtils.updateAndSetGeneratedId(ps, addressObj::setAddressId);
 
-            return addressObj.getAddressId();
+            newAddressId = addressObj.getAddressId();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.info("SQL Exception occurred for create Address");
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newAddressId;
     }
 
 
