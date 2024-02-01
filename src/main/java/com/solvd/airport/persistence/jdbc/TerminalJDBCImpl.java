@@ -51,6 +51,8 @@ public class TerminalJDBCImpl implements TerminalDAO {
     @Override
     public int create(Terminal terminalObj) {
         Connection conn = connectionPool.getConnection();
+        int newTerminalId = 0;
+
         try (
                 PreparedStatement ps = conn.prepareStatement(INSERT_TERMINAL_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
@@ -62,12 +64,14 @@ public class TerminalJDBCImpl implements TerminalDAO {
 
 
             SQLUtils.updateAndSetGeneratedId(ps, terminalObj::setTerminalId);
+
+            newTerminalId = terminalObj.getTerminalId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newTerminalId;
     }
 
 

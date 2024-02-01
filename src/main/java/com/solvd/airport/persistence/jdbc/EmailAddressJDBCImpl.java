@@ -43,18 +43,21 @@ public class EmailAddressJDBCImpl implements EmailAddressDAO {
     @Override
     public int create(EmailAddress emailAddressObj) {
         Connection conn = connectionPool.getConnection();
+        int newEmailAddressId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(INSERT_EMAIL_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, emailAddressObj.getEmailAddress());
 
             SQLUtils.updateAndSetGeneratedId(ps, emailAddressObj::setEmailAddressId);
+
+            newEmailAddressId = emailAddressObj.getEmailAddressId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newEmailAddressId;
     }
 
         /*
@@ -75,8 +78,10 @@ public class EmailAddressJDBCImpl implements EmailAddressDAO {
             .getSQL();
 
     @Override
-    public void createPersonAssociation(int personInfoId, int emailAddressId) {
+    public int createPersonAssociation(int personInfoId, int emailAddressId) {
         Connection conn = connectionPool.getConnection();
+
+        int generatedId = 0;
 
         try (
                 PreparedStatement ps = conn.prepareStatement(
@@ -87,12 +92,15 @@ public class EmailAddressJDBCImpl implements EmailAddressDAO {
             ps.setInt(1, personInfoId);
             ps.setInt(2, emailAddressId);
 
-            ps.executeUpdate();
+            generatedId = SQLUtils.updateAndGetGeneratedKey(ps);
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
+
+        return generatedId;
     }
 
 

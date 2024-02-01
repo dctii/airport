@@ -48,6 +48,8 @@ public class AirportJDBCImpl implements AirportDAO {
     @Override
     public int create(Airport airportObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newAirportId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_AIRPORT_SQL,
@@ -59,12 +61,14 @@ public class AirportJDBCImpl implements AirportDAO {
             SQLUtils.setIntOrNull(ps, 3, airportObj.getAddressId());
 
             SQLUtils.updateAndSetGeneratedId(ps, airportObj::setAirportId);
+
+            newAirportId = airportObj.getAirportId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newAirportId;
     }
 
     /*

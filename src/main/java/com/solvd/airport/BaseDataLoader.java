@@ -4,7 +4,7 @@ package com.solvd.airport;
 import com.solvd.airport.util.AnsiCodes;
 import com.solvd.airport.util.ClassConstants;
 import com.solvd.airport.util.FilepathConstants;
-import com.solvd.airport.util.MenuUtils;
+import com.solvd.airport.util.LoadUtils;
 import com.solvd.airport.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,41 +41,41 @@ public class BaseDataLoader {
 
             switch (choice) {
                 case 1:
-                    MenuUtils.loadCountryData();
+                    LoadUtils.loadCountryData();
                     LOGGER.info(StringConstants.NEWLINE);
-                    MenuUtils.loadTimeZones();
+                    LoadUtils.loadTimeZones();
                     LOGGER.info(StringConstants.NEWLINE);
-                    MenuUtils.loadLargeAirports(FilepathConstants.OUR_AIRPORTS_CSV_DATA_FILEPATH);
+                    LoadUtils.loadLargeAirports(FilepathConstants.OUR_AIRPORTS_CSV_DATA_FILEPATH);
                     LOGGER.info(StringConstants.NEWLINE);
-                    MenuUtils.loadAirlines(FilepathConstants.AIRLINES_JSON);
+                    LoadUtils.loadAirlines(FilepathConstants.AIRLINES_JSON);
                     LOGGER.info(StringConstants.NEWLINE);
-                    MenuUtils.loadTerminals(FilepathConstants.TERMINALS_XML);
+                    LoadUtils.loadTerminals(FilepathConstants.TERMINALS_XML);
                     LOGGER.info(StringConstants.NEWLINE);
-                    MenuUtils.loadGates(FilepathConstants.GATES_XML);
+                    LoadUtils.loadGates(FilepathConstants.GATES_XML);
                     LOGGER.info(StringConstants.NEWLINE);
-                    MenuUtils.loadBookings(FilepathConstants.BOOKINGS_JSON);
+                    LoadUtils.loadBookings(FilepathConstants.BOOKINGS_JSON);
                     break;
                 case 2:
-                    MenuUtils.loadCountryData();
+                    LoadUtils.loadCountryData();
                     break;
                 case 3:
-                    MenuUtils.loadTimeZones();
+                    LoadUtils.loadTimeZones();
                     break;
                 case 4:
                     // 'airports.csv' (2024/01/07) from https://ourairports.com/data/
-                    MenuUtils.loadLargeAirports(FilepathConstants.OUR_AIRPORTS_CSV_DATA_FILEPATH);
+                    LoadUtils.loadLargeAirports(FilepathConstants.OUR_AIRPORTS_CSV_DATA_FILEPATH);
                     break;
                 case 5:
-                    MenuUtils.loadAirlines(FilepathConstants.AIRLINES_JSON);
+                    LoadUtils.loadAirlines(FilepathConstants.AIRLINES_JSON);
                     break;
                 case 6:
-                    MenuUtils.loadTerminals(FilepathConstants.TERMINALS_XML);
+                    LoadUtils.loadTerminals(FilepathConstants.TERMINALS_XML);
                     break;
                 case 7:
-                    MenuUtils.loadGates(FilepathConstants.GATES_XML);
+                    LoadUtils.loadGates(FilepathConstants.GATES_XML);
                     break;
                 case 8:
-                    MenuUtils.loadBookings(FilepathConstants.BOOKINGS_JSON);
+                    LoadUtils.loadBookings(FilepathConstants.BOOKINGS_JSON);
                     break;
                 case 0:
                     LOGGER.info("Exiting...");

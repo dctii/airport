@@ -205,6 +205,7 @@ public final class ClassConstants {
     public static final Class<FilepathConstants> FILEPATH_CONSTANTS = FilepathConstants.class;
     public static final Class<JacksonUtils> JACKSON_UTILS = JacksonUtils.class;
     public static final Class<JaxbUtils> JAXB_UTILS = JaxbUtils.class;
+    public static final Class<LoadUtils> LOAD_UTILS = LoadUtils.class;
     public static final Class<MenuUtils> MENU_UTILS = MenuUtils.class;
     public static final Class<MyBatisUtils> MYBATIS_UTILS = MyBatisUtils.class;
     public static final Class<NumberUtils> NUMBER_UTILS = NumberUtils.class;

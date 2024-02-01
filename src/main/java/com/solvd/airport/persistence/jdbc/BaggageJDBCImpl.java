@@ -45,6 +45,8 @@ public class BaggageJDBCImpl implements BaggageDAO {
     @Override
     public int create(Baggage baggageObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newBaggageId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_BAGGAGE_SQL,
@@ -57,12 +59,14 @@ public class BaggageJDBCImpl implements BaggageDAO {
             SQLUtils.setIntOrNull(ps, 4, baggageObj.getCheckInId());
 
             SQLUtils.updateAndSetGeneratedId(ps, baggageObj::setBaggageId);
+
+            newBaggageId = baggageObj.getBaggageId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newBaggageId;
     }
 
             /*

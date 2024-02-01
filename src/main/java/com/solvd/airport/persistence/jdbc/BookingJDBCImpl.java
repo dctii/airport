@@ -50,6 +50,8 @@ public class BookingJDBCImpl implements BookingDAO {
     @Override
     public int create(Booking bookingObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newBookingId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_BOOKING_SQL,
@@ -67,12 +69,14 @@ public class BookingJDBCImpl implements BookingDAO {
             ps.setString(9, bookingObj.getFlightCode());
 
             SQLUtils.updateAndSetGeneratedId(ps, bookingObj::setBookingId);
+
+            newBookingId = bookingObj.getBookingId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newBookingId;
     }
 
         /*

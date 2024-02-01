@@ -37,6 +37,7 @@ public class TimezoneJDBCImpl implements TimezoneDAO {
     @Override
     public int create(Timezone timezoneObj) {
         Connection conn = connectionPool.getConnection();
+        int newTimezoneId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_TIMEZONE_SQL,
@@ -46,12 +47,14 @@ public class TimezoneJDBCImpl implements TimezoneDAO {
             ps.setString(1, timezoneObj.getTimezone());
 
             SQLUtils.updateAndSetGeneratedId(ps, timezoneObj::setTimezoneId);
+
+            newTimezoneId = timezoneObj.getTimezoneId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newTimezoneId;
     }
 
 

@@ -48,6 +48,8 @@ public class PhoneNumberJDBCImpl implements PhoneNumberDAO {
     @Override
     public int create(PhoneNumber phoneNumberObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newPhoneNumberId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_PHONE_SQL,
@@ -58,12 +60,14 @@ public class PhoneNumberJDBCImpl implements PhoneNumberDAO {
             SQLUtils.setStringOrNull(ps, 2, phoneNumberObj.getExtension());
 
             SQLUtils.updateAndSetGeneratedId(ps, phoneNumberObj::setPhoneNumberId);
+
+            newPhoneNumberId = phoneNumberObj.getPhoneNumberId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newPhoneNumberId;
     }
 
     private static final List<Field<?>> INSERT_PERSON_ASSOCIATION_FIELDS = List.of(
@@ -76,8 +80,9 @@ public class PhoneNumberJDBCImpl implements PhoneNumberDAO {
             .getSQL();
 
     @Override
-    public void createPersonAssociation(int personInfoId, int phoneNumberId) {
+    public int createPersonAssociation(int personInfoId, int phoneNumberId) {
         Connection conn = connectionPool.getConnection();
+        int generatedId = 0;
 
         try (
                 PreparedStatement ps = conn.prepareStatement(
@@ -88,13 +93,14 @@ public class PhoneNumberJDBCImpl implements PhoneNumberDAO {
             ps.setInt(1, personInfoId);
             ps.setInt(2, phoneNumberId);
 
-            ps.executeUpdate();
+            generatedId = SQLUtils.updateAndGetGeneratedKey(ps);
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
+        return generatedId;
     }
 
 

@@ -2,6 +2,7 @@ package com.solvd.airport.util;
 
 import com.solvd.airport.exception.InvalidDateFormatException;
 import com.solvd.airport.exception.UnsuccessfulAutoGenerationOfIdException;
+import com.solvd.airport.exception.UnsuccessfulInstanceCreationException;
 import com.solvd.airport.exception.UnsuccessfulStatementSetException;
 import com.solvd.airport.persistence.AirportDAO;
 import com.solvd.airport.persistence.CountryDAO;
@@ -50,13 +51,42 @@ public class SQLUtils {
     public static void setGeneratedKey(PreparedStatement preparedStatement, IntConsumer setIdConsumer) {
         try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
-                int id = generatedKeys.getInt(1);
-                setIdConsumer.accept(id);
+                int generatedId = generatedKeys.getInt(1);
+                setIdConsumer.accept(generatedId);
             }
         } catch (SQLException e) {
             LOGGER.error("Failed to obtain ID.", e);
             throw new UnsuccessfulAutoGenerationOfIdException("Failed to obtain ID." + e);
         }
+    }
+
+    public static int updateAndGetGeneratedKey(PreparedStatement ps) {
+        int generatedId = 0;
+        try {
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.error("Creating object failed, no rows affected");
+                throw new UnsuccessfulInstanceCreationException("Creating object failed, no rows affected");
+            }
+            generatedId = getGeneratedKey(ps);
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred: ", e);
+        }
+        return generatedId;
+    }
+
+    public static int getGeneratedKey(PreparedStatement ps) {
+        int generatedId = 0;
+
+        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Failed to obtain ID.", e);
+            throw new UnsuccessfulAutoGenerationOfIdException("Failed to obtain ID." + e);
+        }
+        return generatedId;
     }
 
 
@@ -105,7 +135,7 @@ public class SQLUtils {
 
     public static void setBigDecimalOrNull(PreparedStatement ps, int parameterIndex, BigDecimal value) {
         try {
-            
+
             if (value != null) {
                 ps.setBigDecimal(parameterIndex, value);
             } else {

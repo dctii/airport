@@ -42,6 +42,8 @@ public class CountryJDBCImpl implements CountryDAO {
     @Override
     public int create(Country countryObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newCountryId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_COUNTRY_SQL,
@@ -52,12 +54,14 @@ public class CountryJDBCImpl implements CountryDAO {
             ps.setString(2, countryObj.getCountryName());
 
             SQLUtils.updateAndSetGeneratedId(ps, countryObj::setCountryId);
+
+            newCountryId = countryObj.getCountryId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newCountryId;
     }
 
     /*
