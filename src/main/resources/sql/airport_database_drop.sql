@@ -1,1 +1,1 @@
-DROP DATABASE airport;
+DROP DATABASE IF EXISTS airport;
