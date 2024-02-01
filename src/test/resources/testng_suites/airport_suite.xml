@@ -1,34 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-
-<suite name="Example Suite" verbose="1" parallel="tests" thread-count="10">
-    <listeners>
-        <listener class-name="com.solvd.airport.listeners.TestNGListener"/>
-    </listeners>
-
-    <test name="ExampleTest1" parallel="methods" thread-count="5">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Airport Suite" verbose="1" parallel="tests" thread-count="10">
+    <test name="Register Passport Holder Service Test 1" thread-count="5">
         <classes>
-            <class name="com.solvd.airport.ExampleTest">
+            <class name="com.solvd.airport.RegisterPassportHolderServiceTest">
                 <methods>
-                    <exclude name="excludeMe"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="ExampleTest2" parallel="methods" thread-count="5">
-        <classes>
-            <class name="com.solvd.airport.ExampleTest">
-                <methods>
-                    <exclude name="excludeMe"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
-    <test name="ExampleTest3" parallel="methods" thread-count="5">
-        <classes>
-            <class name="com.solvd.airport.ExampleTest">
-                <methods>
-                    <exclude name="excludeMe"/>
+                    <include name="createPersonInfoWithValidData"/>
+                    <include name="createPersonInfoWithNoneAsMiddleName"/>
+                    <include name="createPersonInfoWithEmptyStringAsMiddleName"/>
+                    <include name="tryCreationPersonInfoWithInvalidDateString"/>
+                    <include name="tryCreationPersonInfoWithInvalidSexString"/>
+                    <include name="createAddressWithValidData"/>
+                    <include name="tryCreationAddressWithInvalidCountryCode"/>
+                    <include name="createPhoneNumberWithValidData"/>
+                    <include name="tryCreationPhoneNumberWithoutInternationalFormat"/>
+                    <include name="tryCreationPhoneNumberWithInvalidPhoneNumber"/>
+                    <include name="createEmailAddressWithValidData"/>
+                    <include name="tryCreationEmailAddressWithoutAtSign"/>
+                    <include name="tryCreationEmailAddressWithInvalidDomainName"/>
+                    <include name="createPassportWithValidData"/>
+                    <include name="createPersonAddressAssociationWithValidData"/>
+                    <include name="createPersonPhoneNumberAssociationWithValidData"/>
+                    <include name="createPersonEmailAddressAssociationWithValidData"/>
+                    <include name="registerPassportHolderWithValidData"/>
                 </methods>
             </class>
         </classes>
