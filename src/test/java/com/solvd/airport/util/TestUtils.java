@@ -33,8 +33,6 @@ public class TestUtils {
             String birthdateString,
             String sexString
     ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConstants.YEAR_FIRST_DATE_PATTERN);
-        LocalDate newBirthdate = LocalDate.parse(birthdateString, formatter);
 
         PersonInfo newPersonInfo = MenuUtils.getPersonInfo(surnameString, givenNameString, middleNameString, birthdateString, sexString);
 
@@ -42,7 +40,7 @@ public class TestUtils {
         Assert.assertEquals(newPersonInfo.getSurname(), surnameString.toUpperCase());
         Assert.assertEquals(newPersonInfo.getGivenName(), givenNameString.toUpperCase());
         Assert.assertEquals(newPersonInfo.getMiddleName(), middleNameString.toUpperCase());
-        Assert.assertEquals(newPersonInfo.getBirthdate(), java.sql.Date.valueOf(newBirthdate));
+        Assert.assertEquals(newPersonInfo.getBirthdate(), SQLUtils.toDate(birthdateString));
         Assert.assertEquals(newPersonInfo.getSex(), sexString.toUpperCase());
 
         return personInfoDAO.create(newPersonInfo);
@@ -56,8 +54,6 @@ public class TestUtils {
             String birthdateString,
             String sexString
     ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(StringConstants.YEAR_FIRST_DATE_PATTERN);
-        LocalDate newBirthdate = LocalDate.parse(birthdateString, formatter);
 
         PersonInfo newPersonInfo = MenuUtils.getPersonInfo(surnameString, givenNameString, middleNameString, birthdateString, sexString);
 
@@ -65,7 +61,7 @@ public class TestUtils {
         Assert.assertEquals(newPersonInfo.getSurname(), surnameString.toUpperCase());
         Assert.assertEquals(newPersonInfo.getGivenName(), givenNameString.toUpperCase());
         Assert.assertNull(newPersonInfo.getMiddleName());
-        Assert.assertEquals(newPersonInfo.getBirthdate(), java.sql.Date.valueOf(newBirthdate));
+        Assert.assertEquals(newPersonInfo.getBirthdate(), SQLUtils.toDate(birthdateString));
         Assert.assertEquals(newPersonInfo.getSex(), sexString.toUpperCase());
 
         return personInfoDAO.create(newPersonInfo);
