@@ -87,24 +87,24 @@ public class RegisterPassportHolderServiceTest {
     @DataProvider
     public Object[][] newValidPeopleInfo() {
         return new Object[][]{
-                {"John", "Jackson", "Doe", "1988-12-14", "M"},
-                {"Janet", "Jenae", "Doe", "1999-12-15", "F"}
+                {"Doe", "John", "Joseph", "1988-12-14", "M"},
+                {"Jackson", "Janet", "Jenae", "1999-12-15", "F"}
         };
     }
 
     @DataProvider
     public Object[][] newValidPeopleInfoWithNoneAsMiddleName() {
         return new Object[][]{
-                {"John", "Journeyman", "none", "1988-12-14", "M"},
-                {"Janet", "Journeyman", "none", "1999-12-15", "F"}
+                {"Journeyman", "John", "none", "1988-12-14", "M"},
+                {"Journeyman", "Janet", "none", "1999-12-15", "F"}
         };
     }
 
     @DataProvider
     public Object[][] newValidPeopleInfoWithEmptyMiddleNameString() {
         return new Object[][]{
-                {"Don", "Quixote", "", "1988-12-14", "M"},
-                {"Janet", "Quixote", "", "1999-12-15", "F"}
+                {"Quixote", "Don", "", "1988-12-14", "M"},
+                {"Quixote", "Donna", "", "1999-12-15", "F"}
         };
     }
 
@@ -135,9 +135,9 @@ public class RegisterPassportHolderServiceTest {
     @DataProvider
     public Object[][] newAddressesWithInvalidCountryCode() {
         return new Object[][]{
-                {"123 Orange Street", "Los Angeles", "90210", "XYZ"},
-                {"456 Apple Street", "Los Angeles", "90210", "56"},
-                {"456 Apple Lane", "Los Angeles", "90210", "U"},
+                {"456 Orange Street", "Los Angeles", "90210", "XYZ"},
+                {"123 Apple Street", "Los Angeles", "90210", "56"},
+                {"789 Apple Lane", "Los Angeles", "90210", "U"},
         };
     }
 
@@ -145,7 +145,7 @@ public class RegisterPassportHolderServiceTest {
     @DataProvider
     public Object[][] newValidPhoneNumbers() {
         return new Object[][]{
-                {"+17147289399"},
+                {"+17147289299"},
                 {"+12134213866"},
         };
     }
@@ -161,8 +161,8 @@ public class RegisterPassportHolderServiceTest {
     @DataProvider
     public Object[][] newInvalidPhoneNumbers() {
         return new Object[][]{
-
-                {"+1"}
+                {"+1"},
+                {"+154795"}
         };
     }
 
@@ -289,12 +289,12 @@ public class RegisterPassportHolderServiceTest {
                         birthdateString,
                         sexString
                 );
-        createdPersonIds.add(newPersonInfoId);
 
         Assert.assertTrue(
                 newPersonInfoId > 0,
                 "The PersonInfo ID should be a positive number after successful create."
         );
+        createdPersonIds.add(newPersonInfoId);
     }
 
     @Test(
@@ -317,12 +317,12 @@ public class RegisterPassportHolderServiceTest {
                         birthdateString,
                         sexString
                 );
-        createdPersonIds.add(newPersonInfoId);
 
         Assert.assertTrue(
                 newPersonInfoId > 0,
                 "The PersonInfo ID should be a positive number after successful create."
         );
+        createdPersonIds.add(newPersonInfoId);
     }
 
     @Test(
@@ -345,12 +345,12 @@ public class RegisterPassportHolderServiceTest {
                         birthdateString,
                         sexString
                 );
-        createdPersonIds.add(newPersonInfoId);
 
         Assert.assertTrue(
                 newPersonInfoId > 0,
                 "The PersonInfo ID should be a positive number after successful create."
         );
+        createdPersonIds.add(newPersonInfoId);
     }
 
     @Test(
@@ -415,12 +415,12 @@ public class RegisterPassportHolderServiceTest {
                 postalCodeString,
                 countryCodeString
         );
-        createdAddressIds.add(newAddressId);
 
         Assert.assertTrue(
                 newAddressId > 0,
                 "The Address ID should be a positive number after successful create."
         );
+        createdAddressIds.add(newAddressId);
     }
 
     @Test(
@@ -452,12 +452,12 @@ public class RegisterPassportHolderServiceTest {
     ) {
         // Create PhoneNumber and get phoneNumberId
         int newPhoneNumberId = TestUtils.createAndAssertPhoneNumber(phoneNumberDAO, phoneNumberString);
-        createdPhoneNumberIds.add(newPhoneNumberId);
 
         Assert.assertTrue(
                 newPhoneNumberId > 0,
                 "The Address ID should be a positive number after successful create."
         );
+        createdPhoneNumberIds.add(newPhoneNumberId);
     }
 
     @Test(
@@ -493,18 +493,17 @@ public class RegisterPassportHolderServiceTest {
 
     @Test(
             description = "Take valid input for EmailAddress and create a new row in email_addresses in the MySQL database",
-            dataProvider = "newValidEmailAddresses",
-            enabled = true
+            dataProvider = "newValidEmailAddresses"
     )
     // Create EmailAddress and get emailAddressId
     public void createEmailAddressWithValidData(String emailAddressString) {
         int newEmailAddressId = TestUtils.createAndAssertEmailAddress(emailAddressDAO, emailAddressString);
-        createdEmailAddressIds.add(newEmailAddressId);
 
         Assert.assertTrue(
                 newEmailAddressId > 0,
                 "The EmailAddress ID should be a positive number after successful create"
         );
+        createdEmailAddressIds.add(newEmailAddressId);
     }
 
     @Test(
@@ -539,8 +538,7 @@ public class RegisterPassportHolderServiceTest {
 
     @Test(
             description = "Take valid input for PersonInfo and Passport and create a new row in person_info and passports in the MySQL database",
-            dataProvider = "newPersonAndPassportData",
-            enabled = true
+            dataProvider = "newPersonAndPassportData"
     )
     public void createPassportWithValidData(
             PersonInfo personInfo,
@@ -558,8 +556,8 @@ public class RegisterPassportHolderServiceTest {
                         personInfo.getBirthdate().toString(),
                         personInfo.getSex()
                 );
-        createdPersonIds.add(newPersonInfoId);
         Assert.assertTrue(newPersonInfoId > 0, "The PersonInfo ID should be a positive number after successful create.");
+        createdPersonIds.add(newPersonInfoId);
 
         // Create Passport and get passportId
         int newPassportId = TestUtils.createAndAssertPassport(
@@ -569,19 +567,18 @@ public class RegisterPassportHolderServiceTest {
                 expiryDateString,
                 newPersonInfoId
         );
-        createdPassportIds.add(newPassportId);
 
         Assert.assertTrue(
                 newPassportId > 0,
                 "The EmailAddress ID should be a positive number after successful create"
         );
+        createdPassportIds.add(newPassportId);
     }
 
 
     @Test(
             description = "Take valid input for PersonInfo and Address, create new rows in person_info and addresses, and then in person_address in the MySQL database",
-            dataProvider = "newPersonAndAddressData",
-            enabled = true
+            dataProvider = "newPersonAndAddressData"
     )
     public void createPersonAddressAssociationWithValidData(
             PersonInfo personInfo,
@@ -597,11 +594,11 @@ public class RegisterPassportHolderServiceTest {
                         personInfo.getBirthdate().toString(),
                         personInfo.getSex()
                 );
-        createdPersonIds.add(newPersonInfoId);
         Assert.assertTrue(
                 newPersonInfoId > 0,
                 "The PersonInfo ID should be a positive number after successful create."
         );
+        createdPersonIds.add(newPersonInfoId);
 
         // create new address
         int newAddressId = TestUtils.createAndAssertAddress(
@@ -611,12 +608,12 @@ public class RegisterPassportHolderServiceTest {
                 address.getPostalCode(),
                 address.getCountryCode()
         );
-        createdAddressIds.add(newAddressId);
 
         Assert.assertTrue(
                 newAddressId > 0,
                 "The Address ID should be a positive number after successful create."
         );
+        createdAddressIds.add(newAddressId);
 
 
         int newPersonAddressId = addressDAO.createPersonAssociation(
@@ -633,8 +630,7 @@ public class RegisterPassportHolderServiceTest {
 
     @Test(
             description = "Take valid input for PersonInfo and Address, create new rows in person_info and addresses, and then in person_address in the MySQL database",
-            dataProvider = "newPersonAndPhoneNumberData",
-            enabled = true
+            dataProvider = "newPersonAndPhoneNumberData"
     )
     public void createPersonPhoneNumberAssociationWithValidData(
             PersonInfo personInfo,
@@ -651,20 +647,21 @@ public class RegisterPassportHolderServiceTest {
                         personInfo.getBirthdate().toString(),
                         personInfo.getSex()
                 );
-        createdPersonIds.add(newPersonInfoId);
         Assert.assertTrue(
                 newPersonInfoId > 0,
                 "The PersonInfo ID should be a positive number after successful create."
         );
+        createdPersonIds.add(newPersonInfoId);
 
 
         int newPhoneNumberId = TestUtils.createAndAssertPhoneNumber(phoneNumberDAO, phoneNumber.getPhoneNumber());
-        createdPhoneNumberIds.add(newPhoneNumberId);
 
         Assert.assertTrue(
                 newPhoneNumberId > 0,
                 "The Address ID should be a positive number after successful create."
         );
+        createdPhoneNumberIds.add(newPhoneNumberId);
+
         int newPersonPhoneNumberId = phoneNumberDAO.createPersonAssociation(newPersonInfoId, newPhoneNumberId);
 
         Assert.assertTrue(
@@ -676,8 +673,7 @@ public class RegisterPassportHolderServiceTest {
 
     @Test(
             description = "Take valid input for PersonInfo and EmailAddress, create new rows in person_info and addresses, and then in person_address in the MySQL database",
-            dataProvider = "newPersonAndEmailAddressData",
-            enabled = true
+            dataProvider = "newPersonAndEmailAddressData"
     )
     public void createPersonEmailAddressAssociationWithValidData(
             PersonInfo personInfo,
@@ -692,22 +688,23 @@ public class RegisterPassportHolderServiceTest {
                         personInfo.getBirthdate().toString(),
                         personInfo.getSex()
                 );
-        createdPersonIds.add(newPersonInfoId);
         Assert.assertTrue(
                 newPersonInfoId > 0,
                 "The PersonInfo ID should be a positive number after successful create."
         );
+        createdPersonIds.add(newPersonInfoId);
 
         int newEmailAddressId = TestUtils.createAndAssertEmailAddress(
                 emailAddressDAO,
                 emailAddress.getEmailAddress()
         );
-        createdEmailAddressIds.add(newEmailAddressId);
 
         Assert.assertTrue(
                 newEmailAddressId > 0,
                 "The EmailAddress ID should be a positive number after successful create"
         );
+        createdEmailAddressIds.add(newEmailAddressId);
+
         int newPersonEmailAddressId = emailAddressDAO.createPersonAssociation(
                 newPersonInfoId,
                 newEmailAddressId
@@ -741,8 +738,8 @@ public class RegisterPassportHolderServiceTest {
                         personInfo.getBirthdate().toString(),
                         personInfo.getSex()
                 );
-        createdPersonIds.add(newPersonInfoId);
         Assert.assertTrue(newPersonInfoId > 0, "The PersonInfo ID should be a positive number after successful create.");
+        createdPersonIds.add(newPersonInfoId);
 
         // Create Passport and get passportId
         int newPassportId = TestUtils.createAndAssertPassport(
@@ -752,12 +749,12 @@ public class RegisterPassportHolderServiceTest {
                 passport.getExpiryDate().toString(),
                 newPersonInfoId
         );
-        createdPassportIds.add(newPassportId);
 
         Assert.assertTrue(
                 newPassportId > 0,
                 "The EmailAddress ID should be a positive number after successful create"
         );
+        createdPassportIds.add(newPassportId);
 
         // Create new address and get addressId
         int newAddressId = TestUtils.createAndAssertAddress(
@@ -767,33 +764,33 @@ public class RegisterPassportHolderServiceTest {
                 address.getPostalCode(),
                 address.getCountryCode()
         );
-        createdAddressIds.add(newAddressId);
 
         Assert.assertTrue(
                 newAddressId > 0,
                 "The Address ID should be a positive number after successful create."
         );
+        createdAddressIds.add(newAddressId);
 
         // Create new phone number and get phoneNumberId
         int newPhoneNumberId = TestUtils.createAndAssertPhoneNumber(phoneNumberDAO, phoneNumber.getPhoneNumber());
-        createdPhoneNumberIds.add(newPhoneNumberId);
 
         Assert.assertTrue(
                 newPhoneNumberId > 0,
                 "The Address ID should be a positive number after successful create."
         );
+        createdPhoneNumberIds.add(newPhoneNumberId);
 
         // Create new email address and get emailAddressId
         int newEmailAddressId = TestUtils.createAndAssertEmailAddress(
                 emailAddressDAO,
                 emailAddress.getEmailAddress()
         );
-        createdEmailAddressIds.add(newEmailAddressId);
 
         Assert.assertTrue(
                 newEmailAddressId > 0,
                 "The EmailAddress ID should be a positive number after successful create"
         );
+        createdEmailAddressIds.add(newEmailAddressId);
 
         // Create PersonInfo-<Contact> associations
 
