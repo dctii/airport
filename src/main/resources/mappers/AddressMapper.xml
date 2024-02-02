@@ -39,7 +39,7 @@
     </insert>
 
     <insert id="createPersonAssociation" parameterType="map"
-            useGeneratedKeys="true">
+            useGeneratedKeys="true" keyProperty="generatedId">
         INSERT INTO person_addresses (person_info_id, address_id)
         VALUES (
         #{personInfoId},

@@ -51,6 +51,8 @@ public class PassportJDBCImpl implements PassportDAO {
     @Override
     public int create(Passport passportObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newPassportId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_PASSPORT_SQL,
@@ -63,12 +65,14 @@ public class PassportJDBCImpl implements PassportDAO {
             SQLUtils.setIntOrNull(ps, 4, passportObj.getPersonInfoId());
 
             SQLUtils.updateAndSetGeneratedId(ps, passportObj::setPassportId);
+
+            newPassportId = passportObj.getPassportId();
         } catch (SQLException e) {
             throw new UnsuccessfulInstanceCreationException("Error creating passport" + e);
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newPassportId;
     }
 
     /*

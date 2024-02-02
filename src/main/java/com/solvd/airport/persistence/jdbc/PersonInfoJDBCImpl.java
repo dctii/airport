@@ -55,6 +55,8 @@ public class PersonInfoJDBCImpl implements PersonInfoDAO {
     @Override
     public int create(PersonInfo personInfoObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newPersonId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_PERSON_INFO_SQL,
@@ -69,12 +71,14 @@ public class PersonInfoJDBCImpl implements PersonInfoDAO {
 
             SQLUtils.updateAndSetGeneratedId(ps, personInfoObj::setPersonInfoId);
 
+            newPersonId = personInfoObj.getPersonInfoId();
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newPersonId;
     }
 
     /*

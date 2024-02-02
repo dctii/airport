@@ -53,6 +53,8 @@ public class AirlineStaffMemberJDBCImpl implements AirlineStaffMemberDAO {
     @Override
     public int create(AirlineStaffMember airlineStaffMemberObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newAirlineStaffMemberId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_AIRLINE_STAFF_SQL,
@@ -62,20 +64,16 @@ public class AirlineStaffMemberJDBCImpl implements AirlineStaffMemberDAO {
             ps.setString(1, airlineStaffMemberObj.getMemberRole());
             SQLUtils.setIntOrNull(ps, 2, getPersonInfoId(airlineStaffMemberObj));
 
-            int affectedRows = ps.executeUpdate();
+            SQLUtils.updateAndSetGeneratedId(ps, airlineStaffMemberObj::setAirlineStaffId);
 
-            if (affectedRows == 0) {
-                throw new SQLException("Creating airline staff member failed, no rows affected.");
-            }
-
-            SQLUtils.setGeneratedKey(ps, airlineStaffMemberObj::setAirlineStaffId);
+            newAirlineStaffMemberId = airlineStaffMemberObj.getAirlineStaffId();
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newAirlineStaffMemberId;
     }
 
         /*

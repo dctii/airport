@@ -109,8 +109,10 @@ public class AddressJDBCImpl implements AddressDAO {
             .getSQL();
 
     @Override
-    public void createPersonAssociation(int personInfoId, int addressId) {
+    public int createPersonAssociation(int personInfoId, int addressId) {
         Connection conn = connectionPool.getConnection();
+
+        int generatedId = 0;
 
         try (
                 PreparedStatement ps = conn.prepareStatement(
@@ -121,12 +123,13 @@ public class AddressJDBCImpl implements AddressDAO {
             ps.setInt(1, personInfoId);
             ps.setInt(2, addressId);
 
-            ps.executeUpdate();
+            generatedId = SQLUtils.updateAndGetGeneratedKey(ps);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
+        return generatedId;
     }
 
     /*

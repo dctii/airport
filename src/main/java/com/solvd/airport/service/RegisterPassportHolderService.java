@@ -10,4 +10,12 @@ public interface RegisterPassportHolderService {
             PhoneNumber phoneNumber,
             EmailAddress emailAddress
     );
+
+    void displayRegisteredInfo(
+            PersonInfo personInfo,
+            Passport passport,
+            Address address,
+            PhoneNumber phoneNumber,
+            EmailAddress emailAddress
+    );
 }

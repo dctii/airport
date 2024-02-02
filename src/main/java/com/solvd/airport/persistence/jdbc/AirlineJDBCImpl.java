@@ -54,6 +54,8 @@ public class AirlineJDBCImpl implements AirlineDAO {
     @Override
     public int create(Airline airlineObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newAirlineId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_AIRLINE_SQL,
@@ -65,12 +67,15 @@ public class AirlineJDBCImpl implements AirlineDAO {
             SQLUtils.setIntOrNull(ps, 3, getAddressId(airlineObj));
 
             SQLUtils.updateAndSetGeneratedId(ps, airlineObj::setAirlineId);
+
+            newAirlineId = airlineObj.getAirlineId();
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newAirlineId;
     }
 
 

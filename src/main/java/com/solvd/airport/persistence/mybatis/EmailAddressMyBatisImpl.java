@@ -32,11 +32,12 @@ public class EmailAddressMyBatisImpl implements EmailAddressDAO {
     }
 
     @Override
-    public void createPersonAssociation(int personInfoId, int contactId) {
+    public int createPersonAssociation(int personInfoId, int contactId) {
         try (SqlSession session = MyBatisUtils.getSqlSessionFactory().openSession()) {
             EmailAddressDAO dao = session.getMapper(MAPPER_DAO_CLASS);
-            dao.createPersonAssociation(personInfoId, contactId);
+            int generatedId = dao.createPersonAssociation(personInfoId, contactId);
             session.commit();
+            return generatedId;
         }
     }
 

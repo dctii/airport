@@ -45,6 +45,8 @@ public class BoardingPassJDBCImpl implements BoardingPassDAO {
     @Override
     public int create(BoardingPass boardingPassObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newBookingId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(INSERT_BOARDING_PASS_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
@@ -54,12 +56,14 @@ public class BoardingPassJDBCImpl implements BoardingPassDAO {
             SQLUtils.setIntOrNull(ps, 4, boardingPassObj.getCheckInId());
 
             SQLUtils.updateAndSetGeneratedId(ps, boardingPassObj::setBoardingPassId);
+
+            newBookingId = boardingPassObj.getBoardingPassId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newBookingId;
     }
 
     /*

@@ -56,7 +56,14 @@ public class RegisterPassportHolderServiceImpl implements RegisterPassportHolder
         displayRegisteredInfo(personInfo, passport, address, phoneNumber, emailAddress);
     }
 
-    private void displayRegisteredInfo(PersonInfo personInfo, Passport passport, Address address, PhoneNumber phoneNumber, EmailAddress emailAddress) {
+    @Override
+    public void displayRegisteredInfo(
+            PersonInfo personInfo,
+            Passport passport,
+            Address address,
+            PhoneNumber phoneNumber,
+            EmailAddress emailAddress
+    ) {
         // Display Person Info
         LOGGER.info(StringConstants.NEWLINE);
 

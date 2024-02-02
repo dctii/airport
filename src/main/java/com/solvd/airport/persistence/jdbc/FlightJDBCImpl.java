@@ -56,6 +56,8 @@ public class FlightJDBCImpl implements FlightDAO {
     @Override
     public int create(Flight flightObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newFlightId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(
                         INSERT_FLIGHT_SQL,
@@ -73,12 +75,14 @@ public class FlightJDBCImpl implements FlightDAO {
             SQLUtils.setStringOrNull(ps, 9, flightObj.getTailNumber());
 
             SQLUtils.updateAndSetGeneratedId(ps, flightObj::setFlightId);
+
+            newFlightId = flightObj.getFlightId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newFlightId;
     }
 
     /*

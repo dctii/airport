@@ -48,6 +48,8 @@ public class GateJDBCImpl implements GateDAO {
     @Override
     public int create(Gate gateObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newGateId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(INSERT_GATE_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
@@ -56,12 +58,14 @@ public class GateJDBCImpl implements GateDAO {
             ps.setString(3, gateObj.getTerminalCode());
 
             SQLUtils.updateAndSetGeneratedId(ps, gateObj::setGateId);
+
+            newGateId = gateObj.getGateId();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newGateId;
     }
 
     /*

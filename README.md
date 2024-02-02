@@ -37,7 +37,8 @@ Plugins:
 
 ### Rename and Update `src/main/resources/example.config.properties`
 
-- Rename `example.config.properties` to `config.properties` or create your own `config.properties` file in the `src/main/resources` directory.
+- Rename `example.config.properties` to `config.properties` or create your own `config.properties`
+  file in the `src/main/resources` directory.
 - Look below. Replace `jdbc.url`, `jdbc.user`, and `jdbc.password` with those respective to your
   environment for connecting to your MySQL server.
 - The `persistence.mybatis` package will be used if `database.implementation=mybatis`.
@@ -277,6 +278,26 @@ Exiting...
 ```
 
 ## Assignments
+
+<hr />
+
+### TestNG Assignment
+
+<hr />
+
+#### Requirements
+
+##### Comments and Required changes to consider from previous assignment:
+
+- N/A
+
+##### Requirements for the TestNG Assignment
+
+1. Use your database project (this project)
+2. Create Google Sheet with 10 test cases. The testing target is your `service` layer.
+3. Test cases should test all operations which your service layer performs.
+4. Create 10 java tests in the `test` folder of the project structure.
+5. Create an `xml` suite file and run your tests in parallel. There should be 10 threads.
 
 <hr />
 

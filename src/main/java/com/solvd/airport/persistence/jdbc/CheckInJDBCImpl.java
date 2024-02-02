@@ -46,6 +46,8 @@ public class CheckInJDBCImpl implements CheckInDAO {
     @Override
     public int create(CheckIn checkInObj) {
         Connection conn = connectionPool.getConnection();
+
+        int newCheckInId = 0;
         try (
                 PreparedStatement ps = conn.prepareStatement(INSERT_CHECK_IN_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
@@ -55,12 +57,14 @@ public class CheckInJDBCImpl implements CheckInDAO {
             SQLUtils.setIntOrNull(ps, 4, checkInObj.getBookingId());
 
             SQLUtils.updateAndSetGeneratedId(ps, checkInObj::setCheckInId);
+
+            newCheckInId = checkInObj.getCheckInId();
         } catch (SQLException e) {
             LOGGER.error("Error creating CheckIn: ", e);
         } finally {
             connectionPool.releaseConnection(conn);
         }
-        return 0;
+        return newCheckInId;
     }
 
 
