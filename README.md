@@ -108,7 +108,7 @@ Enter your choice:
 # Run `clean install`
 mvn clean install
 
-# Run the the primary profile to run the services
+# Run the primary profile to run the services
 mvn exec:java
 
 ```
@@ -274,6 +274,14 @@ Enter your choice:
 
 
 Exiting...
+
+```
+
+### Run Tests
+
+```shell
+# Run the test
+mvn test
 
 ```
 
