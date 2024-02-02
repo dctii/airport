@@ -1,6 +1,5 @@
-# airport
+# Airport
 
-# Building Company
 
 Uses:
 
